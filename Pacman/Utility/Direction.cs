@@ -6,7 +6,7 @@
 //  clockwise directions
 //
 
-namespace Breakout.Utility
+namespace FormsPixelGameEngine.Utility
 {
     public enum Direction
     {

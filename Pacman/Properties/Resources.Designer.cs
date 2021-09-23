@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Breakout.Properties {
+namespace FormsPixelGameEngine.Properties {
     using System;
     
     

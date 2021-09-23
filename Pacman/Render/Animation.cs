@@ -11,10 +11,10 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 
-using Breakout.Utility;
-using Breakout.GameObjects;
+using FormsPixelGameEngine.Utility;
+using FormsPixelGameEngine.GameObjects;
 
-namespace Breakout.Render
+namespace FormsPixelGameEngine.Render
 {
     class Animation
     {

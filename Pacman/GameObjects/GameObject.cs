@@ -8,16 +8,16 @@
 
 
 using System.Drawing;
-using Breakout.Render;
-using Breakout.Utility;
+using FormsPixelGameEngine.Render;
+using FormsPixelGameEngine.Utility;
 
-namespace Breakout.GameObjects
+namespace FormsPixelGameEngine.GameObjects
 {
     class GameObject
     {
         private const int STANDARD_Z = 100;
 
-        private static Screen screen;
+        private static GameScreen screen;
 
         // postion and size
         protected float x;
@@ -107,17 +107,13 @@ namespace Breakout.GameObjects
         }
 
         public virtual void Draw()
-            => screen.RenderCopy(texture, sourceRect, new Rectangle((int)x, (int)y, width, height));
+            => screen.Copy(texture, sourceRect, new Rectangle((int)x, (int)y, width, height));
 
         public virtual void Physics()
         {  }
 
         // called per main loop to update any changes to the object
         public virtual void Update()
-        {  }
-
-        // TODO :: try your hardest to get rid of this method
-        public virtual void OnCollsion(GameObject collider)
         {  }
 
         // called when the object is added to the game

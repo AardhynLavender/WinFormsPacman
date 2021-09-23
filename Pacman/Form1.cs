@@ -1,10 +1,12 @@
 ﻿
 
 using System;
-using System.Media;
 using System.Windows.Forms;
+using System.Media;
 
-namespace Breakout
+using FormsPixelGameEngine.Render;
+
+namespace FormsPixelGameEngine
 {
     partial class Form1 : Form
     {
@@ -22,6 +24,21 @@ namespace Breakout
         public static extern bool ReleaseCapture();
         #endregion
 
+        // CONSTANTS
+
+        private const int WIDTH = 224;
+        private const int HEIGHT = 288;
+        private const int TILESIZE = 8;
+        private const float SCALE = 3;
+
+        // FIELDS
+
+        private PacMan pacMan;
+        private GameScreen screen;
+        private SoundPlayer media;
+
+        // CONSTRUCTOR
+
         public Form1()
         {
             // initalize components and window
@@ -32,20 +49,25 @@ namespace Breakout
 
             // game initalization
 
+            pacMan = new PacMan(new GameScreen(CreateGraphics(), WIDTH, HEIGHT, SCALE), new SoundPlayer(), ticker);
+
+            Width = pacMan.Screen.Width;
+            Height = pacMan.Screen.Height;
+
             // start the game timer
             ticker.Start();
         }
 
         // called per time tick
         private void ticker_Tick(object sender, EventArgs e)
-        { }
-
-        // pass the mouses postion onto the Games screen
-        protected override void OnMouseMove(MouseEventArgs e)
         {
-            base.OnMouseMove(e);
+            pacMan.GameLoop();
+        }
 
-
+        protected override void OnKeyPress(KeyPressEventArgs e)
+        {
+            base.OnKeyPress(e);
+            
         }
 
         // pass the mouse down event onto the games screen
@@ -60,12 +82,6 @@ namespace Breakout
                 SendMessage(Handle, WM_NCLBUTTONDOWN, HT_CAPTION, 0);
             }
             #endregion
-        }
-
-        // pass the mouse up event onto the games screen
-        protected override void OnMouseUp(MouseEventArgs e)
-        {
-            base.OnMouseUp(e);
         }
     }
 }

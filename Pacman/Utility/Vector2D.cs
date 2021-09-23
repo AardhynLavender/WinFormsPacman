@@ -6,7 +6,7 @@
 //  methods to zero, invert, and calculate distances.
 //
 
-namespace Breakout.Utility
+namespace FormsPixelGameEngine.Utility
 {
     struct Vector2D
     {

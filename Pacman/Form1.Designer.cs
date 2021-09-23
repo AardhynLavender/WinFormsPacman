@@ -1,5 +1,5 @@
 ﻿
-namespace Breakout
+namespace FormsPixelGameEngine
 {
     partial class Form1
     {
@@ -43,7 +43,7 @@ namespace Breakout
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.ClientSize = new System.Drawing.Size(534, 772);
+            this.ClientSize = new System.Drawing.Size(1111, 772);
             this.Name = "Form1";
             this.Text = "Form1";
             this.ResumeLayout(false);

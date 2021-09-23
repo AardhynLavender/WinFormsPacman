@@ -6,9 +6,9 @@
 //  that manages GameObjects and renders infomation to a Screen
 //
 
-using Breakout.GameObjects;
-using Breakout.Render;
-using Breakout.Utility;
+using FormsPixelGameEngine.GameObjects;
+using FormsPixelGameEngine.Render;
+using FormsPixelGameEngine.Utility;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -16,7 +16,7 @@ using System.IO;
 using System.Linq;
 using System.Media;
 
-namespace Breakout
+namespace FormsPixelGameEngine
 {
     abstract class Game
     {
@@ -26,7 +26,7 @@ namespace Breakout
 
         // FIELDS
 
-        protected Screen screen;
+        protected GameScreen screen;
         protected Random random;
         protected SoundPlayer Media;
 
@@ -50,7 +50,7 @@ namespace Breakout
 
         // CONSTRUCTOR
 
-        protected Game(Screen screen, SoundPlayer media, System.Windows.Forms.Timer ticker)
+        protected Game(GameScreen screen, SoundPlayer media, System.Windows.Forms.Timer ticker)
         {
             // initalize fields
 
@@ -75,7 +75,7 @@ namespace Breakout
 
         // PROPERTIES
 
-        public Screen Screen
+        public GameScreen Screen
         {
             get => screen;
             set => screen = value;
@@ -126,12 +126,12 @@ namespace Breakout
         // draw all game objects to the screen
         protected virtual void Render()
         {
-            screen.RenderClear();
+            screen.Clear();
 
             foreach (GameObject gameObject in gameObjects) 
                 gameObject.Draw();
 
-            screen.RenderPresent();
+            screen.Present();
         }
 
         // process and render

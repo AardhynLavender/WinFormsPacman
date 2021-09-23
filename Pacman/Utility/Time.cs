@@ -6,7 +6,7 @@
 //  steps in terms of milliseconds.
 //
 
-namespace Breakout.Utility
+namespace FormsPixelGameEngine.Utility
 {
     public static class Time
     {

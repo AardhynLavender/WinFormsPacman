@@ -63,7 +63,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Render\Animation.cs" />
-    <Compile Include="Render\Screen.cs" />
+    <Compile Include="Render\GameScreen.cs" />
     <Compile Include="Utility\Direction.cs" />
     <Compile Include="Utility\Time.cs" />
     <Compile Include="Utility\Task.cs" />

@@ -17,9 +17,9 @@ using System.Media;
 using System.Text;
 using System.Threading.Tasks;
 
-using Breakout.Render;
+using FormsPixelGameEngine.Render;
 
-namespace Breakout
+namespace FormsPixelGameEngine
 {
     class PacMan : Game
     {
@@ -29,7 +29,7 @@ namespace Breakout
 
         // CONSTRUCTOR
 
-        public PacMan(Screen screen, SoundPlayer media, System.Windows.Forms.Timer ticker)
+        public PacMan(GameScreen screen, SoundPlayer media, System.Windows.Forms.Timer ticker)
             : base (screen, media,ticker)
         {
 
