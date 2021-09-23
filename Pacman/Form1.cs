@@ -29,13 +29,11 @@ namespace FormsPixelGameEngine
         private const int WIDTH = 224;
         private const int HEIGHT = 288;
         private const int TILESIZE = 8;
-        private const float SCALE = 3;
+        private const float SCALE = 3.5f;
 
         // FIELDS
 
         private PacMan pacMan;
-        private GameScreen screen;
-        private SoundPlayer media;
 
         // CONSTRUCTOR
 
@@ -50,9 +48,9 @@ namespace FormsPixelGameEngine
             // game initalization
 
             pacMan = new PacMan(new GameScreen(CreateGraphics(), WIDTH, HEIGHT, SCALE), new SoundPlayer(), ticker);
-
-            Width = pacMan.Screen.Width;
-            Height = pacMan.Screen.Height;
+            
+            Width = pacMan.Screen.WidthScaled;
+            Height = pacMan.Screen.HeightScaled;
 
             // start the game timer
             ticker.Start();
@@ -60,9 +58,7 @@ namespace FormsPixelGameEngine
 
         // called per time tick
         private void ticker_Tick(object sender, EventArgs e)
-        {
-            pacMan.GameLoop();
-        }
+            => pacMan.GameLoop();
 
         protected override void OnKeyPress(KeyPressEventArgs e)
         {

@@ -21,6 +21,8 @@ namespace FormsPixelGameEngine.Render
     {
         // FIELDS
 
+        private int width;
+        private int height;
         private Image bufferImage;
         private Graphics buffer;
         private Graphics display;
@@ -32,13 +34,28 @@ namespace FormsPixelGameEngine.Render
         public int MouseY { get; set; }
         public bool MouseDown { get; set; }
 
-        public int Width { get; set; }
-        public int Height { get; set; }
+        public int WidthScaled 
+        {
+            get => (int)Math.Round(width * Scale); 
+            set => width = value; 
+        }
+
+        public int HeightScaled 
+        { 
+            get => (int)Math.Round(height * Scale); 
+            set => height = value; 
+        }
+
         public float Scale { get; set; }
 
-        public int WidthPixels
-        { 
-            get => (int)Math.Round(Width / Scale);
+        public int Width
+        {
+            get => width;
+        }
+
+        public int Height 
+        {
+            get => height;
         }
 
         public Graphics Buffer 
@@ -47,10 +64,6 @@ namespace FormsPixelGameEngine.Render
             set => buffer = value;
         }
 
-        public int HeightPixels 
-        {
-            get => (int)Math.Round(Height / Scale); 
-        }
 
         // CONSTRUCTOR
 
@@ -58,13 +71,13 @@ namespace FormsPixelGameEngine.Render
         {
             // initalize fields
 
-            Width                       = width;
-            Height                      = height;
+            WidthScaled                       = width;
+            HeightScaled                      = height;
             Scale                       = scale;
 
             // create buffer
 
-            bufferImage                 = new Bitmap(Width, Height);
+            bufferImage                 = new Bitmap(WidthScaled, HeightScaled);
             Buffer                      = Graphics.FromImage(bufferImage);
             this.display                = display;
 
@@ -76,7 +89,7 @@ namespace FormsPixelGameEngine.Render
 
         // clears the screen
         public void Clear()
-            => Buffer.FillRectangle(Brushes.Black, new Rectangle(0, 0, Width, Height));
+            => Buffer.FillRectangle(Brushes.Black, new Rectangle(0, 0, WidthScaled, HeightScaled));
 
         // copies the buffer to the screen
         public void Copy(Image texture, Rectangle src, Rectangle dest)
@@ -93,6 +106,6 @@ namespace FormsPixelGameEngine.Render
 
         // presents the buffer to the display
         public void Present()
-            => display.DrawImage(bufferImage, 0, 0, Width, Height);
+            => display.DrawImage(bufferImage, 0, 0, WidthScaled, HeightScaled);
     }
 }
