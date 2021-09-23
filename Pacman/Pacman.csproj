@@ -54,6 +54,7 @@
     </Compile>
     <Compile Include="Game.cs" />
     <Compile Include="GameObjects\GameObject.cs" />
+    <Compile Include="GameObjects\TileMap.cs" />
     <Compile Include="PacMan.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -64,6 +65,7 @@
     </Compile>
     <Compile Include="Render\Animation.cs" />
     <Compile Include="Render\GameScreen.cs" />
+    <Compile Include="Render\TileSet.cs" />
     <Compile Include="Utility\Direction.cs" />
     <Compile Include="Utility\Time.cs" />
     <Compile Include="Utility\Task.cs" />
@@ -76,6 +78,8 @@
       <SubType>Designer</SubType>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="Assets\tilemap.tmx" />
+    <None Include="Assets\tileset.xcf" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -89,8 +93,12 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
-    <Folder Include="Assets\" />
+    <Content Include="Assets\tileset.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <TypeScriptCompile Include="Assets\tileset.tsx" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
