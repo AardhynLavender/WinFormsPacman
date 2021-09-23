@@ -11,6 +11,7 @@ using Breakout.Render;
 using Breakout.Utility;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Media;
@@ -19,82 +20,81 @@ namespace Breakout
 {
     abstract class Game
     {
-        // constants
+        // CONSTANTS
+
         private const int TICKRATE = 17;
 
-        // fields
+        // FIELDS
+
         protected Screen screen;
         protected Random random;
         protected SoundPlayer Media;
 
+        // ticking
+
+        protected Stopwatch gameTime;
         protected System.Windows.Forms.Timer ticker;
         protected long tick;
+
+        // object and task managment
 
         protected List<GameObject> gameObjects;
         protected List<GameObject> deleteQueue;
         protected List<Animation> animations;
-
         private List<Task> taskQueue;
+
+        // physics
 
         protected bool processPhysics;
         protected bool processAnimations;
 
-        private int sleepTicks;
+        // CONSTRUCTOR
 
-        // properties
-
-        protected int SleepTicks
-        {
-            get => sleepTicks;
-            set 
-            {
-                sleepTicks = value;
-                if (sleepTicks <= 0) processPhysics = true;
-            }
-        }
-
-        public Screen Screen 
-        { 
-            get => screen; 
-            set => screen = value; 
-        }
-
-        public Action Quit 
-        { 
-            get; 
-            set; 
-        }
-
-        public static int TickRate
-        {
-            get => TICKRATE;
-        }
-
-        public long Tick
-        {
-            get => tick;
-        }
-
-        // constructor
         protected Game(Screen screen, SoundPlayer media, System.Windows.Forms.Timer ticker)
         {
+            // initalize fields
+
             this.ticker             = ticker;
             this.ticker.Interval    = TICKRATE;
             this.screen             = screen;
+            Media                   = media;
+            random                  = new Random();
 
-            random = new Random();
+            // create object managment lists
 
             gameObjects             = new List<GameObject>();
             deleteQueue             = new List<GameObject>();
             taskQueue               = new List<Task>();
             animations              = new List<Animation>();
 
-            Media                   = media;
+            // raise processing flags
+
             processPhysics          = true;
             processAnimations       = true;
         }
 
-        // Main loops
+        // PROPERTIES
+
+        public Screen Screen
+        {
+            get => screen;
+            set => screen = value;
+        }
+
+        // assigned exernally to call the forms quit method
+        public Action Quit
+            { get; set; }
+
+        public static int TickRate
+            => TICKRATE;
+
+        public long Tick 
+            => tick;
+
+        public long RunningTime 
+            => gameTime.ElapsedMilliseconds;
+
+        // LOOPS
 
         protected virtual void Process()
         {
@@ -143,10 +143,10 @@ namespace Breakout
             tick++;
         }
 
-        // Object adding and freeing
+        // OBJECT MANAGMENT
 
         // adds a game object to the game
-        public GameObject AddGameObject(GameObject gameObject)
+        public virtual GameObject AddGameObject(GameObject gameObject)
         {
             gameObjects.Add(gameObject);    // add to game
             gameObject.OnAddGameObject();   // tell game object it has been added
@@ -155,7 +155,7 @@ namespace Breakout
         }
 
         // queues an object for removal
-        public void QueueFree(GameObject gameObject)
+        public virtual void QueueFree(GameObject gameObject)
             => deleteQueue.Add(gameObject);
 
         // removes a game objects if not null
@@ -182,7 +182,7 @@ namespace Breakout
         public bool IsInGame(GameObject gameObject) 
             => gameObjects.Contains(gameObject);
 
-        // Animations
+        // ANIMATION MANAGMENT
 
         // adds an animaion to the game for processing
         public Animation AddAnimation(Animation animation)
@@ -191,7 +191,9 @@ namespace Breakout
             return animations.Last();
         }
 
-        // Physics
+        // removes an animation from the game
+        public void RemoveAnimation(Animation animation)
+            => animations.Remove(animation);
 
         // plays the provided sound stream
         public virtual void PlaySound(Stream sound)
@@ -205,15 +207,23 @@ namespace Breakout
         public void QueueTask(int milliseconds, Action callback)
             => taskQueue.Add(new Task(callback, milliseconds));
 
-        // Abstract Memebers
-        
+        // ABSTRACT
+
         // handles set up code for a game to begin
-        public abstract void StartGame();
+        public virtual void StartGame()
+        {
+            gameTime.Start();
+        }
 
         // handles destruction code for the game
-        public abstract void EndGame();
+        public virtual void EndGame()
+        {
+            gameTime.Stop();
+            gameTime.Reset();
+        }
 
         // handles data saving (unimplimented)
-        protected abstract void SaveGame();
+        protected virtual void SaveGame()
+            => Console.WriteLine("[Game] > unhandled save request");
     }
 }
