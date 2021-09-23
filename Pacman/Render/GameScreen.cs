@@ -71,8 +71,8 @@ namespace FormsPixelGameEngine.Render
         {
             // initalize fields
 
-            WidthScaled                       = width;
-            HeightScaled                      = height;
+            WidthScaled                 = width;
+            HeightScaled                = height;
             Scale                       = scale;
 
             // create buffer
