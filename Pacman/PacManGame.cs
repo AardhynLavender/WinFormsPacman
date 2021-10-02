@@ -16,7 +16,7 @@ using System.Linq;
 using System.Media;
 using System.Text;
 using System.Threading.Tasks;
-
+using FormsPixelGameEngine.GameObjects;
 using FormsPixelGameEngine.Render;
 using FormsPixelGameEngine.Utility;
 
@@ -54,7 +54,16 @@ namespace FormsPixelGameEngine
 
         // OBJECT MANAGMENT 
 
-        
+        // adds an object to the games processing pool
+        public override GameObject AddGameObject(GameObject gameObject)
+        {
+            // give the object a reference to its game and screen
+            gameObject.Game = this;
+            gameObject.Screen = screen;
+
+            // call base method
+            return base.AddGameObject(gameObject);
+        }
 
         // EVENTS
 

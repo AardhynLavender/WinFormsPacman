@@ -120,13 +120,13 @@ namespace FormsPixelGameEngine.GameObjects
             set => sourceRect = value;
         }
 
-        protected PacManGame Game 
+        public PacManGame Game 
         { 
             get => game; 
             set => game = value; 
         }
 
-        protected GameScreen Screen 
+        public GameScreen Screen 
         { 
             get => screen; 
             set => screen = value; 
