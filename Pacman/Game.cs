@@ -106,7 +106,6 @@ namespace FormsPixelGameEngine
                 gameObjects.ToList().ForEach(gameObject => 
                 {
                     gameObject.Update();
-                    gameObject.Physics();
                 });
 
             // update animations
