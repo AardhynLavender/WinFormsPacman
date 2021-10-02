@@ -18,7 +18,7 @@ using FormsPixelGameEngine.Render;
 
 namespace FormsPixelGameEngine.GameObjects
 {
-    class TileMap /* : GameObject */
+    class TileMap : GameObject
     {
         // FIELDS
 
@@ -28,23 +28,28 @@ namespace FormsPixelGameEngine.GameObjects
         private int widthTiles;
         private int HeightTiles;
 
-        private List<Object> tiles;
+        private List<GameObject> tiles;
 
         // CONSTRUCTOR
 
         public TileMap(string filepath, float x, float y, TileSet tileset)
+            : base(x, y)
         {
             this.tileset = tileset;
+
+
         }
 
         // PROPERTIES
 
-        
+
 
         // METHODS
 
-            // override addGameObject() to add all the tiles as-well
+        public override void OnAddGameObject()
+            => tiles.ForEach(tile => Game.AddGameObject(tile));
 
-            // ovrride removeGameObject() to remove all the tiles as-well
+        public override void OnFreeGameObject()
+            => tiles.ForEach(tile => Game.QueueFree(tile));
     }
 }
