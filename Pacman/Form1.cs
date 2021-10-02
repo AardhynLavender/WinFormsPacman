@@ -5,6 +5,7 @@ using System.Windows.Forms;
 using System.Media;
 
 using FormsPixelGameEngine.Render;
+using FormsPixelGameEngine.Utility;
 
 namespace FormsPixelGameEngine
 {
@@ -28,12 +29,11 @@ namespace FormsPixelGameEngine
 
         private const int WIDTH = 224;
         private const int HEIGHT = 288;
-        private const int TILESIZE = 8;
         private const float SCALE = 3.5f;
 
         // FIELDS
 
-        private PacMan pacMan;
+        private PacManGame pacMan;
 
         // CONSTRUCTOR
 
@@ -47,8 +47,9 @@ namespace FormsPixelGameEngine
 
             // game initalization
 
-            pacMan = new PacMan(new GameScreen(CreateGraphics(), WIDTH, HEIGHT, SCALE), new SoundPlayer(), ticker);
+            pacMan = new PacManGame(new GameScreen(CreateGraphics(), WIDTH, HEIGHT, SCALE), new SoundPlayer(), ticker);
             
+            // set the forms size to the GameScreen
             Width = pacMan.Screen.WidthScaled;
             Height = pacMan.Screen.HeightScaled;
 
@@ -60,11 +61,13 @@ namespace FormsPixelGameEngine
         private void ticker_Tick(object sender, EventArgs e)
             => pacMan.GameLoop();
 
-        protected override void OnKeyPress(KeyPressEventArgs e)
-        {
-            base.OnKeyPress(e);
-            
-        }
+        // called when key is pressed
+        protected override void OnKeyDown(KeyEventArgs e)
+            => InputManager.PressKey(e.KeyCode);
+
+        // called when key is released
+        protected override void OnKeyUp(KeyEventArgs e)
+            => InputManager.ReleaseKey(e.KeyCode);
 
         // pass the mouse down event onto the games screen
         protected override void OnMouseDown(MouseEventArgs e)

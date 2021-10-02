@@ -18,10 +18,11 @@ using System.Text;
 using System.Threading.Tasks;
 
 using FormsPixelGameEngine.Render;
+using FormsPixelGameEngine.Utility;
 
 namespace FormsPixelGameEngine
 {
-    class PacMan : Game
+    class PacManGame : Game
     {
         // FIELDS
 
@@ -29,7 +30,7 @@ namespace FormsPixelGameEngine
 
         // CONSTRUCTOR
 
-        public PacMan(GameScreen screen, SoundPlayer media, System.Windows.Forms.Timer ticker)
+        public PacManGame(GameScreen screen, SoundPlayer media, System.Windows.Forms.Timer ticker)
             : base (screen, media,ticker)
         {
 
@@ -52,6 +53,10 @@ namespace FormsPixelGameEngine
         }
 
         // OBJECT MANAGMENT 
+
+        
+
+        // EVENTS
 
         public override void StartGame()
         {

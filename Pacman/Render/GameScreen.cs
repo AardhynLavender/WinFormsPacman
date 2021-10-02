@@ -32,7 +32,6 @@ namespace FormsPixelGameEngine.Render
 
         public int MouseX { get; set; }
         public int MouseY { get; set; }
-        public bool MouseDown { get; set; }
 
         public int WidthScaled 
         {
@@ -46,7 +45,11 @@ namespace FormsPixelGameEngine.Render
             set => height = value; 
         }
 
-        public float Scale { get; set; }
+        public float Scale 
+        { 
+            get => scale; 
+            set => scale = value; 
+        }
 
         public int Width
         {
@@ -63,7 +66,6 @@ namespace FormsPixelGameEngine.Render
             get => buffer; 
             set => buffer = value;
         }
-
 
         // CONSTRUCTOR
 
