@@ -19,7 +19,7 @@ using FormsPixelGameEngine.Render;
 
 namespace FormsPixelGameEngine.GameObjects
 {
-    class TileMap : GameObject
+    class World : GameObject
     {
         // FIELDS
 
@@ -33,7 +33,7 @@ namespace FormsPixelGameEngine.GameObjects
 
         // CONSTRUCTOR
 
-        public TileMap(PacManGame game, string tilemap, float x, float y, TileSet tileset)
+        public World(PacManGame game, string tilemap, float x, float y, TileSet tileset)
             : base(x, y)
         {
             Game = game;

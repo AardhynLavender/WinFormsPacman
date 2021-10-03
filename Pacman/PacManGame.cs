@@ -27,8 +27,8 @@ namespace FormsPixelGameEngine
         // FIELDS
 
         TileSet tileset;
-        TileMap world;
-        TileMap debugger;
+        World world;
+        World debugger;
 
         // CONSTRUCTOR
 
@@ -40,7 +40,7 @@ namespace FormsPixelGameEngine
             tileset = new TileSet("Assets/tileset.tsx", "Assets/tileset.png");
             GameObject.Texture = tileset.Texture;
 
-            world = new TileMap(this, "Assets/tilemap.tmx", 0, 0, tileset);
+            world = new World(this, "Assets/tilemap.tmx", 0, 0, tileset);
 
         }
 

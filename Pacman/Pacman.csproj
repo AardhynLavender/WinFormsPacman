@@ -54,7 +54,7 @@
     </Compile>
     <Compile Include="Game.cs" />
     <Compile Include="GameObjects\GameObject.cs" />
-    <Compile Include="GameObjects\TileMap.cs" />
+    <Compile Include="GameObjects\World.cs" />
     <Compile Include="PacManGame.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
