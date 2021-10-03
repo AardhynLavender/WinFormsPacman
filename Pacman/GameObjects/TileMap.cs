@@ -13,7 +13,8 @@
 
 using System;
 using System.Collections.Generic;
-
+using System.Xml.Linq;
+using System.Linq;
 using FormsPixelGameEngine.Render;
 
 namespace FormsPixelGameEngine.GameObjects
@@ -32,12 +33,34 @@ namespace FormsPixelGameEngine.GameObjects
 
         // CONSTRUCTOR
 
-        public TileMap(string filepath, float x, float y, TileSet tileset)
+        public TileMap(string tilemap, float x, float y, TileSet tileset)
             : base(x, y)
         {
             this.tileset = tileset;
 
+            XElement xTileset;
 
+            // try to load data as XML elements
+            try
+            {
+                xTileset = XElement.Load(tilemap);
+            }
+            catch (Exception err)
+            {
+                throw new Exception($"[Tilemap] > could not load file '{tilemap}' > {err.Message}");
+            }
+
+            // fetch elements
+
+            string[] map = xTileset
+                .Element("layer")
+                .Element("data")
+                .Value.Split(',');
+
+            Array.ForEach(map, tile =>
+            {
+                Console.Write(tile + ", ");
+            });
         }
 
         // PROPERTIES

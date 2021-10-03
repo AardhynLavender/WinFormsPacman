@@ -26,13 +26,20 @@ namespace FormsPixelGameEngine
     {
         // FIELDS
 
-
+        TileSet tileset;
+        TileMap world;
+        TileMap debugger;
 
         // CONSTRUCTOR
 
         public PacManGame(GameScreen screen, SoundPlayer media, System.Windows.Forms.Timer ticker)
             : base (screen, media,ticker)
         {
+            // create tileset and world
+
+            tileset = new TileSet("Assets/tileset.tsx");
+            world = new TileMap("Assets/tilemap.tmx", 0, 0, tileset);
+
 
         }
 

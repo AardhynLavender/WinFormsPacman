@@ -45,7 +45,7 @@ namespace FormsPixelGameEngine.Render
             }
             catch (Exception err)
             {
-                throw new Exception($"[Tilemap] > could not load file '{tileset}' > {err.Message}");
+                throw new Exception($"[Tileset] > could not load file '{tileset}' > {err.Message}");
             }
 
             // fetch elements
@@ -80,13 +80,18 @@ namespace FormsPixelGameEngine.Render
 
                 // determine if the tile is a wall
 
-                bool wall = 
-                    (string)xTiles[i]
-                    .Descendants("properties")
-                    .Descendants("property")
-                    .Attributes("value").First() == "true";
+                try
+                {
+                    bool wall =
+                        (string)xTiles[i]
+                        .Descendants("properties")
+                        .Descendants("property")
+                        .Attributes("value").First() == "true";
 
-                tileCollisions.Add(wall);
+                    tileCollisions.Add(wall);
+                }
+                catch { }
+
             }
         }
 
