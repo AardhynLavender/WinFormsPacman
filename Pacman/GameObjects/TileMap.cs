@@ -33,9 +33,11 @@ namespace FormsPixelGameEngine.GameObjects
 
         // CONSTRUCTOR
 
-        public TileMap(string tilemap, float x, float y, TileSet tileset)
+        public TileMap(PacManGame game, string tilemap, float x, float y, TileSet tileset)
             : base(x, y)
         {
+            Game = game;
+
             this.tileset = tileset;
 
             XElement xTileset;
@@ -52,17 +54,34 @@ namespace FormsPixelGameEngine.GameObjects
 
             // fetch elements
 
-            string[] map = xTileset
-                .Element("layer")
-                .Element("data")
-                .Value.Split(',');
-
-            Array.ForEach(map, tile =>
+            if (int.TryParse((string)xTileset.Attribute("tilewidth"), out int size)
+                && int.TryParse((string)xTileset.Attribute("width"), out int width))
             {
-                Console.Write(tile + ", ");
-            });
-        }
+                // convert width to pixels
+                width *= size;
 
+                Console.WriteLine(width);
+                Console.WriteLine(size);
+
+                // get map data
+                string[] map = xTileset
+                    .Element("layer")
+                    .Element("data")
+                    .Value.Split(',');
+
+                // create game objects from map
+                int i = 0;
+                Array.ForEach(map, tile =>
+                {
+                    int objX = i * size % width;
+                    int objY = (int)Math.Floor((float)i / (width / size)) * size;
+                    i++;
+
+                    if (int.TryParse(tile, out int index) && index != 0)
+                        Game.AddGameObject(new GameObject(x + objX, y + objY, tileset.GetTileSourceRect(index - 1)));
+                });
+            }
+        }
         // PROPERTIES
 
 

@@ -24,28 +24,31 @@ namespace FormsPixelGameEngine.Render
         // FIELDS
 
         private string imageSource;
-        private int tileSize;
+        private int size;
         private int tileCount;
         private int width;
         private int height;
+
+        private Image texture;
 
         private List<Rectangle> tileTextures;
         private List<bool> tileCollisions;
 
         // CONSTRUCTOR
 
-        public TileSet(string tileset)
+        public TileSet(string tilesetFilepath, string imageFilepath)
         {
+
             XElement xTileset;
 
             // try to load data as XML elements
             try
             {
-                xTileset = XElement.Load(tileset);
+                xTileset = XElement.Load(tilesetFilepath);
             }
             catch (Exception err)
             {
-                throw new Exception($"[Tileset] > could not load file '{tileset}' > {err.Message}");
+                throw new Exception($"[Tileset] > could not load file '{tilesetFilepath}' > {err.Message}");
             }
 
             // fetch elements
@@ -55,16 +58,15 @@ namespace FormsPixelGameEngine.Render
 
             // parse numerical data
 
-            tileSize    = int.Parse((string)xTileset.Attribute("tilewidth"));
+            size        = int.Parse((string)xTileset.Attribute("tilewidth"));
             tileCount   = int.Parse((string)xTileset.Attribute("tilecount"));
             width       = int.Parse((string)xImage.Attribute("width"));
             height      = int.Parse((string)xImage.Attribute("height"));
 
-            imageSource 
-                = Directory.GetCurrentDirectory() + '/'
-                + tileset + '/'
-                + xImage.Attributes("source").First()
-                .ToString().Replace('/', '\\');
+            imageSource = Directory.GetCurrentDirectory() + '\\' + imageFilepath;
+            texture     = new Bitmap(imageSource);
+
+            Console.WriteLine(width);
 
             // create tile source rectangles and collision infomation
 
@@ -74,9 +76,12 @@ namespace FormsPixelGameEngine.Render
             {
                 // create tile texture source rectangle
 
-                int x = i * tileSize % width;
-                int y = (int)Math.Floor(i / (float)tileSize) / width;
-                tileTextures.Add(new Rectangle(x, y, tileSize, tileSize));
+                int x = i * size % width;
+                int y = (int)Math.Floor((float)i / (width / size)) * size;
+
+                Console.WriteLine(y);
+
+                tileTextures.Add(new Rectangle(x, y, size, size));
 
                 // determine if the tile is a wall
 
@@ -90,14 +95,14 @@ namespace FormsPixelGameEngine.Render
 
                     tileCollisions.Add(wall);
                 }
-                catch { }
-
+                catch {  }
             }
         }
 
         // PROPERTIES
 
-            // return reference to image ("image" type from winForms)
+        public Image Texture 
+            => texture;
 
         // METHODS
 

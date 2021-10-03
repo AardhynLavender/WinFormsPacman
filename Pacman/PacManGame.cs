@@ -37,9 +37,10 @@ namespace FormsPixelGameEngine
         {
             // create tileset and world
 
-            tileset = new TileSet("Assets/tileset.tsx");
-            world = new TileMap("Assets/tilemap.tmx", 0, 0, tileset);
+            tileset = new TileSet("Assets/tileset.tsx", "Assets/tileset.png");
+            GameObject.Texture = tileset.Texture;
 
+            world = new TileMap(this, "Assets/tilemap.tmx", 0, 0, tileset);
 
         }
 

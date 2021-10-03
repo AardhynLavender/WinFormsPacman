@@ -19,9 +19,11 @@ namespace FormsPixelGameEngine.GameObjects
 {
     class GameObject
     {
-        // CONSTANTS
+        // CONSTANT AND STATIC MEMBERS
 
         private const int STANDARD_Z = 100;
+
+        private static Image texture = null;
 
         // FIELDS
 
@@ -35,7 +37,6 @@ namespace FormsPixelGameEngine.GameObjects
 
         // texture
 
-        protected Image texture;
         protected Rectangle sourceRect;
 
         // game
@@ -56,14 +57,16 @@ namespace FormsPixelGameEngine.GameObjects
             width = height = 0;
         }
 
-        public GameObject(float x, float y, Image texture, Rectangle sourceRect, int z = STANDARD_Z, int tileSpanX = 1, int tileSpanY = 1)
+        public GameObject(float x, float y, Rectangle sourceRect, int z = STANDARD_Z, int tileSpanX = 1, int tileSpanY = 1)
         {
+            if (texture is null) 
+                throw new System.Exception("[Game Object] GameObject class does not contain a definition for static member 'texture'");
+
             // initalize fields
 
             this.x          = x;
             this.y          = y;
             this.z          = z;
-            this.texture    = texture;
             this.sourceRect = sourceRect;
 
             // span multuple tiles if specified
@@ -79,11 +82,6 @@ namespace FormsPixelGameEngine.GameObjects
 
         // PROPERTIES
 
-        public Image Texture
-        {
-            get => texture;
-            set => texture = value;
-        }
         public float X
         {
             get => x;
@@ -122,14 +120,22 @@ namespace FormsPixelGameEngine.GameObjects
 
         public PacManGame Game 
         { 
-            get => game; 
+            protected get => game; 
             set => game = value; 
         }
 
         public GameScreen Screen 
         { 
-            get => screen; 
+            protected get => screen; 
             set => screen = value; 
+        }
+
+        // STATIC PROPERTIES
+
+        public static Image Texture 
+        {
+            private get => texture; 
+            set => texture = value; 
         }
 
         // METHODS
