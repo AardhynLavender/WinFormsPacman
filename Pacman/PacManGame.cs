@@ -28,7 +28,6 @@ namespace FormsPixelGameEngine
 
         TileSet tileset;
         World world;
-        World debugger;
 
         // CONSTRUCTOR
 
@@ -38,10 +37,10 @@ namespace FormsPixelGameEngine
             // create tileset and world
 
             tileset = new TileSet("Assets/tileset.tsx", "Assets/tileset.png");
-            GameObject.Texture = tileset.Texture;
+            GameObject.Texture = tileset;
 
             world = new World(this, "Assets/tilemap.tmx", 0, 0, tileset);
-
+            AddGameObject(world);
         }
 
         // PROPERTIES

@@ -23,7 +23,7 @@ namespace FormsPixelGameEngine.GameObjects
 
         private const int STANDARD_Z = 100;
 
-        private static Image texture = null;
+        protected static TileSet tileset = null;
 
         // FIELDS
 
@@ -32,6 +32,7 @@ namespace FormsPixelGameEngine.GameObjects
         protected float x;
         protected float y;
         protected int z;
+
         protected int width;
         protected int height;
 
@@ -59,7 +60,7 @@ namespace FormsPixelGameEngine.GameObjects
 
         public GameObject(float x, float y, Rectangle sourceRect, int z = STANDARD_Z, int tileSpanX = 1, int tileSpanY = 1)
         {
-            if (texture is null) 
+            if (tileset is null) 
                 throw new System.Exception("[Game Object] GameObject class does not contain a definition for static member 'texture'");
 
             // initalize fields
@@ -132,17 +133,17 @@ namespace FormsPixelGameEngine.GameObjects
 
         // STATIC PROPERTIES
 
-        public static Image Texture 
+        public static TileSet Texture 
         {
-            private get => texture; 
-            set => texture = value; 
+            private get => tileset; 
+            set => tileset = value; 
         }
 
         // METHODS
 
         // draws the object to the screen
         public virtual void Draw()
-            => screen.Copy(texture, sourceRect, new Rectangle((int)x, (int)y, width, height));
+            => screen.Copy(tileset.Texture, sourceRect, new Rectangle((int)x, (int)y, width, height));
 
         // called per main loop to update any changes to the object
         public virtual void Update()

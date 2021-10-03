@@ -66,8 +66,6 @@ namespace FormsPixelGameEngine.Render
             imageSource = Directory.GetCurrentDirectory() + '\\' + imageFilepath;
             texture     = new Bitmap(imageSource);
 
-            Console.WriteLine(width);
-
             // create tile source rectangles and collision infomation
 
             tileTextures = new List<Rectangle>(tileCount);
@@ -78,8 +76,6 @@ namespace FormsPixelGameEngine.Render
 
                 int x = i * size % width;
                 int y = (int)Math.Floor((float)i / (width / size)) * size;
-
-                Console.WriteLine(y);
 
                 tileTextures.Add(new Rectangle(x, y, size, size));
 
@@ -103,6 +99,9 @@ namespace FormsPixelGameEngine.Render
 
         public Image Texture 
             => texture;
+
+        public int Size
+            => size;
 
         // METHODS
 

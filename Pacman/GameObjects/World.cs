@@ -16,6 +16,7 @@ using System.Collections.Generic;
 using System.Xml.Linq;
 using System.Linq;
 using FormsPixelGameEngine.Render;
+using FormsPixelGameEngine.Utility;
 
 namespace FormsPixelGameEngine.GameObjects
 {
@@ -60,9 +61,6 @@ namespace FormsPixelGameEngine.GameObjects
                 // convert width to pixels
                 width *= size;
 
-                Console.WriteLine(width);
-                Console.WriteLine(size);
-
                 // get map data
                 string[] map = xTileset
                     .Element("layer")
@@ -71,17 +69,18 @@ namespace FormsPixelGameEngine.GameObjects
 
                 // create game objects from map
                 int i = 0;
+                tiles = new List<GameObject>();
                 Array.ForEach(map, tile =>
                 {
                     int objX = i * size % width;
-                    int objY = (int)Math.Floor((float)i / (width / size)) * size;
-                    i++;
+                    int objY = (int)Math.Floor((float)i++ / (width / size)) * size;
 
                     if (int.TryParse(tile, out int index) && index != 0)
-                        Game.AddGameObject(new GameObject(x + objX, y + objY, tileset.GetTileSourceRect(index - 1)));
+                        tiles.Add(new GameObject(x + objX, y + objY, tileset.GetTileSourceRect(index - 1)));
                 });
             }
         }
+
         // PROPERTIES
 
 
@@ -93,5 +92,12 @@ namespace FormsPixelGameEngine.GameObjects
 
         public override void OnFreeGameObject()
             => tiles.ForEach(tile => Game.QueueFree(tile));
+
+        public Vector2D GetCurrentTile(GameObject gameObject)
+            => new Vector2D()
+            {
+                X = (float)Math.Floor((gameObject.X - x) / tileset.Size),
+                Y = (float)Math.Floor((gameObject.Y - y) / tileset.Size)
+            };
     }
 }
