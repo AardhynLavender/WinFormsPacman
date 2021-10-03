@@ -29,5 +29,8 @@ namespace FormsPixelGameEngine.Utility
         // gets the absolute distance between two vectors
         public static void GetDistance(Vector2D a, Vector2D b)
             => new Vector2D(a.X - b.X, a.Y - b.Y);
+
+        public override string ToString()
+            => $"({X}, {Y})";
     }
 }

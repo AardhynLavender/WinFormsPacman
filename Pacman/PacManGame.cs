@@ -29,6 +29,9 @@ namespace FormsPixelGameEngine
         TileSet tileset;
         World world;
 
+        GameObject foo;
+        GameObject bar;
+
         // CONSTRUCTOR
 
         public PacManGame(GameScreen screen, SoundPlayer media, System.Windows.Forms.Timer ticker)
@@ -41,6 +44,21 @@ namespace FormsPixelGameEngine
 
             world = new World(this, "Assets/tilemap.tmx", 0, 0, tileset);
             AddGameObject(world);
+
+            foo = AddGameObject(new GameObject(8, 60, tileset.GetTileSourceRect(168), 100, 2, 2));
+            bar = AddGameObject(new GameObject(0, 0, tileset.GetTileSourceRect(323)));
+
+            Animation a = AddAnimation(new Animation(this, bar, new List<System.Drawing.Rectangle>
+            {
+                tileset.GetTileSourceRect(323),
+                tileset.GetTileSourceRect(324),
+                tileset.GetTileSourceRect(325),
+                tileset.GetTileSourceRect(326),
+                tileset.GetTileSourceRect(327),
+                tileset.GetTileSourceRect(328),
+                tileset.GetTileSourceRect(329)
+            }, 50));
+            a.Start();
         }
 
         // PROPERTIES
@@ -52,6 +70,13 @@ namespace FormsPixelGameEngine
         protected override void Process()
         {
             base.Process();
+            if (tick % 10 == 0)
+            {
+                foo.X++;
+                foo.Y += 2;
+            }
+
+            world.PlaceObject(bar, world.GetCurrentTile(foo));
         }
 
         protected override void Render()

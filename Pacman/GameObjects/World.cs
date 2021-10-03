@@ -99,5 +99,11 @@ namespace FormsPixelGameEngine.GameObjects
                 X = (float)Math.Floor((gameObject.X - x) / tileset.Size),
                 Y = (float)Math.Floor((gameObject.Y - y) / tileset.Size)
             };
+
+        public void PlaceObject(GameObject gameObject, Vector2D tile)
+        {
+            gameObject.X = tile.X * tileset.Size;
+            gameObject.Y = tile.Y * tileset.Size;
+        }
     }
 }
