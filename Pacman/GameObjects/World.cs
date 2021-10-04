@@ -58,8 +58,11 @@ namespace FormsPixelGameEngine.GameObjects
             if (int.TryParse((string)xTileset.Attribute("tilewidth"), out int size)
                 && int.TryParse((string)xTileset.Attribute("width"), out int width))
             {
-                // convert width to pixels
+                // calculate width and widthTiles;
+                widthTiles = width;
                 width *= size;
+
+                Console.WriteLine(width);
 
                 // get map data
                 string[] map = xTileset
@@ -75,8 +78,18 @@ namespace FormsPixelGameEngine.GameObjects
                     int objX = i * size % width;
                     int objY = (int)Math.Floor((float)i++ / (width / size)) * size;
 
-                    if (int.TryParse(tile, out int index) && index != 0)
-                        tiles.Add(new GameObject(x + objX, y + objY, tileset.GetTileSourceRect(index - 1)));
+                    if (int.TryParse(tile, out int index))
+                    {
+                        if (index == 0)
+                        {
+                            tiles.Add(new GameObject(x + objX, y + objY));
+                        }
+                        else
+                        {
+                            tiles.Add(new GameObject(x + objX, y + objY, tileset.GetTileSourceRect(index - 1)));
+                            tiles.Last().Wall = tileset.IsTileWall(index - 1);
+                        }
+                    }
                 });
             }
         }
@@ -93,12 +106,15 @@ namespace FormsPixelGameEngine.GameObjects
         public override void OnFreeGameObject()
             => tiles.ForEach(tile => Game.QueueFree(tile));
 
-        public Vector2D GetCurrentTile(GameObject gameObject)
+        public Vector2D GetTile(GameObject gameObject)
             => new Vector2D()
             {
                 X = (float)Math.Floor((gameObject.X - x) / tileset.Size),
                 Y = (float)Math.Floor((gameObject.Y - y) / tileset.Size)
-            };
+            };        
+
+        public GameObject GetTile(Vector2D tile)
+            => tiles[((int)tile.X % widthTiles) + widthTiles * (int)tile.Y];
 
         public void PlaceObject(GameObject gameObject, Vector2D tile)
         {

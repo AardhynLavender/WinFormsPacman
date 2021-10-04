@@ -29,6 +29,8 @@ namespace FormsPixelGameEngine.GameObjects
 
         // postion and size
 
+        private bool wall;
+
         protected float x;
         protected float y;
         protected int z;
@@ -43,7 +45,7 @@ namespace FormsPixelGameEngine.GameObjects
         // game
 
         private PacManGame game;
-        private GameScreen screen;
+        protected GameScreen screen;
 
         // CONSTRUCTORS 
 
@@ -82,6 +84,12 @@ namespace FormsPixelGameEngine.GameObjects
         }
 
         // PROPERTIES
+
+        public bool Wall
+        {
+            get => wall;
+            set => wall = value;
+        }
 
         public float X
         {

@@ -81,17 +81,13 @@ namespace FormsPixelGameEngine.Render
 
                 // determine if the tile is a wall
 
-                try
-                {
-                    bool wall =
-                        (string)xTiles[i]
-                        .Descendants("properties")
-                        .Descendants("property")
-                        .Attributes("value").First() == "true";
+                bool wall =
+                    (string)xTiles[i]
+                    .Descendants("properties")
+                    .Descendants("property")
+                    .Attributes("value").First() == "true";
 
-                    tileCollisions.Add(wall);
-                }
-                catch {  }
+                tileCollisions.Add(wall);
             }
         }
 

@@ -46,6 +46,7 @@ namespace FormsPixelGameEngine
             this.ClientSize = new System.Drawing.Size(1111, 772);
             this.Name = "Form1";
             this.Text = "Form1";
+            this.TransparencyKey = System.Drawing.Color.Black;
             this.ResumeLayout(false);
 
         }

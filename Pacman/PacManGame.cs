@@ -16,6 +16,7 @@ using System.Linq;
 using System.Media;
 using System.Text;
 using System.Threading.Tasks;
+
 using FormsPixelGameEngine.GameObjects;
 using FormsPixelGameEngine.Render;
 using FormsPixelGameEngine.Utility;
@@ -29,7 +30,7 @@ namespace FormsPixelGameEngine
         TileSet tileset;
         World world;
 
-        GameObject foo;
+        Sprite foo;
         GameObject bar;
 
         // CONSTRUCTOR
@@ -45,7 +46,7 @@ namespace FormsPixelGameEngine
             world = new World(this, "Assets/tilemap.tmx", 0, 0, tileset);
             AddGameObject(world);
 
-            foo = AddGameObject(new GameObject(8, 60, tileset.GetTileSourceRect(168), 100, 2, 2));
+            foo = (Sprite)AddGameObject(new Sprite(8, 64, 84, 2, 2, new Vector2D(0, 0), world));
             bar = AddGameObject(new GameObject(0, 0, tileset.GetTileSourceRect(323)));
 
             Animation a = AddAnimation(new Animation(this, bar, new List<System.Drawing.Rectangle>
@@ -58,6 +59,7 @@ namespace FormsPixelGameEngine
                 tileset.GetTileSourceRect(328),
                 tileset.GetTileSourceRect(329)
             }, 50));
+
             a.Start();
         }
 
@@ -70,13 +72,34 @@ namespace FormsPixelGameEngine
         protected override void Process()
         {
             base.Process();
-            if (tick % 10 == 0)
+
+            foo.CurrentTile = world.GetTile(foo);
+
+            if (InputManager.Up)
             {
-                foo.X++;
-                foo.Y += 2;
+                foo.Direction = Direction.UP;
+                foo.Trajectory.Y = -1;
             }
 
-            world.PlaceObject(bar, world.GetCurrentTile(foo));
+            if (InputManager.Down)
+            {
+                foo.Direction = Direction.DOWN;
+                foo.Trajectory.Y = 1;
+            }
+
+            if (InputManager.Left)
+            {
+                foo.Direction = Direction.LEFT;
+                foo.Trajectory.X = -1;
+            }
+
+            if (InputManager.Right)
+            {
+                foo.Direction = Direction.RIGHT;
+                foo.Trajectory.X = 1;
+            }
+
+            world.PlaceObject(bar, world.GetTile(foo));
         }
 
         protected override void Render()
