@@ -32,6 +32,7 @@ namespace FormsPixelGameEngine
 
         Sprite foo;
         GameObject bar;
+        GameObject targetTile;
 
         // CONSTRUCTOR
 
@@ -48,6 +49,7 @@ namespace FormsPixelGameEngine
 
             foo = (Sprite)AddGameObject(new Sprite(8, 64, 84, 2, 2, new Vector2D(0, 0), world));
             bar = AddGameObject(new GameObject(0, 0, tileset.GetTileSourceRect(323)));
+            targetTile = AddGameObject(new GameObject(0, 0, tileset.GetTileSourceRect(23)));
 
             Animation a = AddAnimation(new Animation(this, bar, new List<System.Drawing.Rectangle>
             {
@@ -73,33 +75,32 @@ namespace FormsPixelGameEngine
         {
             base.Process();
 
-            foo.CurrentTile = world.GetTile(foo);
-
             if (InputManager.Up)
             {
                 foo.Direction = Direction.UP;
                 foo.Trajectory.Y = -1;
             }
 
-            if (InputManager.Down)
+            else if (InputManager.Down)
             {
                 foo.Direction = Direction.DOWN;
                 foo.Trajectory.Y = 1;
             }
 
-            if (InputManager.Left)
+            else if (InputManager.Left)
             {
                 foo.Direction = Direction.LEFT;
                 foo.Trajectory.X = -1;
             }
 
-            if (InputManager.Right)
+            else if (InputManager.Right)
             {
                 foo.Direction = Direction.RIGHT;
                 foo.Trajectory.X = 1;
             }
 
             world.PlaceObject(bar, world.GetTile(foo));
+            world.PlaceObject(targetTile, foo.targetTile);
         }
 
         protected override void Render()

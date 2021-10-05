@@ -29,6 +29,7 @@ namespace FormsPixelGameEngine.GameObjects
         private World world;
 
         private Vector2D currentTile;
+        public Vector2D targetTile;
 
         private Direction direction;
 
@@ -44,10 +45,7 @@ namespace FormsPixelGameEngine.GameObjects
         // PROPERTIES
 
         public Vector2D CurrentTile 
-        { 
-            get => currentTile; 
-            set => currentTile = value; 
-        }
+            => currentTile; 
 
         public Direction Direction
         {
@@ -59,33 +57,49 @@ namespace FormsPixelGameEngine.GameObjects
 
         public override void Update()  
         {
-            if ((x - world.X) % tileset.Size == 0)   
-            {
-                if ((direction != Direction.LEFT && direction != Direction.RIGHT)
-                && !world.GetTile(new Vector2D(CurrentTile.X, CurrentTile.Y + Trajectory.Y)).Wall)
-                    Trajectory.X = 0;
+            Console.WriteLine(direction);
 
-                if (world.GetTile(new Vector2D(CurrentTile.X + Trajectory.X, CurrentTile.Y)).Wall)
-                    Trajectory.X = 0;
-            }
+            currentTile = world.GetTile(x, y);
+
+            if (Trajectory.X == 1 && Trajectory.Y == 1)
+                currentTile = world.GetTile(x + 7, y + 7);            
+            
+            else if (Trajectory.X == 1)
+                currentTile = world.GetTile(x + 7, y);
+
+            else if (Trajectory.Y == 1)
+                currentTile = world.GetTile(x, y + 7);
+
+            targetTile = (direction == Direction.UP || direction == Direction.DOWN)
+                ? new Vector2D(currentTile.X, currentTile.Y + Trajectory.Y)
+                : new Vector2D(currentTile.X + Trajectory.X, currentTile.Y);
+
 
             if ((y - world.Y) % tileset.Size == 0)
             {
-                if ((direction != Direction.UP && direction != Direction.DOWN)
-                && !world.GetTile(new Vector2D(CurrentTile.X + Trajectory.X, CurrentTile.Y)).Wall)
-                    Trajectory.Y = 0;
-
                 if (world.GetTile(new Vector2D(CurrentTile.X, CurrentTile.Y + Trajectory.Y)).Wall)
                     Trajectory.Y = 0;
+
+                if (direction != Direction.UP && direction != Direction.DOWN)
+                    Trajectory.Y = 0;
             }
-            
+
+            if ((x - world.X) % tileset.Size == 0)
+            {
+                if (world.GetTile(new Vector2D(CurrentTile.X + Trajectory.X, CurrentTile.Y)).Wall)
+                    Trajectory.X = 0;
+
+                if (direction != Direction.LEFT && direction != Direction.RIGHT)
+                    Trajectory.X = 0;
+            }
+
             x += Trajectory.X;
             y += Trajectory.Y;
         }
 
         public override void Draw()
         {
-            screen.Copy(tileset.Texture, sourceRect, new Rectangle((int)x - 4, (int)y - 4, width, height));
+            screen.Copy(tileset.Texture, sourceRect, new Rectangle((int)x - 3, (int)y - 3, width, height));
         }
     }
 }

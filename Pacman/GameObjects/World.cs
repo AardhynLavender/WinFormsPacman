@@ -110,8 +110,15 @@ namespace FormsPixelGameEngine.GameObjects
             => new Vector2D()
             {
                 X = (float)Math.Floor((gameObject.X - x) / tileset.Size),
-                Y = (float)Math.Floor((gameObject.Y - y) / tileset.Size)
-            };        
+                Y = (float)Math.Floor((gameObject.Y - y)  / tileset.Size)
+            };
+        
+        public Vector2D GetTile(float x, float y)
+            => new Vector2D()
+            {
+                X = (float)Math.Floor((x - this.x) / tileset.Size),
+                Y = (float)Math.Floor((y - this.y) / tileset.Size)
+            };
 
         public GameObject GetTile(Vector2D tile)
             => tiles[((int)tile.X % widthTiles) + widthTiles * (int)tile.Y];

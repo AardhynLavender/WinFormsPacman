@@ -35,7 +35,6 @@ namespace FormsPixelGameEngine
             // 
             // ticker
             // 
-            this.ticker.Interval = 17;
             this.ticker.Tick += new System.EventHandler(this.ticker_Tick);
             // 
             // Form1
@@ -46,7 +45,6 @@ namespace FormsPixelGameEngine
             this.ClientSize = new System.Drawing.Size(1111, 772);
             this.Name = "Form1";
             this.Text = "Form1";
-            this.TransparencyKey = System.Drawing.Color.Black;
             this.ResumeLayout(false);
 
         }

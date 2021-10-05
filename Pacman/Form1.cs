@@ -29,7 +29,7 @@ namespace FormsPixelGameEngine
 
         private const int WIDTH = 224;
         private const int HEIGHT = 288;
-        private const float SCALE = 3f;
+        private const float SCALE = 4f;
 
         // FIELDS
 
