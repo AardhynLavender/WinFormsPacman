@@ -18,6 +18,8 @@ using System.Linq;
 using FormsPixelGameEngine.Render;
 using FormsPixelGameEngine.Utility;
 
+using Breakout.GameObjects;
+
 namespace FormsPixelGameEngine.GameObjects
 {
     class World : GameObject
@@ -25,12 +27,10 @@ namespace FormsPixelGameEngine.GameObjects
         // FIELDS
 
         private TileSet tileset;
-        private int width;
-        private int height;
         private int widthTiles;
         private int HeightTiles;
 
-        private List<GameObject> tiles;
+        private List<TileObject> tiles;
 
         // CONSTRUCTOR
 
@@ -62,6 +62,8 @@ namespace FormsPixelGameEngine.GameObjects
                 widthTiles = width;
                 width *= size;
 
+                this.width = width;
+
                 Console.WriteLine(width);
 
                 // get map data
@@ -72,7 +74,7 @@ namespace FormsPixelGameEngine.GameObjects
 
                 // create game objects from map
                 int i = 0;
-                tiles = new List<GameObject>();
+                tiles = new List<TileObject>();
                 Array.ForEach(map, tile =>
                 {
                     int objX = i * size % width;
@@ -82,11 +84,11 @@ namespace FormsPixelGameEngine.GameObjects
                     {
                         if (index == 0)
                         {
-                            tiles.Add(new GameObject(x + objX, y + objY));
+                            tiles.Add(new TileObject(x + objX, y + objY));
                         }
                         else
                         {
-                            tiles.Add(new GameObject(x + objX, y + objY, tileset.GetTileSourceRect(index - 1)));
+                            tiles.Add(new TileObject(x + objX, y + objY, tileset.GetTileSourceRect(index - 1)));
                             tiles.Last().Wall = tileset.IsTileWall(index - 1);
                         }
                     }
@@ -95,8 +97,6 @@ namespace FormsPixelGameEngine.GameObjects
         }
 
         // PROPERTIES
-
-
 
         // METHODS
 
@@ -138,7 +138,7 @@ namespace FormsPixelGameEngine.GameObjects
         /// </summary>
         /// <param name="tile">coordinate in tiles</param>
         /// <returns>TileObject at that coordinate</returns>
-        public GameObject GetTileObject(Vector2D tile)
+        public TileObject GetTileObject(Vector2D tile)
             => tiles[((int)tile.X % widthTiles) + widthTiles * (int)tile.Y];
 
         public void PlaceObject(GameObject gameObject, Vector2D tile)
