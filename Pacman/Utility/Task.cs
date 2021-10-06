@@ -18,16 +18,19 @@ namespace FormsPixelGameEngine.Utility
     class Task
     {
         // fields
-        int sleepFor;
+        Game game;
         bool called;
+        long callTime;
         Action callback;
 
         // constructor
-        public Task(Action callback, int milliseconds)
+        public Task(Action callback, int milliseconds, Game game)
         {
-            sleepFor = milliseconds / Game.TickRate;
-            called = false;
-            this.callback = callback;
+            callTime        = game.RunningTime + milliseconds;
+            called          = false;
+
+            this.game       = game;
+            this.callback   = callback;
         }
 
         // has the task been run yet
@@ -36,7 +39,7 @@ namespace FormsPixelGameEngine.Utility
         // attempt to run the task
         public bool TryRun()
         {
-            if (--sleepFor < 1)
+            if (game.RunningTime > callTime)
             {
                 callback();
                 called = true;

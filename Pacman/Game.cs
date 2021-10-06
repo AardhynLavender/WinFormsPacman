@@ -60,17 +60,23 @@ namespace FormsPixelGameEngine
             Media                   = media;
             random                  = new Random();
 
+            // runnning time
+
+            gameTime = new Stopwatch();
+
             // create object managment lists
 
             gameObjects             = new List<GameObject>();
             deleteQueue             = new List<GameObject>();
-            taskQueue               = new List<Task>();
             animations              = new List<Animation>();
+            taskQueue               = new List<Task>();
 
             // raise processing flags
 
             processPhysics          = true;
             processAnimations       = true;
+
+            gameTime.Start();
         }
 
         // PROPERTIES
@@ -205,7 +211,7 @@ namespace FormsPixelGameEngine
 
         // Queues a task to be called
         public void QueueTask(int milliseconds, Action callback)
-            => taskQueue.Add(new Task(callback, milliseconds));
+            => taskQueue.Add(new Task(callback, milliseconds, this));
 
         // ABSTRACT
 

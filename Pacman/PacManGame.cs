@@ -48,6 +48,12 @@ namespace FormsPixelGameEngine
             AddGameObject(world);
 
             pacman = (PacMan)AddGameObject(new PacMan(8, 64, world, this));
+
+            QueueTask(1000, () => Console.WriteLine(RunningTime));
+            QueueTask(2000, () => Console.WriteLine(RunningTime));
+            QueueTask(3000, () => Console.WriteLine(RunningTime));
+            QueueTask(4000, () => Console.WriteLine(RunningTime));
+            QueueTask(5000, () => Console.WriteLine(RunningTime));
         }
 
         // PROPERTIES
@@ -59,8 +65,6 @@ namespace FormsPixelGameEngine
         protected override void Process()
         {
             base.Process();
-
-
         }
 
         protected override void Render()
