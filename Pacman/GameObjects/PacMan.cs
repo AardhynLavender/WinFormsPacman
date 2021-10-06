@@ -41,25 +41,25 @@ namespace FormsPixelGameEngine.GameObjects
                 switch (value)
                 {
                     case Direction.UP:
-                        direction = world.GetTile(new Vector2D(currentTile.X, currentTile.Y - 1)).Wall
+                        direction = world.GetTileObject(new Vector2D(currentTile.X, currentTile.Y - 1)).Wall
                             ? direction : value;
 
                         break;
 
                     case Direction.RIGHT:
-                        direction = world.GetTile(new Vector2D(currentTile.X + 1, currentTile.Y)).Wall
+                        direction = world.GetTileObject(new Vector2D(currentTile.X + 1, currentTile.Y)).Wall
                             ? direction : value;
 
                         break;
 
                     case Direction.DOWN:
-                        direction = world.GetTile(new Vector2D(currentTile.X, currentTile.Y + 1)).Wall
+                        direction = world.GetTileObject(new Vector2D(currentTile.X, currentTile.Y + 1)).Wall
                             ? direction : value;
 
                         break;
 
                     case Direction.LEFT:
-                        direction = world.GetTile(new Vector2D(currentTile.X - 1, currentTile.Y)).Wall
+                        direction = world.GetTileObject(new Vector2D(currentTile.X - 1, currentTile.Y)).Wall
                             ? direction : value;
 
                         break;
@@ -89,14 +89,14 @@ namespace FormsPixelGameEngine.GameObjects
             // check for wall collisons and direction changes when pacMan is centered on a tile
 
             if ((y - world.Y) % tileset.Size == 0
-                && (world.GetTile(new Vector2D(CurrentTile.X, CurrentTile.Y + Trajectory.Y)).Wall
+                && (world.GetTileObject(new Vector2D(CurrentTile.X, CurrentTile.Y + Trajectory.Y)).Wall
                 || direction != Direction.UP && direction != Direction.DOWN))
             {
                 Trajectory.Y = 0;
             }
 
             if ((x - world.X) % tileset.Size == 0
-                && (world.GetTile(new Vector2D(CurrentTile.X + Trajectory.X, CurrentTile.Y)).Wall
+                && (world.GetTileObject(new Vector2D(CurrentTile.X + Trajectory.X, CurrentTile.Y)).Wall
                 || direction != Direction.LEFT && direction != Direction.RIGHT))
             {
                 Trajectory.X = 0;

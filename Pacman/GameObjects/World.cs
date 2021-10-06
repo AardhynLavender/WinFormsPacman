@@ -100,12 +100,19 @@ namespace FormsPixelGameEngine.GameObjects
 
         // METHODS
 
+        // adds each TileObject to the game
         public override void OnAddGameObject()
             => tiles.ForEach(tile => Game.AddGameObject(tile));
 
+        // removes each TileObject from the game
         public override void OnFreeGameObject()
             => tiles.ForEach(tile => Game.QueueFree(tile));
 
+        /// <summary>
+        /// Gets the Tile Coordinate for the specified GameObject
+        /// </summary>
+        /// <param name="gameObject">The GameObject</param>
+        /// <returns>Tile Coordinate</returns>
         public Vector2D GetTile(GameObject gameObject)
             => new Vector2D()
             {
@@ -113,6 +120,12 @@ namespace FormsPixelGameEngine.GameObjects
                 Y = (float)Math.Floor((gameObject.Y - y)  / tileset.Size)
             };
         
+        /// <summary>
+        /// Gets the Tile for the provided absolute pixel coordainte
+        /// </summary>
+        /// <param name="x">x absolute pixel coordinate</param>
+        /// <param name="y">y absolute pixel coordiante</param>
+        /// <returns>tile coordiante</returns>
         public Vector2D GetTile(float x, float y)
             => new Vector2D()
             {
@@ -120,7 +133,12 @@ namespace FormsPixelGameEngine.GameObjects
                 Y = (float)Math.Floor((y - this.y) / tileset.Size)
             };
 
-        public GameObject GetTile(Vector2D tile)
+        /// <summary>
+        /// Returns the TileObject at the specified tile coordinate
+        /// </summary>
+        /// <param name="tile">coordinate in tiles</param>
+        /// <returns>TileObject at that coordinate</returns>
+        public GameObject GetTileObject(Vector2D tile)
             => tiles[((int)tile.X % widthTiles) + widthTiles * (int)tile.Y];
 
         public void PlaceObject(GameObject gameObject, Vector2D tile)
