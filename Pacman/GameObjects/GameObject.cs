@@ -148,6 +148,10 @@ namespace FormsPixelGameEngine.GameObjects
         public virtual void Update()
         {  }
 
+        // called per main loop to process anything relating to user input
+        public virtual void Input()
+        {  }
+
         // called when the object is added to the game
         public virtual void OnAddGameObject()
         {  }

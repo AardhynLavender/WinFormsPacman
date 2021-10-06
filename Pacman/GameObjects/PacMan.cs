@@ -167,5 +167,32 @@ namespace FormsPixelGameEngine.GameObjects
 
             base.Update();
         }
+
+        public override void Input()
+        {
+            if (InputManager.Up)
+            {
+                Direction = Direction.UP;
+                Trajectory.Y = -1;
+            }
+
+            else if (InputManager.Down)
+            {
+                Direction = Direction.DOWN;
+                Trajectory.Y = 1;
+            }
+
+            else if (InputManager.Left)
+            {
+                Direction = Direction.LEFT;
+                Trajectory.X = -1;
+            }
+
+            else if (InputManager.Right)
+            {
+                Direction = Direction.RIGHT;
+                Trajectory.X = 1;
+            }
+        }
     }
 }

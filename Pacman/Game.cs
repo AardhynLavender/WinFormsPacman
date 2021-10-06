@@ -105,6 +105,7 @@ namespace FormsPixelGameEngine
             if (processPhysics)
                 gameObjects.ToList().ForEach(gameObject => 
                 {
+                    gameObject.Input();
                     gameObject.Update();
                 });
 

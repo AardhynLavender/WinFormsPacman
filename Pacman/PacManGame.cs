@@ -60,29 +60,7 @@ namespace FormsPixelGameEngine
         {
             base.Process();
 
-            if (InputManager.Up)
-            {
-                pacman.Direction = Direction.UP;
-                pacman.Trajectory.Y = -1;
-            }
 
-            else if (InputManager.Down)
-            {
-                pacman.Direction = Direction.DOWN;
-                pacman.Trajectory.Y = 1;
-            }
-
-            else if (InputManager.Left)
-            {
-                pacman.Direction = Direction.LEFT;
-                pacman.Trajectory.X = -1;
-            }
-
-            else if (InputManager.Right)
-            {
-                pacman.Direction = Direction.RIGHT;
-                pacman.Trajectory.X = 1;
-            }
         }
 
         protected override void Render()
