@@ -18,6 +18,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using FormsPixelGameEngine.GameObjects;
+using FormsPixelGameEngine.Render;
 using FormsPixelGameEngine.Utility;
 
 namespace FormsPixelGameEngine.GameObjects
@@ -26,6 +27,7 @@ namespace FormsPixelGameEngine.GameObjects
     {
         // CONSTATNS
 
+        private const int SPEED = 2;
         private const int TILE_CENTER = 3;
 
         // FIELDS
@@ -33,6 +35,7 @@ namespace FormsPixelGameEngine.GameObjects
         protected World world;
         protected Vector2D currentTile;
         protected Direction direction;
+        private Animation currentAnimation;
 
         // CONSTRUCTOR
 
@@ -48,6 +51,17 @@ namespace FormsPixelGameEngine.GameObjects
         public Vector2D CurrentTile
             => currentTile;
 
+        public Animation CurrentAnimation
+        {
+            get => currentAnimation;
+            set
+            {
+                Game.RemoveAnimation(currentAnimation);
+                currentAnimation = value;
+                Game.AddAnimation(currentAnimation);
+            }
+        }
+
         public virtual Direction Direction
         {
             get => direction;
@@ -58,13 +72,11 @@ namespace FormsPixelGameEngine.GameObjects
 
         public override void Update()  
         {
-            x += Trajectory.X;
-            y += Trajectory.Y;
+            x += Trajectory.X * SPEED;
+            y += Trajectory.Y * SPEED;
         }
 
         public override void Draw()
-        {
-            screen.Copy(tileset.Texture, sourceRect, new Rectangle((int)x - TILE_CENTER, (int)y - TILE_CENTER, width, height));
-        }
+            => screen.Copy(tileset.Texture, sourceRect, new Rectangle((int)x - TILE_CENTER, (int)y - TILE_CENTER, width, height));
     }
 }

@@ -47,22 +47,7 @@ namespace FormsPixelGameEngine
             world = new World(this, "Assets/tilemap.tmx", 0, 0, tileset);
             AddGameObject(world);
 
-            pacman = (PacMan)AddGameObject(new PacMan(8, 64, world));
-            bar = AddGameObject(new GameObject(0, 0, tileset.GetTileSourceRect(323)));
-            targetTile = AddGameObject(new GameObject(0, 0, tileset.GetTileSourceRect(323)));
-
-            Animation a = AddAnimation(new Animation(this, bar, new List<System.Drawing.Rectangle>
-            {
-                tileset.GetTileSourceRect(323),
-                tileset.GetTileSourceRect(324),
-                tileset.GetTileSourceRect(325),
-                tileset.GetTileSourceRect(326),
-                tileset.GetTileSourceRect(327),
-                tileset.GetTileSourceRect(328),
-                tileset.GetTileSourceRect(329)
-            }, 10));
-
-            a.Start();
+            pacman = (PacMan)AddGameObject(new PacMan(8, 64, world, this));
         }
 
         // PROPERTIES
@@ -98,8 +83,6 @@ namespace FormsPixelGameEngine
                 pacman.Direction = Direction.RIGHT;
                 pacman.Trajectory.X = 1;
             }
-
-            world.PlaceObject(bar, world.GetTile(pacman));
         }
 
         protected override void Render()

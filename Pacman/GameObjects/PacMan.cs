@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 using FormsPixelGameEngine.GameObjects;
+using FormsPixelGameEngine.Render;
 using FormsPixelGameEngine.Utility;
 
 namespace FormsPixelGameEngine.GameObjects
@@ -15,20 +17,63 @@ namespace FormsPixelGameEngine.GameObjects
 
         private const int START_X       = 108;
         private const int START_Y       = 208;
-        private const int TEXTURE       = 84;
+
+        private const int UP            = 88;
+        private const int DOWN          = 96;
+        private const int LEFT          = 92;
+        private const int RIGHT         = 84;
+
         private const int TILE_WIDTH    = 2;
         private const int TILE_HEIGHT   = 2;
         private const int TILE_HEADER   = 7;
 
         // FIELDS
 
-
+        private Animation up;
+        private Animation down;
+        private Animation left;
+        private Animation right;
 
         // CONSTRUCTOR
 
-        public PacMan(float x, float y, World world)
-            : base(START_X, START_Y, TEXTURE, TILE_WIDTH, TILE_HEIGHT, new Vector2D(), world)
-        {  }
+        public PacMan(float x, float y, World world, Game game)
+            : base(START_X, START_Y, UP, TILE_WIDTH, TILE_HEIGHT, new Vector2D(), world)
+        {
+            Console.WriteLine(width);
+
+            up = new Animation(game, this, new List<Rectangle>
+            {
+                tileset.GetTileSourceRect(UP, 2 , 2),
+                tileset.GetTileSourceRect(UP + 2, 2 , 2)
+            },
+            10, loop: true);
+
+            down = new Animation(game, this, new List<Rectangle>
+            {
+                tileset.GetTileSourceRect(DOWN, 2 , 2),
+                tileset.GetTileSourceRect(DOWN + 2, 2 , 2)
+            },
+            10, loop: true);
+
+            left = new Animation(game, this, new List<Rectangle>
+            {
+                tileset.GetTileSourceRect(LEFT, 2 , 2),
+                tileset.GetTileSourceRect(LEFT + 2, 2 , 2)
+            },
+            10, loop: true);
+
+            right = new Animation(game, this, new List<Rectangle>
+            {
+                tileset.GetTileSourceRect(RIGHT, 2 , 2),
+                tileset.GetTileSourceRect(RIGHT + 2, 2 , 2)
+            },
+            10, loop: true);
+
+            up.Start();
+            down.Start();
+            left.Start();
+            right.Start();
+        }
 
         // PROPERTIES
 
@@ -100,6 +145,22 @@ namespace FormsPixelGameEngine.GameObjects
                 || direction != Direction.LEFT && direction != Direction.RIGHT))
             {
                 Trajectory.X = 0;
+            }
+
+            // set animation
+            switch(direction)
+            {
+                case Direction.UP       : CurrentAnimation = up;
+                    break;
+
+                case Direction.DOWN     : CurrentAnimation = down;
+                    break;
+
+                case Direction.LEFT     : CurrentAnimation = left;
+                    break;
+
+                case Direction.RIGHT    : CurrentAnimation = right;
+                    break;
             }
 
             // update the sprite

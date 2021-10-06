@@ -102,12 +102,16 @@ namespace FormsPixelGameEngine.Render
         // METHODS
 
         // fetches the location of the texture data
-        public Rectangle GetTileSourceRect(int index) 
+        public Rectangle GetTileSourceRect(int index, int spanX = 1, int spanY = 1) 
         {
             if (index > tileCount) 
                 throw new Exception("[TileSet] > tile index out of range");
 
-            return tileTextures[index];
+            Rectangle sourceRect = tileTextures[index];
+            sourceRect.Width *= spanX;
+            sourceRect.Height *= spanY;
+
+            return sourceRect;
         }
 
         // checks if the tile is a 'wall'
