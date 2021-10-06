@@ -21,8 +21,7 @@ namespace FormsPixelGameEngine.GameObjects
     {
         // CONSTANT AND STATIC MEMBERS
 
-        private const int STANDARD_Z = 100;
-
+        protected const int STANDARD_Z = 100;
         protected static TileSet tileset = null;
 
         // FIELDS

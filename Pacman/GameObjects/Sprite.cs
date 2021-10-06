@@ -24,6 +24,10 @@ namespace FormsPixelGameEngine.GameObjects
 {
     class Sprite : GameObject
     {
+        // CONSTATNS
+
+        private const int TILE_CENTER = 3;
+
         // FIELDS
 
         protected World world;
@@ -33,7 +37,7 @@ namespace FormsPixelGameEngine.GameObjects
         // CONSTRUCTOR
 
         public Sprite(float x, float y, int index, int tileSpanX, int tileSpanY, Vector2D trajectory, World world)
-            : base(x, y, tileset.GetTileSourceRect(index), 100, tileSpanX, tileSpanY)
+            : base(x, y, tileset.GetTileSourceRect(index), STANDARD_Z, tileSpanX, tileSpanY)
         {
             this.world = world;
             Trajectory = trajectory;
@@ -43,10 +47,6 @@ namespace FormsPixelGameEngine.GameObjects
 
         public Vector2D CurrentTile
             => currentTile;
-
-        public bool MovingDiagonaly
-            => Trajectory.Y == 1 && Trajectory.X == 1
-            || Trajectory.X == -1 && Trajectory.Y == -1;
 
         public virtual Direction Direction
         {
@@ -64,7 +64,7 @@ namespace FormsPixelGameEngine.GameObjects
 
         public override void Draw()
         {
-            screen.Copy(tileset.Texture, sourceRect, new Rectangle((int)x - 3, (int)y - 3, width, height));
+            screen.Copy(tileset.Texture, sourceRect, new Rectangle((int)x - TILE_CENTER, (int)y - TILE_CENTER, width, height));
         }
     }
 }
