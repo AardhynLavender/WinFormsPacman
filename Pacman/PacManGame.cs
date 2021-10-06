@@ -30,7 +30,7 @@ namespace FormsPixelGameEngine
         TileSet tileset;
         World world;
 
-        Sprite foo;
+        PacMan pacman;
         GameObject bar;
         GameObject targetTile;
 
@@ -47,9 +47,9 @@ namespace FormsPixelGameEngine
             world = new World(this, "Assets/tilemap.tmx", 0, 0, tileset);
             AddGameObject(world);
 
-            foo = (Sprite)AddGameObject(new Sprite(8, 64, 84, 2, 2, new Vector2D(0, 0), world));
+            pacman = (PacMan)AddGameObject(new PacMan(8, 64, world));
             bar = AddGameObject(new GameObject(0, 0, tileset.GetTileSourceRect(323)));
-            targetTile = AddGameObject(new GameObject(0, 0, tileset.GetTileSourceRect(23)));
+            targetTile = AddGameObject(new GameObject(0, 0, tileset.GetTileSourceRect(323)));
 
             Animation a = AddAnimation(new Animation(this, bar, new List<System.Drawing.Rectangle>
             {
@@ -60,7 +60,7 @@ namespace FormsPixelGameEngine
                 tileset.GetTileSourceRect(327),
                 tileset.GetTileSourceRect(328),
                 tileset.GetTileSourceRect(329)
-            }, 50));
+            }, 10));
 
             a.Start();
         }
@@ -77,30 +77,29 @@ namespace FormsPixelGameEngine
 
             if (InputManager.Up)
             {
-                foo.Direction = Direction.UP;
-                foo.Trajectory.Y = -1;
+                pacman.Direction = Direction.UP;
+                pacman.Trajectory.Y = -1;
             }
 
             else if (InputManager.Down)
             {
-                foo.Direction = Direction.DOWN;
-                foo.Trajectory.Y = 1;
+                pacman.Direction = Direction.DOWN;
+                pacman.Trajectory.Y = 1;
             }
 
             else if (InputManager.Left)
             {
-                foo.Direction = Direction.LEFT;
-                foo.Trajectory.X = -1;
+                pacman.Direction = Direction.LEFT;
+                pacman.Trajectory.X = -1;
             }
 
             else if (InputManager.Right)
             {
-                foo.Direction = Direction.RIGHT;
-                foo.Trajectory.X = 1;
+                pacman.Direction = Direction.RIGHT;
+                pacman.Trajectory.X = 1;
             }
 
-            world.PlaceObject(bar, world.GetTile(foo));
-            world.PlaceObject(targetTile, foo.targetTile);
+            world.PlaceObject(bar, world.GetTile(pacman));
         }
 
         protected override void Render()
