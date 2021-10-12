@@ -15,20 +15,24 @@ namespace FormsPixelGameEngine.GameObjects
     {
         // CONSTANTS
 
+        // start position
         private const int START_X       = 108;
         private const int START_Y       = 208;
 
+        // texture indices
         private const int UP            = 88;
         private const int DOWN          = 96;
         private const int LEFT          = 92;
         private const int RIGHT         = 84;
 
+        // tile infomation
         private const int TILE_WIDTH    = 2;
         private const int TILE_HEIGHT   = 2;
         private const int TILE_HEADER   = 7;
 
         // FIELDS
 
+        // animations
         private Animation up;
         private Animation down;
         private Animation left;
@@ -39,35 +43,39 @@ namespace FormsPixelGameEngine.GameObjects
         public PacMan(float x, float y, World world, Game game)
             : base(START_X, START_Y, UP, TILE_WIDTH, TILE_HEIGHT, new Vector2D(), world)
         {
-            Console.WriteLine(width);
+            speed = 1.0f;
+
+            // create animations
 
             up = new Animation(game, this, new List<Rectangle>
             {
                 tileset.GetTileSourceRect(UP, 2 , 2),
                 tileset.GetTileSourceRect(UP + 2, 2 , 2)
             },
-            10, loop: true);
+            5, loop: true);
 
             down = new Animation(game, this, new List<Rectangle>
             {
                 tileset.GetTileSourceRect(DOWN, 2 , 2),
                 tileset.GetTileSourceRect(DOWN + 2, 2 , 2)
             },
-            10, loop: true);
+            5, loop: true);
 
             left = new Animation(game, this, new List<Rectangle>
             {
                 tileset.GetTileSourceRect(LEFT, 2 , 2),
                 tileset.GetTileSourceRect(LEFT + 2, 2 , 2)
             },
-            10, loop: true);
+            5, loop: true);
 
             right = new Animation(game, this, new List<Rectangle>
             {
                 tileset.GetTileSourceRect(RIGHT, 2 , 2),
                 tileset.GetTileSourceRect(RIGHT + 2, 2 , 2)
             },
-            10, loop: true);
+            5, loop: true);
+
+            // start animations
 
             up.Start();
             down.Start();
@@ -116,8 +124,11 @@ namespace FormsPixelGameEngine.GameObjects
 
         public override void Update()
         {
-            // get the current tile
+            // round position
+            int x = (int)Math.Round(this.x);
+            int y = (int)Math.Round(this.y);
 
+            // get the current tile
             currentTile = world.GetTile(x, y);
 
             // calculate the target tile based on the front most pixel
@@ -163,8 +174,13 @@ namespace FormsPixelGameEngine.GameObjects
                     break;
             }
 
-            // update the sprite
+            // toggle animation
+            if (Trajectory.X != 0 || Trajectory.Y != 0)
+                CurrentAnimation.Start();
+            else
+                CurrentAnimation.Animating = false;
 
+            // update the sprite
             base.Update();
         }
 

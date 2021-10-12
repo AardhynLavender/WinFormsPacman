@@ -27,7 +27,6 @@ namespace FormsPixelGameEngine.GameObjects
     {
         // CONSTATNS
 
-        private const int SPEED = 2;
         private const int TILE_CENTER = 3;
 
         // FIELDS
@@ -36,6 +35,7 @@ namespace FormsPixelGameEngine.GameObjects
         protected Vector2D currentTile;
         protected Direction direction;
         private Animation currentAnimation;
+        protected float speed = 0;
 
         // CONSTRUCTOR
 
@@ -72,8 +72,8 @@ namespace FormsPixelGameEngine.GameObjects
 
         public override void Update()  
         {
-            x += Trajectory.X * SPEED;
-            y += Trajectory.Y * SPEED;
+            x += Trajectory.X * speed;
+            y += Trajectory.Y * speed;
         }
 
         public override void Draw()

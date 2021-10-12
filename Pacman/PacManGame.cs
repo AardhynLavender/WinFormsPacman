@@ -49,11 +49,7 @@ namespace FormsPixelGameEngine
 
             pacman = (PacMan)AddGameObject(new PacMan(8, 64, world, this));
 
-            QueueTask(1000, () => Console.WriteLine(RunningTime));
-            QueueTask(2000, () => Console.WriteLine(RunningTime));
-            QueueTask(3000, () => Console.WriteLine(RunningTime));
-            QueueTask(4000, () => Console.WriteLine(RunningTime));
-            QueueTask(5000, () => Console.WriteLine(RunningTime));
+            bar = AddGameObject(new GameObject(0, 0, tileset.GetTileSourceRect(323)));
         }
 
         // PROPERTIES
@@ -70,6 +66,7 @@ namespace FormsPixelGameEngine
         protected override void Render()
         {
             base.Render();
+            world.PlaceObject(bar, pacman.CurrentTile);
         }
 
         // OBJECT MANAGMENT 

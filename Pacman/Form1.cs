@@ -43,7 +43,7 @@ namespace FormsPixelGameEngine
             InitializeComponent();
             FormBorderStyle = FormBorderStyle.None;
             TopMost = true;
-            Cursor.Hide();
+            //Cursor.Hide();
 
             // game initalization
 

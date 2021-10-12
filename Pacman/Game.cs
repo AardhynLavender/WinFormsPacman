@@ -22,7 +22,7 @@ namespace FormsPixelGameEngine
     {
         // CONSTANTS
 
-        private const int TICKRATE = 5;
+        private const int TICKRATE = 1;
 
         // FIELDS
 
