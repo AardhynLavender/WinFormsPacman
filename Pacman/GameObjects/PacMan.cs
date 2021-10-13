@@ -25,6 +25,9 @@ namespace FormsPixelGameEngine.GameObjects
         private const int LEFT          = 92;
         private const int RIGHT         = 84;
 
+        // animation
+        private const int ANIMATION     = 20; 
+
         // tile infomation
         private const int TILE_WIDTH    = 2;
         private const int TILE_HEIGHT   = 2;
@@ -38,12 +41,20 @@ namespace FormsPixelGameEngine.GameObjects
         private Animation left;
         private Animation right;
 
+        private Animation[] directionalAnimations;
+
+        // history
+        private List<Direction> directionHistory;
+
         // CONSTRUCTOR
 
         public PacMan(float x, float y, World world, Game game)
             : base(START_X, START_Y, UP, TILE_WIDTH, TILE_HEIGHT, new Vector2D(), world)
         {
+            // initatlize fields
+
             speed = 1.0f;
+            directionHistory = new List<Direction>();
 
             // create animations
 
@@ -52,28 +63,32 @@ namespace FormsPixelGameEngine.GameObjects
                 tileset.GetTileSourceRect(UP, 2 , 2),
                 tileset.GetTileSourceRect(UP + 2, 2 , 2)
             },
-            5, loop: true);
+            ANIMATION, loop: true);
 
             down = new Animation(game, this, new List<Rectangle>
             {
                 tileset.GetTileSourceRect(DOWN, 2 , 2),
                 tileset.GetTileSourceRect(DOWN + 2, 2 , 2)
             },
-            5, loop: true);
+            ANIMATION, loop: true);
 
             left = new Animation(game, this, new List<Rectangle>
             {
                 tileset.GetTileSourceRect(LEFT, 2 , 2),
                 tileset.GetTileSourceRect(LEFT + 2, 2 , 2)
             },
-            5, loop: true);
+            ANIMATION, loop: true);
 
             right = new Animation(game, this, new List<Rectangle>
             {
                 tileset.GetTileSourceRect(RIGHT, 2 , 2),
                 tileset.GetTileSourceRect(RIGHT + 2, 2 , 2)
             },
-            5, loop: true);
+            ANIMATION, loop: true);
+
+            // store directional animations in an array
+            directionalAnimations = new Animation[4]
+            { up, down, left, right };
 
             // start animations
 
@@ -81,44 +96,14 @@ namespace FormsPixelGameEngine.GameObjects
             down.Start();
             left.Start();
             right.Start();
+
+            direction = Direction.LEFT;
+            currentAnimation = directionalAnimations[(int)direction];
         }
 
         // PROPERTIES
 
-        // block directions that could cause collision
-        public override Direction Direction
-        {
-            get => base.Direction;
-            set
-            {
-                switch (value)
-                {
-                    case Direction.UP:
-                        direction = world.GetTileObject(new Vector2D(currentTile.X, currentTile.Y - 1)).Wall
-                            ? direction : value;
 
-                        break;
-
-                    case Direction.RIGHT:
-                        direction = world.GetTileObject(new Vector2D(currentTile.X + 1, currentTile.Y)).Wall
-                            ? direction : value;
-
-                        break;
-
-                    case Direction.DOWN:
-                        direction = world.GetTileObject(new Vector2D(currentTile.X, currentTile.Y + 1)).Wall
-                            ? direction : value;
-
-                        break;
-
-                    case Direction.LEFT:
-                        direction = world.GetTileObject(new Vector2D(currentTile.X - 1, currentTile.Y)).Wall
-                            ? direction : value;
-
-                        break;
-                }
-            }
-        }
 
         // METHODS
 
@@ -128,8 +113,19 @@ namespace FormsPixelGameEngine.GameObjects
             int x = (int)Math.Round(this.x);
             int y = (int)Math.Round(this.y);
 
+            // set animation and trajectory
+            switch (direction)
+            {
+                case Direction.UP       : Trajectory.Y = -1;    break;
+                case Direction.DOWN     : Trajectory.Y = 1;     break;
+                case Direction.LEFT     : Trajectory.X = -1;    break;
+                case Direction.RIGHT    : Trajectory.X = 1;     break;
+            }
+
             // get the current tile
-            currentTile = world.GetTile(x, y);
+
+            Vector2D previousTile = currentTile;
+            currentTile = world.GetTile(x, y); ;
 
             // calculate the target tile based on the front most pixel
 
@@ -141,6 +137,9 @@ namespace FormsPixelGameEngine.GameObjects
 
             else if (Trajectory.Y == 1)
                 currentTile = world.GetTile(x, y + TILE_HEADER);
+
+            if (!previousTile.Equals(currentTile))
+                directionHistory.Add(direction);
 
             // check for wall collisons and direction changes when pacMan is centered on a tile
 
@@ -158,57 +157,65 @@ namespace FormsPixelGameEngine.GameObjects
                 Trajectory.X = 0;
             }
 
-            // set animation
-            switch(direction)
-            {
-                case Direction.UP       : CurrentAnimation = up;
-                    break;
-
-                case Direction.DOWN     : CurrentAnimation = down;
-                    break;
-
-                case Direction.LEFT     : CurrentAnimation = left;
-                    break;
-
-                case Direction.RIGHT    : CurrentAnimation = right;
-                    break;
-            }
-
-            // toggle animation
+            // determine if pacman is moving
             if (Trajectory.X != 0 || Trajectory.Y != 0)
                 CurrentAnimation.Start();
             else
+            {
+                // pause animation
                 CurrentAnimation.Animating = false;
+
+                // reaply previous direction
+                if (directionHistory.Count > 2)
+                {
+                    Direction direction = directionHistory[directionHistory.Count - 2];
+                    Direction = direction;
+                }
+            }
+
+            CurrentAnimation = directionalAnimations[(int)direction];
 
             // update the sprite
             base.Update();
+
+            Console.WriteLine(directionHistory.Count);
         }
 
         public override void Input()
         {
-            if (InputManager.Up)
+            previousDirection = Direction == previousDirection 
+                ? previousDirection 
+                : Direction;
+
+            if (InputManager.Up 
+                && direction != Direction.UP
+                && !world.GetTileObject(new Vector2D(currentTile.X, currentTile.Y - 1)).Wall)
             {
                 Direction = Direction.UP;
                 Trajectory.Y = -1;
             }
-
-            else if (InputManager.Down)
+            else if (InputManager.Down 
+                && direction != Direction.DOWN 
+                && !world.GetTileObject(new Vector2D(currentTile.X, currentTile.Y + 1)).Wall)
             {
+
                 Direction = Direction.DOWN;
                 Trajectory.Y = 1;
             }
-
-            else if (InputManager.Left)
+            else if (InputManager.Left
+                && direction != Direction.LEFT
+                && !world.GetTileObject(new Vector2D(currentTile.X - 1, currentTile.Y)).Wall)
             {
                 Direction = Direction.LEFT;
                 Trajectory.X = -1;
             }
-
-            else if (InputManager.Right)
+            else if (InputManager.Right
+                && direction != Direction.RIGHT
+                && !world.GetTileObject(new Vector2D(currentTile.X + 1, currentTile.Y)).Wall)
             {
                 Direction = Direction.RIGHT;
                 Trajectory.X = 1;
-            }
+            } 
         }
     }
 }

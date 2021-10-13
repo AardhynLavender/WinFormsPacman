@@ -49,7 +49,7 @@ namespace FormsPixelGameEngine
 
             pacman = (PacMan)AddGameObject(new PacMan(8, 64, world, this));
 
-            bar = AddGameObject(new GameObject(0, 0, tileset.GetTileSourceRect(323)));
+            //bar = AddGameObject(new GameObject(0, 0, tileset.GetTileSourceRect(323)));
         }
 
         // PROPERTIES
@@ -66,7 +66,7 @@ namespace FormsPixelGameEngine
         protected override void Render()
         {
             base.Render();
-            world.PlaceObject(bar, pacman.CurrentTile);
+            //world.PlaceObject(bar, pacman.CurrentTile);
         }
 
         // OBJECT MANAGMENT 

@@ -31,10 +31,14 @@ namespace FormsPixelGameEngine.GameObjects
 
         // FIELDS
 
+        protected float localX;
+        protected float localY;
+
         protected World world;
         protected Vector2D currentTile;
         protected Direction direction;
-        private Animation currentAnimation;
+        protected Direction previousDirection;
+        protected Animation currentAnimation;
         protected float speed = 0;
 
         // CONSTRUCTOR
@@ -74,6 +78,9 @@ namespace FormsPixelGameEngine.GameObjects
         {
             x += Trajectory.X * speed;
             y += Trajectory.Y * speed;
+
+            localX = (int)Math.Floor(x % tileset.Size);
+            localY = (int)Math.Floor(y % tileset.Size);
         }
 
         public override void Draw()
