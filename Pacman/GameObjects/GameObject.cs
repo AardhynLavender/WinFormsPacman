@@ -41,7 +41,7 @@ namespace FormsPixelGameEngine.GameObjects
 
         // game
 
-        private PacManGame game;
+        protected PacManGame game;
         protected GameScreen screen;
 
         // CONSTRUCTORS 
@@ -50,6 +50,7 @@ namespace FormsPixelGameEngine.GameObjects
         public GameObject(float x, float y, int z = STANDARD_Z)
         {
             // initalize fields
+
             this.x = x;
             this.y = y;
             this.z = z;
@@ -57,6 +58,7 @@ namespace FormsPixelGameEngine.GameObjects
             width = height = 0;
         }
 
+        // construct a textured object
         public GameObject(float x, float y, Rectangle sourceRect, int z = STANDARD_Z, int tileSpanX = 1, int tileSpanY = 1)
         {
             if (tileset is null) 

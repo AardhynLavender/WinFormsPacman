@@ -12,11 +12,9 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Media;
-using System.Text;
-using System.Threading.Tasks;
 
+using Breakout.GameObjects;
 using FormsPixelGameEngine.GameObjects;
 using FormsPixelGameEngine.Render;
 using FormsPixelGameEngine.Utility;
@@ -27,18 +25,34 @@ namespace FormsPixelGameEngine
     {
         // FIELDS
 
-        TileSet tileset;
-        World world;
+        private int score;
 
-        PacMan pacman;
-        GameObject bar;
-        GameObject targetTile;
+        private List<TileObject> scoreDisplay;
+
+        private TileSet tileset;
+        private World world;
+
+        private PacMan pacman;
+        private GameObject bar;
+        private GameObject targetTile;
+
+        private Dictionary<int, int> digits;
 
         // CONSTRUCTOR
 
         public PacManGame(GameScreen screen, SoundPlayer media, System.Windows.Forms.Timer ticker)
             : base (screen, media,ticker)
         {
+            // initalize fileds
+
+            digits = new Dictionary<int, int>(10)
+            {
+                { 0, 402 },{ 1, 403 },{ 2, 404 },{ 3, 444 },{ 4, 445 },
+                { 5, 446 },{ 6, 486 },{ 7, 487 },{ 8, 488 },{ 9, 528 }
+            };
+
+            scoreDisplay = new List<TileObject>();
+
             // create tileset and world
 
             tileset = new TileSet("Assets/tileset.tsx", "Assets/tileset.png");
@@ -54,7 +68,28 @@ namespace FormsPixelGameEngine
 
         // PROPERTIES
 
+        public int Score
+        {
+            get => score;
+            set
+            {
+                score = value;
 
+                int index = 40;
+                char[] strScore = score.ToString().ToCharArray();
+                Array.ForEach(strScore, character =>
+                {
+                    int digit = (int)char.GetNumericValue(character);
+                    world.SetTileObject(
+                        new TileObject(index, world, tileset.GetTileSourceRect(digits[digit])),
+                        index++
+                    );
+                });
+            }
+        }
+
+        public Vector2D PacManPosition 
+            => pacman.CurrentTile;
 
         // GAME LOOP
 

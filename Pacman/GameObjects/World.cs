@@ -60,11 +60,7 @@ namespace FormsPixelGameEngine.GameObjects
             {
                 // calculate width and widthTiles;
                 widthTiles = width;
-                width *= size;
-
-                this.width = width;
-
-                Console.WriteLine(width);
+                this.width = width * size;
 
                 // get map data
                 string[] map = xTileset
@@ -77,42 +73,61 @@ namespace FormsPixelGameEngine.GameObjects
                 tiles = new List<TileObject>();
                 Array.ForEach(map, tile =>
                 {
-                    int objX = i * size % width;
-                    int objY = (int)Math.Floor((float)i++ / (width / size)) * size;
-
                     if (int.TryParse(tile, out int index))
                     {
                         if (index == 0)
-                        {
-                            tiles.Add(new TileObject(x + objX, y + objY));
-                        }
+                            AddTileObject(new TileObject(i, this));
+
+                        else if (index == 23)
+                            AddTileObject(new Point(i, this));
+
                         else
-                        {
-                            tiles.Add(new TileObject(x + objX, y + objY, tileset.GetTileSourceRect(index - 1)));
-                            tiles.Last().Wall = tileset.IsTileWall(index - 1);
-                        }
+                            AddTileObject(new TileObject(i, this, tileset.GetTileSourceRect(index - 1)))
+                            .Wall = tileset.IsTileWall(index - 1);
                     }
+                    i++;
                 });
             }
         }
 
         // PROPERTIES
 
-        // METHODS
+        public int WidthTiles 
+            => widthTiles;
 
-        // adds each TileObject to the game
-        public override void OnAddGameObject()
-            => tiles.ForEach(tile => Game.AddGameObject(tile));
+        // METHODS
 
         // removes each TileObject from the game
         public override void OnFreeGameObject()
             => tiles.ForEach(tile => Game.QueueFree(tile));
+
+        public TileObject AddTileObject(TileObject tileObject)
+        {
+            tiles.Add(tileObject);
+            return (TileObject)game.AddGameObject(tileObject);
+        }
+
+        public TileObject SetTileObject(TileObject tileObject, int index)
+        {
+            game.QueueFree(tiles[index]);
+            return tiles[index] = (TileObject)game.AddGameObject(tileObject);
+        }
+
+        public void QueueTileFree(TileObject tileObject)
+        {
+            // remove tile from game and set world tile to blank
+            tiles[tiles.FindIndex(tile => tile == tileObject)] 
+                = AddTileObject(new TileObject(tileObject.X, tileObject.Y));
+
+            game.QueueFree(tileObject);
+        }
 
         /// <summary>
         /// Gets the Tile Coordinate for the specified GameObject
         /// </summary>
         /// <param name="gameObject">The GameObject</param>
         /// <returns>Tile Coordinate</returns>
+
         public Vector2D GetTile(GameObject gameObject)
             => new Vector2D()
             {
@@ -126,6 +141,7 @@ namespace FormsPixelGameEngine.GameObjects
         /// <param name="x">x absolute pixel coordinate</param>
         /// <param name="y">y absolute pixel coordiante</param>
         /// <returns>tile coordiante</returns>
+
         public Vector2D GetTile(float x, float y)
             => new Vector2D()
             {

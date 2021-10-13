@@ -55,6 +55,7 @@
     <Compile Include="Game.cs" />
     <Compile Include="GameObjects\GameObject.cs" />
     <Compile Include="GameObjects\PacMan.cs" />
+    <Compile Include="GameObjects\Point.cs" />
     <Compile Include="GameObjects\Sprite.cs" />
     <Compile Include="GameObjects\TileObject.cs" />
     <Compile Include="GameObjects\World.cs" />
