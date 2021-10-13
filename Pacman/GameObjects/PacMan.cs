@@ -97,7 +97,7 @@ namespace FormsPixelGameEngine.GameObjects
             left.Start();
             right.Start();
 
-            direction = Direction.LEFT;
+            direction = Direction.UP;
             currentAnimation = directionalAnimations[(int)direction];
         }
 
