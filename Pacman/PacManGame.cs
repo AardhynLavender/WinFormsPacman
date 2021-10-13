@@ -26,6 +26,7 @@ namespace FormsPixelGameEngine
         // FIELDS
 
         private int score;
+        private int hiScore;
 
         private List<TileObject> scoreDisplay;
 
@@ -33,8 +34,6 @@ namespace FormsPixelGameEngine
         private World world;
 
         private PacMan pacman;
-        private GameObject bar;
-        private GameObject targetTile;
 
         private Dictionary<int, int> digits;
 
@@ -61,9 +60,9 @@ namespace FormsPixelGameEngine
             world = new World(this, "Assets/tilemap.tmx", 0, 0, tileset);
             AddGameObject(world);
 
-            pacman = (PacMan)AddGameObject(new PacMan(8, 64, world, this));
+            // add pacman
 
-            //bar = AddGameObject(new GameObject(0, 0, tileset.GetTileSourceRect(323)));
+            pacman = (PacMan)AddGameObject(new PacMan(8, 64, world, this));
         }
 
         // PROPERTIES
@@ -75,16 +74,20 @@ namespace FormsPixelGameEngine
             {
                 score = value;
 
-                int index = 40;
-                char[] strScore = score.ToString().ToCharArray();
-                Array.ForEach(strScore, character =>
-                {
-                    int digit = (int)char.GetNumericValue(character);
-                    world.SetTileObject(
-                        new TileObject(index, world, tileset.GetTileSourceRect(digits[digit])),
-                        index++
-                    );
-                });
+                DisplayText(score.ToString(), 30);
+
+                if (score >= hiScore)
+                    HiScore = score;
+            }
+        }
+
+        public int HiScore
+        {
+            get => hiScore;
+            private set
+            {
+                hiScore = value;
+                DisplayText(hiScore.ToString(), 40);
             }
         }
 
@@ -102,6 +105,23 @@ namespace FormsPixelGameEngine
         {
             base.Render();
             //world.PlaceObject(bar, pacman.CurrentTile);
+        }
+
+        // TEXT MANAGMENT
+
+        private void DisplayText(string text, int index)
+        {
+            char[] strScore = text.ToString().ToCharArray();
+            Array.ForEach(strScore, character =>
+            {
+                if (int.TryParse(character.ToString(), out int digit))
+                    world.SetTileObject(
+                        new TileObject(index, world, tileset.GetTileSourceRect(digits[digit])),
+                        index++
+                    );
+                else
+                    throw new Exception("text rendering has not yet been implimented!");
+            });
         }
 
         // OBJECT MANAGMENT 
