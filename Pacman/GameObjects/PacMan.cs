@@ -162,10 +162,9 @@ namespace FormsPixelGameEngine.GameObjects
                 CurrentAnimation.Start();
             else
             {
-                // pause animation
                 CurrentAnimation.Animating = false;
 
-                // reaply previous direction
+                // reapply previous direction (prevents 'orphan corner collision')
                 if (directionHistory.Count > 2)
                 {
                     Direction direction = directionHistory[directionHistory.Count - 2];
@@ -173,12 +172,11 @@ namespace FormsPixelGameEngine.GameObjects
                 }
             }
 
+            // set the correct animation
             CurrentAnimation = directionalAnimations[(int)direction];
 
             // update the sprite
             base.Update();
-
-            Console.WriteLine(directionHistory.Count);
         }
 
         public override void Input()
@@ -198,7 +196,6 @@ namespace FormsPixelGameEngine.GameObjects
                 && direction != Direction.DOWN 
                 && !world.GetTileObject(new Vector2D(currentTile.X, currentTile.Y + 1)).Wall)
             {
-
                 Direction = Direction.DOWN;
                 Trajectory.Y = 1;
             }
