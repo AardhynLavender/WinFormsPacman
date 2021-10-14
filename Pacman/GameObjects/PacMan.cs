@@ -155,12 +155,24 @@ namespace FormsPixelGameEngine.GameObjects
                 && (world.GetTileObject(new Vector2D(CurrentTile.X + Trajectory.X, CurrentTile.Y)).Wall
                 || direction != Direction.LEFT && direction != Direction.RIGHT))
             {
-                Trajectory.X = 0;
+                // block wall x-axis collisions only while on the board
+                if (currentTile.X > 0 && currentTile.X < world.WidthTiles)
+                    Trajectory.X = 0;
             }
+
+            // check for tunnel travel
+
+            if (currentTile.X < -1 && direction == Direction.LEFT)
+                X = world.Width + 1;
+
+            else if (X > world.Width && direction == Direction.RIGHT)
+                X = -tileset.Size - 1;
+
 
             // determine if pacman is moving
             if (Trajectory.X != 0 || Trajectory.Y != 0)
                 CurrentAnimation.Start();
+
             else
             {
                 CurrentAnimation.Animating = false;
