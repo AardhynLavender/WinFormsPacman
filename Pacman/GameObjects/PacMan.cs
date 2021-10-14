@@ -56,7 +56,7 @@ namespace FormsPixelGameEngine.GameObjects
         {
             // initatlize fields
 
-            speed = 1.33f;
+            speed = 1f;
             directionHistory = new List<Direction>();
             locked = true;
 

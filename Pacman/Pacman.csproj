@@ -103,14 +103,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Assets\Audio\FruitEat.wav" />
-    <Content Include="Assets\Audio\ghostCollision.wav" />
-    <Content Include="Assets\Audio\pacman_beginning.wav" />
-    <Content Include="Assets\Audio\pacman_extrapac.wav" />
-    <Content Include="Assets\Audio\waka.wav" />
-    <Content Include="Assets\Audio\win.wav" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Assets\tileset.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -119,6 +111,26 @@
     <None Include="Assets\tileset.tsx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Assets\Audio\credit_1.wav" />
+    <Content Include="Assets\Audio\death_3.wav" />
+    <Content Include="Assets\Audio\death_4.wav" />
+    <Content Include="Assets\Audio\eat_fruit_1.wav" />
+    <Content Include="Assets\Audio\eat_ghost_1.wav" />
+    <Content Include="Assets\Audio\extend_1.wav" />
+    <Content Include="Assets\Audio\game_start_1.wav" />
+    <Content Include="Assets\Audio\intermission_1.wav" />
+    <Content Include="Assets\Audio\power_pellet_1.wav" />
+    <Content Include="Assets\Audio\retreating_1.wav" />
+    <Content Include="Assets\Audio\siren_10.wav" />
+    <Content Include="Assets\Audio\siren_6.wav" />
+    <Content Include="Assets\Audio\siren_7.wav" />
+    <Content Include="Assets\Audio\siren_8.wav" />
+    <Content Include="Assets\Audio\siren_9.wav" />
+    <Content Include="Assets\Audio\waka_1.wav" />
+    <Content Include="Assets\Audio\waka_a.wav" />
+    <Content Include="Assets\Audio\waka_b.wav" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

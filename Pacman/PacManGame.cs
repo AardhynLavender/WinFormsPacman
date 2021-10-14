@@ -63,7 +63,7 @@ namespace FormsPixelGameEngine
 
             pacman = (PacMan)AddGameObject(new PacMan(8, 64, world, this));
 
-            PlaySound(Properties.Resources.pacman_beginning);
+            PlaySound(Properties.Resources.game_start);
             QueueTask(4000, () =>
             {
                 pacman.Locked = false;

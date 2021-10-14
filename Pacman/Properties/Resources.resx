@@ -118,22 +118,58 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="FruitEat" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\assets\audio\fruiteat.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="credit" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\assets\audio\credit_1.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="ghostCollision" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\assets\audio\ghostcollision.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="death_3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\assets\audio\death_3.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="pacman_beginning" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\assets\audio\pacman_beginning.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="death_4" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\assets\audio\death_4.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="pacman_extrapac" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\assets\audio\pacman_extrapac.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="eat_fruit" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\assets\audio\eat_fruit_1.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="eat_ghost" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\assets\audio\eat_ghost_1.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="extend" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\assets\audio\extend_1.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="game_start" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\assets\audio\game_start_1.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="intermission" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\assets\audio\intermission_1.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="power_pellet" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\assets\audio\power_pellet_1.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="retreating" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\assets\audio\retreating_1.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="siren_1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\assets\audio\siren_6.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="siren_2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\assets\audio\siren_7.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="siren_3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\assets\audio\siren_8.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="siren_4" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\assets\audio\siren_9.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="siren_5" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\assets\audio\siren_10.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="waka" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\assets\audio\waka.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>..\assets\audio\waka_1.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="win" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\assets\audio\win.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="waka_a" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\assets\audio\waka_a.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="waka_b" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\assets\audio\waka_b.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
 </root>
