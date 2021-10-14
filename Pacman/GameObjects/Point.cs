@@ -17,6 +17,8 @@ namespace FormsPixelGameEngine.GameObjects
 
         // FIELDS
         
+        private static int count;
+
         private int value;
 
         // CONSTRUCTOR
@@ -31,8 +33,11 @@ namespace FormsPixelGameEngine.GameObjects
         {
             if (game.PacManPosition.Equals(world.GetTile(this)))
             {
+                count++;
                 game.Score += value;
                 world.QueueTileFree(this);
+                
+                game.PlaySound(count % 2 == 0 ? Resources.waka_a : Resources.waka_b);
             }
         }
     }
