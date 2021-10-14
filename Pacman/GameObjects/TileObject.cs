@@ -5,10 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using FormsPixelGameEngine.GameObjects;
 using FormsPixelGameEngine.Utility;
 
-namespace Breakout.GameObjects
+namespace FormsPixelGameEngine.GameObjects
 {
     class TileObject : GameObject
     {

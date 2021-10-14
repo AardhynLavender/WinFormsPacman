@@ -102,7 +102,14 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Assets\Audio\FruitEat.wav" />
+    <Content Include="Assets\Audio\ghostCollision.wav" />
+    <Content Include="Assets\Audio\pacman_beginning.wav" />
+    <Content Include="Assets\Audio\pacman_extrapac.wav" />
+    <Content Include="Assets\Audio\waka.wav" />
+    <Content Include="Assets\Audio\win.wav" />
+  </ItemGroup>
   <ItemGroup>
     <None Include="Assets\tileset.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

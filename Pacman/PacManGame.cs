@@ -14,7 +14,6 @@ using System;
 using System.Collections.Generic;
 using System.Media;
 
-using Breakout.GameObjects;
 using FormsPixelGameEngine.GameObjects;
 using FormsPixelGameEngine.Render;
 using FormsPixelGameEngine.Utility;
@@ -63,6 +62,14 @@ namespace FormsPixelGameEngine
             // add pacman
 
             pacman = (PacMan)AddGameObject(new PacMan(8, 64, world, this));
+
+            PlaySound(Properties.Resources.pacman_beginning);
+            QueueTask(4000, () =>
+            {
+                pacman.Locked = false;
+                for (int i = 0; i < 5; i++)
+                    world.QueueTileFree(571 + i);
+            });
         }
 
         // PROPERTIES

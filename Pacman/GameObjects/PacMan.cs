@@ -34,6 +34,8 @@ namespace FormsPixelGameEngine.GameObjects
         private const int TILE_HEIGHT   = 2;
         private const int TILE_HEADER   = 7;
 
+        private bool locked;
+
         // FIELDS
 
         // animations
@@ -56,6 +58,7 @@ namespace FormsPixelGameEngine.GameObjects
 
             speed = 1.33f;
             directionHistory = new List<Direction>();
+            locked = true;
 
             // create animations
 
@@ -104,7 +107,11 @@ namespace FormsPixelGameEngine.GameObjects
 
         // PROPERTIES
 
-
+        public bool Locked
+        {
+            get => locked;
+            set => locked = value;
+        }
 
         // METHODS
 
@@ -194,6 +201,8 @@ namespace FormsPixelGameEngine.GameObjects
 
         public override void Input()
         {
+            if (locked) return;
+
             previousDirection = Direction == previousDirection 
                 ? previousDirection 
                 : Direction;

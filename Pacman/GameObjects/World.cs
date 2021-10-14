@@ -14,11 +14,9 @@
 using System;
 using System.Collections.Generic;
 using System.Xml.Linq;
-using System.Linq;
+
 using FormsPixelGameEngine.Render;
 using FormsPixelGameEngine.Utility;
-
-using Breakout.GameObjects;
 
 namespace FormsPixelGameEngine.GameObjects
 {
@@ -120,6 +118,15 @@ namespace FormsPixelGameEngine.GameObjects
                 = AddTileObject(new TileObject(tileObject.X, tileObject.Y));
 
             game.QueueFree(tileObject);
+        }      
+        
+        public void QueueTileFree(int index)
+        {
+            game.QueueFree(tiles[index]);
+
+            // set tile to blank
+            tiles[index] = AddTileObject(new TileObject(index, this));
+
         }
 
         /// <summary>
