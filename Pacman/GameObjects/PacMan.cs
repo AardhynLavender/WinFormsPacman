@@ -61,29 +61,29 @@ namespace FormsPixelGameEngine.GameObjects
 
             up = new Animation(game, this, new List<Rectangle>
             {
-                tileset.GetTileSourceRect(UP, 2 , 2),
-                tileset.GetTileSourceRect(UP + 2, 2 , 2)
+                tileset.GetTileSourceRect(UP, TILE_WIDTH , TILE_WIDTH),
+                tileset.GetTileSourceRect(UP + TILE_WIDTH, TILE_WIDTH , TILE_WIDTH)
             },
             ANIMATION, loop: true);
 
             down = new Animation(game, this, new List<Rectangle>
             {
-                tileset.GetTileSourceRect(DOWN, 2 , 2),
-                tileset.GetTileSourceRect(DOWN + 2, 2 , 2)
+                tileset.GetTileSourceRect(DOWN, TILE_WIDTH , TILE_WIDTH),
+                tileset.GetTileSourceRect(DOWN + TILE_WIDTH, TILE_WIDTH , TILE_WIDTH)
             },
             ANIMATION, loop: true);
 
             left = new Animation(game, this, new List<Rectangle>
             {
-                tileset.GetTileSourceRect(LEFT, 2 , 2),
-                tileset.GetTileSourceRect(LEFT + 2, 2 , 2)
+                tileset.GetTileSourceRect(LEFT, TILE_WIDTH , TILE_WIDTH),
+                tileset.GetTileSourceRect(LEFT + TILE_WIDTH, TILE_WIDTH , TILE_WIDTH)
             },
             ANIMATION, loop: true);
 
             right = new Animation(game, this, new List<Rectangle>
             {
-                tileset.GetTileSourceRect(RIGHT, 2 , 2),
-                tileset.GetTileSourceRect(RIGHT + 2, 2 , 2)
+                tileset.GetTileSourceRect(RIGHT, TILE_WIDTH , TILE_WIDTH),
+                tileset.GetTileSourceRect(RIGHT + TILE_WIDTH, TILE_WIDTH , TILE_WIDTH)
             },
             ANIMATION, loop: true);
 
