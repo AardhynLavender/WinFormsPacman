@@ -26,7 +26,8 @@ namespace FormsPixelGameEngine.GameObjects
         private const int RIGHT         = 84;
 
         // animation
-        private const int ANIMATION     = 20; 
+        private const int ANIMATION     = 20;
+        private const int DIRECTIONS    = 4;
 
         // tile infomation
         private const int TILE_WIDTH    = 2;
@@ -86,8 +87,8 @@ namespace FormsPixelGameEngine.GameObjects
             },
             ANIMATION, loop: true);
 
-            // store directional animations in an array
-            directionalAnimations = new Animation[4]
+            // store directional animations in an array    
+            directionalAnimations = new Animation[DIRECTIONS]
             { up, down, left, right };
 
             // start animations
