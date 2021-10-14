@@ -207,6 +207,13 @@ namespace FormsPixelGameEngine
             sound.Position = 0;
             Media.Stream = sound;
             Media.Play();
+        }        
+        
+        // plays the provided sound filepath 
+        public virtual void PlaySound(string filepath)
+        {
+            Media.SoundLocation = filepath;
+            Media.Play();
         }
 
         // Queues a task to be called
