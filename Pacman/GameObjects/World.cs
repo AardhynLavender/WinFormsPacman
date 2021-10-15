@@ -151,5 +151,34 @@ namespace FormsPixelGameEngine.GameObjects
             gameObject.X = tile.X * tileset.Size;
             gameObject.Y = tile.Y * tileset.Size;
         }
+
+        // cycles the maps tiles in the specified direction 
+        public void Slide(Direction direction, int step = 0)
+        {
+            if (direction == Direction.LEFT)
+            {
+                game.QueueTask(0, () =>
+                {
+                    tiles.ForEach(tile =>
+                        tile.X = (tile.X + tileset.Size * 2) % width
+                    );
+
+                    if (step < widthTiles)
+                        Slide(direction, ++step);
+                });
+            }
+            else if (direction == Direction.RIGHT)
+            {
+                game.QueueTask(0, () =>
+                {
+                    tiles.ForEach(tile =>
+                        tile.X = (tile.X + width - tileset.Size * 2) % width
+                    );
+
+                    if (step < widthTiles / 2)
+                        Slide(direction, ++step);
+                });
+            }
+        }
     }
 }

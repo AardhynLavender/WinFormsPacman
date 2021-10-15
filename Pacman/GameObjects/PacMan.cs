@@ -188,8 +188,7 @@ namespace FormsPixelGameEngine.GameObjects
                 X = world.Width + 1;
 
                 // animate tunnel leftward
-
-
+                world.Slide(Direction.LEFT, 1);
             }
 
             else if (X > world.Width && direction == Direction.RIGHT)
@@ -198,8 +197,7 @@ namespace FormsPixelGameEngine.GameObjects
                 X = -tileset.Size - 1;
 
                 // animate tunnel rightward
-
-
+                world.Slide(Direction.RIGHT, 1);
             }
 
 
