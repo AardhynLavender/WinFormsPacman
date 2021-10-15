@@ -1,11 +1,22 @@
-﻿using System;
+﻿
+//
+//  PacMan : Sprite Class
+//  Created 5/10/2021
+//
+//  WinForms PacMan v0.0.1
+//  Aardhyn Lavender 2021
+//
+//  A Sprite that moves according to provided input, animating
+//  in the appropriate direction, and cornering at intersections.
+//
+//  PacMan sprites die when colliding with ghosts and eat them
+//  when their mode is FRIGHTENED
+//
+
+using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-using FormsPixelGameEngine.GameObjects;
 using FormsPixelGameEngine.Render;
 using FormsPixelGameEngine.Utility;
 
@@ -149,8 +160,9 @@ namespace FormsPixelGameEngine.GameObjects
             if (!previousTile.Equals(currentTile))
                 directionHistory.Add(direction);
 
-            // check for wall collisons and direction changes when pacMan is centered on a tile
+            // check for wall collisons and direction changes when pacMan is centered on a tile origin
 
+            // y axis tile origin
             if ((y - world.Y) % tileset.Size == 0
                 && (world.GetTileObject(new Vector2D(CurrentTile.X, CurrentTile.Y + Trajectory.Y)).Wall
                 || direction != Direction.UP && direction != Direction.DOWN))
@@ -158,6 +170,7 @@ namespace FormsPixelGameEngine.GameObjects
                 Trajectory.Y = 0;
             }
 
+            // x axis tile origin
             if ((x - world.X) % tileset.Size == 0
                 && (world.GetTileObject(new Vector2D(CurrentTile.X + Trajectory.X, CurrentTile.Y)).Wall
                 || direction != Direction.LEFT && direction != Direction.RIGHT))
@@ -170,10 +183,24 @@ namespace FormsPixelGameEngine.GameObjects
             // check for tunnel travel
 
             if (currentTile.X < -1 && direction == Direction.LEFT)
+            {
+                // teleport pacman to opposite side
                 X = world.Width + 1;
 
+                // animate tunnel leftward
+
+
+            }
+
             else if (X > world.Width && direction == Direction.RIGHT)
+            {
+                // teleport pacman to opposite side
                 X = -tileset.Size - 1;
+
+                // animate tunnel rightward
+
+
+            }
 
 
             // determine if pacman is moving
@@ -184,7 +211,7 @@ namespace FormsPixelGameEngine.GameObjects
             {
                 CurrentAnimation.Animating = false;
 
-                // reapply previous direction (prevents 'orphan corner collision')
+                // re-apply previous direction (prevents 'orphaned corner collision')
                 if (directionHistory.Count > 2)
                 {
                     Direction direction = directionHistory[directionHistory.Count - 2];
@@ -203,10 +230,13 @@ namespace FormsPixelGameEngine.GameObjects
         {
             if (locked) return;
 
+            // grab the direction before it updates
             previousDirection = Direction == previousDirection 
                 ? previousDirection 
                 : Direction;
 
+            // move UP if not already going UP
+            // and the next tile is not a wall            
             if (InputManager.Up 
                 && direction != Direction.UP
                 && !world.GetTileObject(new Vector2D(currentTile.X, currentTile.Y - 1)).Wall)
@@ -214,6 +244,9 @@ namespace FormsPixelGameEngine.GameObjects
                 Direction = Direction.UP;
                 Trajectory.Y = -1;
             }
+
+            // move DOWN if not already going DOWN
+            // and the next tile is not a wall            
             else if (InputManager.Down 
                 && direction != Direction.DOWN 
                 && !world.GetTileObject(new Vector2D(currentTile.X, currentTile.Y + 1)).Wall)
@@ -221,6 +254,9 @@ namespace FormsPixelGameEngine.GameObjects
                 Direction = Direction.DOWN;
                 Trajectory.Y = 1;
             }
+
+            // move LEFT if not already going LEFT
+            // and the next tile is not a wall
             else if (InputManager.Left
                 && direction != Direction.LEFT
                 && !world.GetTileObject(new Vector2D(currentTile.X - 1, currentTile.Y)).Wall)
@@ -228,6 +264,9 @@ namespace FormsPixelGameEngine.GameObjects
                 Direction = Direction.LEFT;
                 Trajectory.X = -1;
             }
+
+            // move RIGHT if not already going RIGHT
+            // and the next tile is not a wall
             else if (InputManager.Right
                 && direction != Direction.RIGHT
                 && !world.GetTileObject(new Vector2D(currentTile.X + 1, currentTile.Y)).Wall)
