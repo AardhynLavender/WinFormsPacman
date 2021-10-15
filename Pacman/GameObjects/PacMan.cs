@@ -185,7 +185,10 @@ namespace FormsPixelGameEngine.GameObjects
             if (currentTile.X < -1 && direction == Direction.LEFT)
             {
                 // teleport pacman to opposite side
-                X = world.Width + 1;
+                X = world.Width + tileset.Size + 1;
+
+                locked = true;
+                game.QueueTask(250, () => locked = false);                
 
                 // animate tunnel leftward
                 world.Slide(Direction.LEFT, 1);
@@ -194,7 +197,10 @@ namespace FormsPixelGameEngine.GameObjects
             else if (X > world.Width && direction == Direction.RIGHT)
             {
                 // teleport pacman to opposite side
-                X = -tileset.Size - 1;
+                X = -tileset.Size * 2 - 1;
+
+                locked = true;
+                game.QueueTask(250, () => locked = false);
 
                 // animate tunnel rightward
                 world.Slide(Direction.RIGHT, 1);

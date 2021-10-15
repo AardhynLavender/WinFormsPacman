@@ -163,7 +163,7 @@ namespace FormsPixelGameEngine.GameObjects
                         tile.X = (tile.X + tileset.Size * 2) % width
                     );
 
-                    if (step < widthTiles)
+                    if (step < widthTiles / 2)
                         Slide(direction, ++step);
                 });
             }
