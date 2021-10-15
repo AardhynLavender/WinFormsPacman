@@ -1,9 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
+﻿
+//
+//  Tile Object : Game Object Class
+//  Created 04/10/2021
+//
+//  WinForms PacMan v0.0.1
+//  Aardhyn Lavender 2021
+//
+//  A Game Object that belongs to a world, and aligns to its
+//  tile system. Tile Objects can be walls or not, and can be
+//  given a position based on cartesian point, tile coordinate
+//  or index in world. 
+//  
+
+using System;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 using FormsPixelGameEngine.Utility;
 
@@ -26,6 +36,8 @@ namespace FormsPixelGameEngine.GameObjects
             : base(0, 0, sourceRect)
         {
             this.world = world;
+
+            // determine index from tile coordinate
             X = world.X + (index * tileset.Size % world.Width);
             Y = world.Y + ((int)Math.Floor((float)index++ / (world.Width / tileset.Size)) * tileset.Size);
         }
@@ -34,17 +46,17 @@ namespace FormsPixelGameEngine.GameObjects
             : base(0, 0, sourceRect)
         {
             this.world = world;
+
+            // convert cartesian point to tile coordinate
             X = world.X + (tile.X * tileset.Size);
             Y = world.Y + (tile.Y * tileset.Size);
         }
 
-        public TileObject(float x, float y, Rectangle sourceRect)
-            : base(x, y, sourceRect)
-        {  }
 
         // PROPERTIES
 
-        public World World { set => world = value; }
+        public World World 
+        { set => world = value; }
 
         public bool Wall
         {

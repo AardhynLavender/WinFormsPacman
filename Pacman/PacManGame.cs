@@ -56,7 +56,7 @@ namespace FormsPixelGameEngine
             tileset = new TileSet("Assets/tileset.tsx", "Assets/tileset.png");
             GameObject.Texture = tileset;
 
-            world = new World(this, "Assets/tilemap.tmx", 0, 0, tileset);
+            world = new World(this, "Assets/tilemap.tmx", 0, 0);
             AddGameObject(world);
 
             // add pacman
@@ -68,7 +68,7 @@ namespace FormsPixelGameEngine
             {
                 pacman.Locked = false;
                 for (int i = 0; i < 5; i++)
-                    world.QueueTileFree(571 + i);
+                    world.ClearTile(571 + i);
             });
         }
 
@@ -122,7 +122,7 @@ namespace FormsPixelGameEngine
             Array.ForEach(strScore, character =>
             {
                 if (int.TryParse(character.ToString(), out int digit))
-                    world.SetTileObject(
+                    world.SetTile(
                         new TileObject(index, world, tileset.GetTileSourceRect(digits[digit])),
                         index++
                     );

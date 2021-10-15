@@ -1,6 +1,6 @@
 ﻿
 //
-//  TileMap Class
+//  World : Game Object Class
 //  Created 22/09/2021
 //
 //  WinForms PacMan v0.0.1
@@ -15,7 +15,6 @@ using System;
 using System.Collections.Generic;
 using System.Xml.Linq;
 
-using FormsPixelGameEngine.Render;
 using FormsPixelGameEngine.Utility;
 
 namespace FormsPixelGameEngine.GameObjects
@@ -24,20 +23,15 @@ namespace FormsPixelGameEngine.GameObjects
     {
         // FIELDS
 
-        private TileSet tileset;
         private int widthTiles;
-        private int HeightTiles;
-
         private List<TileObject> tiles;
 
         // CONSTRUCTOR
 
-        public World(PacManGame game, string tilemap, float x, float y, TileSet tileset)
+        public World(PacManGame game, string tilemap, float x, float y)
             : base(x, y)
         {
             Game = game;
-
-            this.tileset = tileset;
 
             XElement xTileset;
 
@@ -74,13 +68,13 @@ namespace FormsPixelGameEngine.GameObjects
                     if (int.TryParse(tile, out int index))
                     {
                         if (index == 0)
-                            AddTileObject(new TileObject(i, this));
+                            AddTile(new TileObject(i, this));
 
                         else if (index == 23)
-                            AddTileObject(new Point(i, this));
+                            AddTile(new Point(i, this));
 
                         else
-                            AddTileObject(new TileObject(i, this, tileset.GetTileSourceRect(index - 1)))
+                            AddTile(new TileObject(i, this, tileset.GetTileSourceRect(index - 1)))
                             .Wall = tileset.IsTileWall(index - 1);
                     }
                     i++;
@@ -99,42 +93,38 @@ namespace FormsPixelGameEngine.GameObjects
         public override void OnFreeGameObject()
             => tiles.ForEach(tile => Game.QueueFree(tile));
 
-        public TileObject AddTileObject(TileObject tileObject)
+        // pushes a new tile to the worlds tile vector
+        public TileObject AddTile(TileObject tileObject)
         {
             tiles.Add(tileObject);
             return (TileObject)game.AddGameObject(tileObject);
         }
 
-        public TileObject SetTileObject(TileObject tileObject, int index)
+        // replaces the specified tile with the provided tile object
+        public TileObject SetTile(TileObject tileObject, int index)
         {
             game.QueueFree(tiles[index]);
             return tiles[index] = (TileObject)game.AddGameObject(tileObject);
         }
 
-        public void QueueTileFree(TileObject tileObject)
+        // replaces the specified tile with a blank tile
+        public void ClearTile(TileObject tileObject)
         {
             // remove tile from game and set world tile to blank
             tiles[tiles.FindIndex(tile => tile == tileObject)] 
-                = AddTileObject(new TileObject(tileObject.X, tileObject.Y));
+                = new TileObject(tileObject.X, tileObject.Y);
 
             game.QueueFree(tileObject);
         }      
         
-        public void QueueTileFree(int index)
+        // replaces the specified tile with a blank tile
+        public void ClearTile(int index)
         {
             game.QueueFree(tiles[index]);
-
-            // set tile to blank
-            tiles[index] = AddTileObject(new TileObject(index, this));
-
+            tiles[index] = AddTile(new TileObject(index, this));
         }
 
-        /// <summary>
-        /// Gets the Tile Coordinate for the specified GameObject
-        /// </summary>
-        /// <param name="gameObject">The GameObject</param>
-        /// <returns>Tile Coordinate</returns>
-
+        // Gets the Tile Coordinate for the specified GameObject
         public Vector2D GetTile(GameObject gameObject)
             => new Vector2D()
             {
@@ -142,13 +132,7 @@ namespace FormsPixelGameEngine.GameObjects
                 Y = (float)Math.Floor((gameObject.Y - y)  / tileset.Size)
             };
         
-        /// <summary>
-        /// Gets the Tile for the provided absolute pixel coordainte
-        /// </summary>
-        /// <param name="x">x absolute pixel coordinate</param>
-        /// <param name="y">y absolute pixel coordiante</param>
-        /// <returns>tile coordiante</returns>
-
+        // Gets the Tile for the provided absolute pixel coordainte
         public Vector2D GetTile(float x, float y)
             => new Vector2D()
             {
@@ -156,14 +140,12 @@ namespace FormsPixelGameEngine.GameObjects
                 Y = (float)Math.Floor((y - this.y) / tileset.Size)
             };
 
-        /// <summary>
-        /// Returns the TileObject at the specified tile coordinate
-        /// </summary>
-        /// <param name="tile">coordinate in tiles</param>
-        /// <returns>TileObject at that coordinate</returns>
+        // Returns the TileObject at the specified tile coordinate
         public TileObject GetTileObject(Vector2D tile)
             => tiles[((int)tile.X % widthTiles) + widthTiles * (int)tile.Y];
 
+        // places the provided game object on a tile coordinate
+        // as if it was a tile object
         public void PlaceObject(GameObject gameObject, Vector2D tile)
         {
             gameObject.X = tile.X * tileset.Size;

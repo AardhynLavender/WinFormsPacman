@@ -41,7 +41,7 @@ namespace FormsPixelGameEngine.GameObjects
             {
                 // increment score and remove point
                 game.Score += value;
-                world.QueueTileFree(this);
+                world.ClearTile(this);
                 
                 // play 'wah' and 'kah' alternating
                 game.PlaySound(++count % 2 == 0 ? Resources.waka_a : Resources.waka_b);
