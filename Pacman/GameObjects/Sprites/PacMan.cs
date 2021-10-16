@@ -20,7 +20,7 @@ using System.Drawing;
 using FormsPixelGameEngine.Render;
 using FormsPixelGameEngine.Utility;
 
-namespace FormsPixelGameEngine.GameObjects
+namespace FormsPixelGameEngine.GameObjects.Sprites
 {
     class PacMan : Sprite
     {

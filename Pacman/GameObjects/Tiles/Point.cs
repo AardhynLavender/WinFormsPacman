@@ -13,7 +13,7 @@
 
 using FormsPixelGameEngine.Properties;
 
-namespace FormsPixelGameEngine.GameObjects
+namespace FormsPixelGameEngine.GameObjects.Tiles
 {
     class Point : TileObject
     {

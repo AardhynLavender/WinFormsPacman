@@ -17,7 +17,7 @@ using System.Drawing;
 
 using FormsPixelGameEngine.Utility;
 
-namespace FormsPixelGameEngine.GameObjects
+namespace FormsPixelGameEngine.GameObjects.Tiles
 {
     class TileObject : GameObject
     {

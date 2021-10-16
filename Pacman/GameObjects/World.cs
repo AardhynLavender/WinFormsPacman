@@ -16,6 +16,7 @@ using System.Collections.Generic;
 using System.Xml.Linq;
 
 using FormsPixelGameEngine.Utility;
+using FormsPixelGameEngine.GameObjects.Tiles;
 
 namespace FormsPixelGameEngine.GameObjects
 {

@@ -15,6 +15,9 @@ using System.Collections.Generic;
 using System.Media;
 
 using FormsPixelGameEngine.GameObjects;
+using FormsPixelGameEngine.GameObjects.Sprites;
+using FormsPixelGameEngine.GameObjects.Tiles;
+
 using FormsPixelGameEngine.Render;
 using FormsPixelGameEngine.Utility;
 
@@ -22,7 +25,7 @@ namespace FormsPixelGameEngine
 {
     class PacManGame : Game
     {
-        //
+        // CONSTANTS
 
         private const int DIGITS = 10;
 

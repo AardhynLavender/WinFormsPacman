@@ -6,8 +6,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{301CA426-D34D-4E8C-91B7-25AFF8B43AF8}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>Breakout</RootNamespace>
-    <AssemblyName>Breakout</AssemblyName>
+    <RootNamespace>FormsPixelGameEngine</RootNamespace>
+    <AssemblyName>Pacman</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -54,10 +54,11 @@
     </Compile>
     <Compile Include="Game.cs" />
     <Compile Include="GameObjects\GameObject.cs" />
-    <Compile Include="GameObjects\PacMan.cs" />
-    <Compile Include="GameObjects\Point.cs" />
-    <Compile Include="GameObjects\Sprite.cs" />
-    <Compile Include="GameObjects\TileObject.cs" />
+    <Compile Include="GameObjects\Sprites\PacMan.cs" />
+    <Compile Include="GameObjects\Tiles\Energizer.cs" />
+    <Compile Include="GameObjects\Tiles\Point.cs" />
+    <Compile Include="GameObjects\Sprites\Sprite.cs" />
+    <Compile Include="GameObjects\Tiles\TileObject.cs" />
     <Compile Include="GameObjects\World.cs" />
     <Compile Include="PacManGame.cs" />
     <Compile Include="Program.cs" />
@@ -131,6 +132,9 @@
     <Content Include="Assets\Audio\waka_1.wav" />
     <Content Include="Assets\Audio\waka_a.wav" />
     <Content Include="Assets\Audio\waka_b.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="GameObjects\Sprites\Ghosts\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
