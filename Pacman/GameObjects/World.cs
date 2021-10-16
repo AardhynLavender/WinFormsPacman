@@ -153,7 +153,7 @@ namespace FormsPixelGameEngine.GameObjects
         }
 
         // cycles the maps tiles in the specified direction 
-        public void Slide(Direction direction, int step = 0)
+        public void Slide(Direction direction, int step = 1)
         {
             if (direction == Direction.LEFT)
             {
