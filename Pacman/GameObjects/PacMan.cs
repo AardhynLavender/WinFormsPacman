@@ -188,10 +188,10 @@ namespace FormsPixelGameEngine.GameObjects
                 X = world.Width + tileset.Size + 1;
 
                 locked = true;
-                game.QueueTask(250, () => locked = false);                
+                game.QueueTask(Time.QUARTER_SECOND, () => locked = false);                
 
                 // animate tunnel leftward
-                world.Slide(Direction.LEFT, 1);
+                world.Slide(Direction.LEFT);
             }
 
             else if (X > world.Width && direction == Direction.RIGHT)
@@ -200,10 +200,10 @@ namespace FormsPixelGameEngine.GameObjects
                 X = -tileset.Size * 2 - 1;
 
                 locked = true;
-                game.QueueTask(250, () => locked = false);
+                game.QueueTask(Time.QUARTER_SECOND, () => locked = false);
 
                 // animate tunnel rightward
-                world.Slide(Direction.RIGHT, 1);
+                world.Slide(Direction.RIGHT);
             }
 
 

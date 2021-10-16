@@ -22,6 +22,10 @@ namespace FormsPixelGameEngine
 {
     class PacManGame : Game
     {
+        //
+
+        private const int DIGITS = 10;
+
         // FIELDS
 
         private int score;
@@ -43,7 +47,7 @@ namespace FormsPixelGameEngine
         {
             // initalize fileds
 
-            digits = new Dictionary<int, int>(10)
+            digits = new Dictionary<int, int>(DIGITS)
             {
                 { 0, 402 },{ 1, 403 },{ 2, 404 },{ 3, 444 },{ 4, 445 },
                 { 5, 446 },{ 6, 486 },{ 7, 487 },{ 8, 488 },{ 9, 528 }
@@ -63,8 +67,10 @@ namespace FormsPixelGameEngine
 
             pacman = (PacMan)AddGameObject(new PacMan(8, 64, world, this));
 
+            // start game
+            
             PlaySound(Properties.Resources.game_start);
-            QueueTask(4000, () =>
+            QueueTask(Time.FOUR_SECOND, () =>
             {
                 pacman.Locked = false;
                 for (int i = 0; i < 5; i++)
@@ -126,8 +132,8 @@ namespace FormsPixelGameEngine
                         new TileObject(index, world, tileset.GetTileSourceRect(digits[digit])),
                         index++
                     );
-                else
-                    throw new Exception("text rendering has not yet been implimented!");
+
+                else throw new Exception("text rendering has not yet been implimented!");
             });
         }
 
