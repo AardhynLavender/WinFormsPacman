@@ -54,6 +54,11 @@
     </Compile>
     <Compile Include="Game.cs" />
     <Compile Include="GameObjects\GameObject.cs" />
+    <Compile Include="GameObjects\Sprites\Ghosts\Blinky.cs" />
+    <Compile Include="GameObjects\Sprites\Ghosts\Clyde.cs" />
+    <Compile Include="GameObjects\Sprites\Ghosts\Ghost.cs" />
+    <Compile Include="GameObjects\Sprites\Ghosts\Inky.cs" />
+    <Compile Include="GameObjects\Sprites\Ghosts\Pinky.cs" />
     <Compile Include="GameObjects\Sprites\PacMan.cs" />
     <Compile Include="GameObjects\Tiles\Energizer.cs" />
     <Compile Include="GameObjects\Tiles\Point.cs" />
@@ -73,6 +78,7 @@
     <Compile Include="Render\TileSet.cs" />
     <Compile Include="Utility\Direction.cs" />
     <Compile Include="Utility\InputManager.cs" />
+    <Compile Include="Utility\Mode.cs" />
     <Compile Include="Utility\Time.cs" />
     <Compile Include="Utility\Task.cs" />
     <Compile Include="Utility\Vector2D.cs" />
@@ -133,8 +139,6 @@
     <Content Include="Assets\Audio\waka_a.wav" />
     <Content Include="Assets\Audio\waka_b.wav" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="GameObjects\Sprites\Ghosts\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

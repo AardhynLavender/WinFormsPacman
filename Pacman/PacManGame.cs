@@ -15,8 +15,9 @@ using System.Collections.Generic;
 using System.Media;
 
 using FormsPixelGameEngine.GameObjects;
-using FormsPixelGameEngine.GameObjects.Sprites;
 using FormsPixelGameEngine.GameObjects.Tiles;
+using FormsPixelGameEngine.GameObjects.Sprites;
+using FormsPixelGameEngine.GameObjects.Sprites.Ghosts;
 
 using FormsPixelGameEngine.Render;
 using FormsPixelGameEngine.Utility;
@@ -40,6 +41,7 @@ namespace FormsPixelGameEngine
         private World world;
 
         private PacMan pacman;
+        private Blinky blinky;
 
         private Dictionary<int, int> digits;
 
@@ -69,6 +71,10 @@ namespace FormsPixelGameEngine
             // add pacman
 
             pacman = (PacMan)AddGameObject(new PacMan(8, 64, world, this));
+
+            // add ghosts
+
+            blinky = (Blinky)AddGameObject(new Blinky(world, pacman));
 
             // start game
             
