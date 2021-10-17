@@ -48,8 +48,6 @@ namespace FormsPixelGameEngine.GameObjects.Sprites
         private const int TILE_HEIGHT   = 2;
         private const int TILE_HEADER   = 7;
 
-        private bool locked;
-
         // FIELDS
 
         // animations
@@ -124,11 +122,7 @@ namespace FormsPixelGameEngine.GameObjects.Sprites
 
         // PROPERTIES
 
-        public bool Locked
-        {
-            get => locked;
-            set => locked = value;
-        }
+
 
         // METHODS
 

@@ -83,7 +83,8 @@ namespace FormsPixelGameEngine
             PlaySound(Properties.Resources.game_start);
             QueueTask(Time.FOUR_SECOND, () =>
             {
-                pacman.Locked = false;
+                pacman.Locked = blinky.Locked = false;
+
                 for (int i = 0; i < 5; i++)
                     world.ClearTile(571 + i);
             });

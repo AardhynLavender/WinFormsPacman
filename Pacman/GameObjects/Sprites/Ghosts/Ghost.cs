@@ -101,9 +101,10 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
             // initalize fields
 
             this.pacman = pacman;
-            mode = Mode.CHASE;
-            offsetX = OFFSET_X;
-            offsetY = OFFSET_Y;
+            locked      = true;
+            mode        = Mode.CHASE;
+            offsetX     = OFFSET_X;
+            offsetY     = OFFSET_Y;
 
             // create frightened animation
             frightened = new Animation(game, this, new List<Rectangle>(ANIMATIONS)
@@ -172,8 +173,8 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
                 Trajectory = Directions[distances.IndexOf(distances.Min())];
             }
 
-            // update sprite
-            base.Update();
+            if (!locked)
+                base.Update();
         }
     }
 }

@@ -25,12 +25,14 @@ namespace FormsPixelGameEngine.GameObjects.Sprites
         protected float localX;
         protected float localY;
 
+        protected bool locked;
+        protected float speed;
+
         protected World world;
         protected Vector2D currentTile;
         protected Direction direction;
         protected Direction previousDirection;
         protected Animation currentAnimation;
-        protected float speed = 0;
 
         // CONSTRUCTOR
 
@@ -64,6 +66,14 @@ namespace FormsPixelGameEngine.GameObjects.Sprites
         }
 
         public Vector2D Trajectory;
+
+        public bool Locked
+        {
+            get => locked;
+            set => locked = value;
+        }
+
+        // METHODS
 
         public override void Update()  
         {
