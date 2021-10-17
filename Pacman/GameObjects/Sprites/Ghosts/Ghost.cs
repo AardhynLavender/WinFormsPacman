@@ -55,6 +55,7 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
     {
         // CONSTANT AND STATIC MEMBERS
 
+        private const int INFINITY          = 1000;
         private const int DIRECTIONS        = 4;
         private const int SIZE              = 2;
         private const int TUNNEL_DIVISOR    = 2;
@@ -66,6 +67,9 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
         protected const int EATEN_LEFT      = 514;
         protected const int EATEN_UP        = 516;
         protected const int EATEN_DOWN      = 518;
+
+        private const int OFFSET_X = 4;
+        private const int OFFSET_Y = 3;
 
         protected static Vector2D[] Directions =
         new Vector2D[DIRECTIONS]
@@ -98,8 +102,8 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
 
             this.pacman = pacman;
             mode = Mode.CHASE;
-            offsetX = 4;
-            offsetY = 3;
+            offsetX = OFFSET_X;
+            offsetY = OFFSET_Y;
 
             // create frightened animation
             frightened = new Animation(game, this, new List<Rectangle>(ANIMATIONS)
@@ -158,7 +162,7 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
 
                     // get ajacant tile distances setting wall and previous tiles to high numbers
                     distances.Add(world.GetTileObject(ajacantTile).Wall || Trajectory.Invert().Equals(direction)
-                        ? 1000
+                        ? INFINITY
                         : (int)Vector2D.GetAbsDistance(world.GetCoordinate(ajacantTile), world.GetCoordinate(targetTile)));
                 }
 
