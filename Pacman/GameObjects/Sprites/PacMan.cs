@@ -103,7 +103,7 @@ namespace FormsPixelGameEngine.GameObjects.Sprites
 
             // store directional animations in an array    
             directionalAnimations = new Animation[DIRECTIONS]
-            { up, down, left, right };
+            { up, right, down, left };
 
             // start animations
 
