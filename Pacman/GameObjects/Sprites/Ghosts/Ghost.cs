@@ -98,6 +98,8 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
 
             this.pacman = pacman;
             mode = Mode.CHASE;
+            offsetX = 4;
+            offsetY = 3;
 
             // create frightened animation
             frightened = new Animation(game, this, new List<Rectangle>(ANIMATIONS)
