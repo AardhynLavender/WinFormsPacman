@@ -141,6 +141,14 @@ namespace FormsPixelGameEngine.GameObjects
                 Y = (float)Math.Floor((y - this.y) / tileset.Size)
             };
 
+        // gets the absolute pixel coordinte of the provided tile
+        public Vector2D GetCoordinate(Vector2D tile)
+            => new Vector2D()
+            {
+                X = tile.X * tileset.Size,
+                Y = tile.Y * tileset.Size
+            };
+
         // Returns the TileObject at the specified tile coordinate
         public TileObject GetTileObject(Vector2D tile)
             => tiles[((int)tile.X % widthTiles) + widthTiles * (int)tile.Y];
