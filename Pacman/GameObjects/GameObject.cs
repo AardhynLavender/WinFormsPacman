@@ -38,6 +38,8 @@ namespace FormsPixelGameEngine.GameObjects
         // texture
 
         protected Rectangle sourceRect;
+        protected int offsetX;
+        protected int offsetY;
 
         // game
 
@@ -70,6 +72,8 @@ namespace FormsPixelGameEngine.GameObjects
             this.y          = y;
             this.z          = z;
             this.sourceRect = sourceRect;
+
+            offsetX = offsetY = 0;
 
             // span multuple tiles if specified
 

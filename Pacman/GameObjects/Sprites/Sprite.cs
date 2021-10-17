@@ -20,10 +20,6 @@ namespace FormsPixelGameEngine.GameObjects.Sprites
 {
     class Sprite : GameObject
     {
-        // CONSTATNS
-
-        private const int TILE_CENTER = 3;
-
         // FIELDS
 
         protected float localX;
@@ -79,6 +75,6 @@ namespace FormsPixelGameEngine.GameObjects.Sprites
         }
 
         public override void Draw()
-            => screen.Copy(tileset.Texture, sourceRect, new Rectangle((int)x - TILE_CENTER, (int)y - TILE_CENTER, width, height));
+            => screen.Copy(tileset.Texture, sourceRect, new Rectangle((int)x - offsetX, (int)y - offsetY, width, height));
     }
 }

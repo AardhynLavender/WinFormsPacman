@@ -27,6 +27,7 @@ namespace FormsPixelGameEngine.GameObjects.Sprites
         // CONSTANTS
 
         // start position
+
         private const int START_X       = 108;
         private const int START_Y       = 208;
 
@@ -37,10 +38,12 @@ namespace FormsPixelGameEngine.GameObjects.Sprites
         private const int RIGHT         = 84;
 
         // animation
+
         private const int ANIMATION     = 20;
         private const int DIRECTIONS    = 4;
 
         // tile infomation
+
         private const int TILE_WIDTH    = 2;
         private const int TILE_HEIGHT   = 2;
         private const int TILE_HEADER   = 7;
@@ -50,6 +53,7 @@ namespace FormsPixelGameEngine.GameObjects.Sprites
         // FIELDS
 
         // animations
+
         private Animation up;
         private Animation down;
         private Animation left;
@@ -58,6 +62,7 @@ namespace FormsPixelGameEngine.GameObjects.Sprites
         private Animation[] directionalAnimations;
 
         // history
+
         private List<Direction> directionHistory;
 
         // CONSTRUCTOR
@@ -67,9 +72,10 @@ namespace FormsPixelGameEngine.GameObjects.Sprites
         {
             // initatlize fields
 
-            speed = 1f;
-            directionHistory = new List<Direction>();
-            locked = true;
+            speed               = 1f;
+            directionHistory    = new List<Direction>();
+            locked              = true;
+            offsetX = offsetY   = 3;
 
             // create animations
 
