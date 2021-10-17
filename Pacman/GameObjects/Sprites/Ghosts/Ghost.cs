@@ -56,8 +56,8 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
         // CONSTANT AND STATIC MEMBERS
 
         private const int INFINITY          = 1000;
-        private const int DIRECTIONS        = 4;
-        private const int SIZE              = 2;
+        protected const int DIRECTIONS      = 4;
+        protected const int SIZE            = 2;
         private const int TUNNEL_DIVISOR    = 2;
         protected const int ANIMATIONS      = 2;
         protected const int ANIMATION_SPEED = Time.HUNDREDTH_SECOND;
@@ -93,9 +93,16 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
 
         protected Animation frightened;
 
+        protected Animation right;
+        protected Animation left;
+        protected Animation up;
+        protected Animation down;
+
+        protected Animation[] directionalAnimations;
+
         // CONSTRUCTOR
 
-        public Ghost(float x, float y, int index, World world, PacMan pacman)
+        public Ghost(float x, float y, int index, World world, Game game, PacMan pacman)
             : base(x, y, index, SIZE, SIZE, new Vector2D(), world)
         {
             // initalize fields
@@ -168,9 +175,14 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
                         : (int)Vector2D.GetAbsDistance(world.GetCoordinate(ajacantTile), world.GetCoordinate(targetTile)));
                 }
 
-                // set the ghosts trajectory to the index of the first instance
-                // of the shortest distance in the directions list<vector>
-                Trajectory = Directions[distances.IndexOf(distances.Min())];
+
+                // set the ghosts trajectory and animation to the index of the first
+                //  instance of the shortest distance in the directions list<vector>
+
+                int directionIndex = distances.IndexOf(distances.Min());
+
+                Trajectory = Directions[directionIndex];
+                CurrentAnimation = directionalAnimations[directionIndex];
             }
 
             if (!locked)

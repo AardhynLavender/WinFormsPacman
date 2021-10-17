@@ -75,7 +75,7 @@ namespace FormsPixelGameEngine
 
             // add ghosts
 
-            blinky = (Blinky)AddGameObject(new Blinky(world, pacman));
+            blinky = (Blinky)AddGameObject(new Blinky(this, world, pacman));
             blinkyTarget = AddGameObject(new GameObject(0, 0, tileset.GetTileSourceRect(324)));
 
             // start game
