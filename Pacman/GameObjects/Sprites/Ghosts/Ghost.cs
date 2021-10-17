@@ -114,6 +114,7 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
             offsetY     = OFFSET_Y;
 
             // create frightened animation
+
             frightened = new Animation(game, this, new List<Rectangle>(ANIMATIONS)
             {
                 tileset.GetTileSourceRect(FRIGHTENED, SIZE, SIZE),

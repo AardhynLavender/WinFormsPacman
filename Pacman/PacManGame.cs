@@ -42,7 +42,9 @@ namespace FormsPixelGameEngine
 
         private PacMan pacman;
         private Blinky blinky;
-        private GameObject blinkyTarget;
+        private Clyde clyde;
+
+        private GameObject clydeTarget;
 
         private Dictionary<int, int> digits;
 
@@ -76,7 +78,8 @@ namespace FormsPixelGameEngine
             // add ghosts
 
             blinky = (Blinky)AddGameObject(new Blinky(this, world, pacman));
-            blinkyTarget = AddGameObject(new GameObject(0, 0, tileset.GetTileSourceRect(324)));
+            clyde = (Clyde)AddGameObject(new Clyde(this, world, pacman));
+            clydeTarget = AddGameObject(new GameObject(0, 0, tileset.GetTileSourceRect(324)));
 
             // start game
             
@@ -84,6 +87,8 @@ namespace FormsPixelGameEngine
             QueueTask(Time.FOUR_SECOND, () =>
             {
                 pacman.Locked = blinky.Locked = false;
+
+                QueueTask(Time.FOUR_SECOND, () => clyde.Locked = false);
 
                 for (int i = 0; i < 5; i++)
                     world.ClearTile(571 + i);
@@ -129,7 +134,7 @@ namespace FormsPixelGameEngine
         protected override void Render()
         {
             base.Render();
-            world.PlaceObject(blinkyTarget, blinky.TargetTile);
+            world.PlaceObject(clydeTarget, clyde.TargetTile);
         }
 
         // TEXT MANAGMENT
