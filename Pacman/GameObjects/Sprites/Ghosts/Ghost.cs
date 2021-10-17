@@ -115,7 +115,8 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
 
         // PROPERTIES
 
-
+        public Vector2D TargetTile 
+            => targetTile;
 
         // METHODS
 

@@ -42,6 +42,7 @@ namespace FormsPixelGameEngine
 
         private PacMan pacman;
         private Blinky blinky;
+        private GameObject blinkyTarget;
 
         private Dictionary<int, int> digits;
 
@@ -75,6 +76,7 @@ namespace FormsPixelGameEngine
             // add ghosts
 
             blinky = (Blinky)AddGameObject(new Blinky(world, pacman));
+            blinkyTarget = AddGameObject(new GameObject(0, 0, tileset.GetTileSourceRect(324)));
 
             // start game
             
@@ -126,7 +128,7 @@ namespace FormsPixelGameEngine
         protected override void Render()
         {
             base.Render();
-            //world.PlaceObject(bar, pacman.CurrentTile);
+            world.PlaceObject(blinkyTarget, blinky.TargetTile);
         }
 
         // TEXT MANAGMENT
