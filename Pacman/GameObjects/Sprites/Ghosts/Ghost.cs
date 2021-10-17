@@ -1,15 +1,48 @@
 ﻿
 //
 //  Ghost : Sprite Class
-//  Created 04/10/2021
+//  Created 16/10/2021
 //
 //  WinForms PacMan v0.0.1
 //  Aardhyn Lavender 2021
 //
-//  A Game Object that has velocity and responds to tile based
-//  physics using a current tile based on the provided world.
-//  
+//  A Sprite that moves about the maze and chooses a new
+//  direction at intersections based on AI implimented in
+//  child classes. Provides functionality shared across
+//  all ghosts such as target tile Pathfinding, and mode
+//  switching and subsequent functionality augmentation
+//
+//  Ghosts can be in multiple MODEs
+//
+//  *   CHASE mode, where they follow their 
+//      implimented target tile finding algorithms.
 
+//  *   SCATTER mode, where their targe tile
+//      is set to an constant implimented in derived
+//      classes.
+//  
+//  *   EATEN mode, where their target tile is set to
+//      their home tile which implimented in derived
+//      classes. Thier texture is set to the EATEN 
+//      varients defined.
+//
+//  *   FRIGHTEND mode, where their movements are based
+//      on random turns at intersections rather than
+//      a target tile. Ghosts use the FRIGHTENED texture
+//      in this mode
+//
+//  Ghosts change from CHASE || SCATTER to FRIGHTENED when 
+//  PacMan:sprite types enter the same tile as Energizer:TileObject
+//  types, and remain in said mode until 'Eaten()', or the FrightenedTime
+//  elapsed since 'Frighten()'ed;
+//
+//  Ghosts can be eaten by Pacman:sprite types which triggers
+//  the mode from FRIGHTEND to EATEN, reverting back to CHASE 
+//  when the Ghost has returned to its Home Tile.
+//
+
+using System;
+using System.Linq;
 using System.Drawing;
 using System.Collections.Generic;
 
@@ -20,8 +53,9 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
 {
     abstract class Ghost : Sprite
     {
-        // CONSTANTS
+        // CONSTANT AND STATIC MEMBERS
 
+        private const int DIRECTIONS        = 4;
         private const int SIZE              = 2;
         private const int TUNNEL_DIVISOR    = 2;
         protected const int ANIMATIONS      = 2;
@@ -33,20 +67,39 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
         protected const int EATEN_UP        = 516;
         protected const int EATEN_DOWN      = 518;
 
+        protected static Vector2D[] Directions =
+        new Vector2D[DIRECTIONS]
+        {
+            new Vector2D(0,-1),
+            new Vector2D(1,0),
+            new Vector2D(0,1),
+            new Vector2D(-1,0)
+        };
+
         // FIELDS
 
-        protected Vector2D targetTile;
+        protected PacMan pacman;
         protected Mode mode;
+
+        protected Vector2D targetTile;
+        protected Vector2D scatterTile;
+
+        protected Vector2D homeTile;
+        protected int houseWaitTime;
 
         protected Animation frightened;
 
         // CONSTRUCTOR
 
-        public Ghost(float x, float y, int index, World world)
+        public Ghost(float x, float y, int index, World world, PacMan pacman)
             : base(x, y, index, SIZE, SIZE, new Vector2D(), world)
         {
-            mode = Mode.SCATTER;
+            // initalize fields
 
+            this.pacman = pacman;
+            mode = Mode.CHASE;
+
+            // create frightened animation
             frightened = new Animation(game, this, new List<Rectangle>(ANIMATIONS)
             {
                 tileset.GetTileSourceRect(FRIGHTENED, SIZE, SIZE),
@@ -56,27 +109,16 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
 
         // PROPERTIES
 
-        // speed
-        protected abstract int speed
-        { get; set; }
 
-        // how long the ghost waits before chasing pacman
-        protected abstract int houseWaitTime    
-        { get; set; }
-
-        // the target tile while in SCATTER mode
-        protected abstract int scatterTile      
-        { get; set; }
-
-        // the spawn tile and EATEN target tile
-        protected abstract int homeTile         
-        { get; set; }
 
         // METHODS
 
         // reverse direction and set target tile to
         // applicable map corner
         public abstract void Scatter();
+
+        // calculate the target tile
+        protected abstract Vector2D GetTargetTile();
 
         // reverse direction and set mode to FRIGHTENED
         public void Frighten()
@@ -93,10 +135,35 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
         public override void Update()
         {
             // slow down for tunnel
+            // ...
 
-            // if in tunnel
-                speed  /= TUNNEL_DIVISOR;
-            // else
+            currentTile = world.GetTile(x, y);
+
+            // update target tile if centered on a tile
+            if (x % tileset.Size == 0 && y % tileset.Size == 0)
+            {
+                // update target tile
+                targetTile = GetTargetTile();
+
+                // store distances to 'target tile' from tiles ajacant to the 'current tile'
+                List<int> distances = new List<int>(DIRECTIONS);
+
+                // loop ajacant tiles in order
+                for (int i = 0; i < DIRECTIONS; i++)
+                {
+                    Vector2D direction = Directions[i];
+                    Vector2D ajacantTile = new Vector2D(CurrentTile.X + direction.X, CurrentTile.Y + direction.Y);
+
+                    // get ajacant tile distances setting wall and previous tiles to high numbers
+                    distances.Add(world.GetTileObject(ajacantTile).Wall || Trajectory.Invert().Equals(direction)
+                        ? 1000
+                        : (int)Vector2D.GetAbsDistance(world.GetCoordinate(ajacantTile), world.GetCoordinate(targetTile)));
+                }
+
+                // set the ghosts trajectory to the index of the first instance
+                // of the shortest distance in the directions list<vector>
+                Trajectory = Directions[distances.IndexOf(distances.Min())];
+            }
 
             // update sprite
             base.Update();
