@@ -11,8 +11,8 @@ namespace FormsPixelGameEngine.Utility
     public enum Direction
     {
         UP,     
-        DOWN,
-        LEFT,
         RIGHT,
+        DOWN,
+        LEFT
     }
 }
