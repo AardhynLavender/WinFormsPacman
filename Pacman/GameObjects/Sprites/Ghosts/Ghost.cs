@@ -68,9 +68,13 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
         protected const int EATEN_UP        = 516;
         protected const int EATEN_DOWN      = 518;
 
-        private const int OFFSET_X = 4;
-        private const int OFFSET_Y = 3;
+        private const int SUDO_WALLS        = 4;
+        private const int GATE_TILES        = 2;
 
+        private const int OFFSET_X          = 4;
+        private const int OFFSET_Y          = 3;
+
+        // directional trajectories
         protected static Vector2D[] Directions =
         new Vector2D[DIRECTIONS]
         {
@@ -78,6 +82,24 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
             new Vector2D(1,0),
             new Vector2D(0,1),
             new Vector2D(-1,0)
+        };
+
+        // tiles that ghosts can't turn UP into
+        private static Vector2D[] SudoWalls =
+        new Vector2D[SUDO_WALLS]
+        {
+            new Vector2D(12,13),
+            new Vector2D(15,13),
+            new Vector2D(12,25),
+            new Vector2D(15,25)
+        };
+
+        // tiles that ghosts can't turn DOWN into
+        private static Vector2D[] monsterGate =
+        new Vector2D[GATE_TILES]
+        {
+            new Vector2D(13,15),
+            new Vector2D(14,15)
         };
 
         // FIELDS
@@ -167,13 +189,21 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
                 // loop ajacant tiles in order
                 for (int i = 0; i < DIRECTIONS; i++)
                 {
-                    Vector2D direction = Directions[i];
-                    Vector2D ajacantTile = new Vector2D(CurrentTile.X + direction.X, CurrentTile.Y + direction.Y);
+                    Vector2D directionTrajectory = Directions[i];
+                    Vector2D ajacantTile = new Vector2D(CurrentTile.X + directionTrajectory.X, CurrentTile.Y + directionTrajectory.Y);
 
-                    // get ajacant tile distances setting wall and previous tiles to high numbers
-                    distances.Add(world.GetTileObject(ajacantTile).Wall || Trajectory.Invert().Equals(direction)
-                        ? INFINITY
-                        : (int)Vector2D.GetAbsDistance(world.GetCoordinate(ajacantTile), world.GetCoordinate(targetTile)));
+                    // get ajacant tile distance
+                    int distance = (int)Vector2D.GetAbsDistance(world.GetCoordinate(ajacantTile), world.GetCoordinate(targetTile));
+
+                    // set distance to INFINITY if the ajacant tile is a wall, 'sudowall', gate, or flank direction tile
+                    if (world.GetTileObject(ajacantTile).Wall || Trajectory.Invert().Equals(directionTrajectory)
+                    || (CurrentTile.Y > ajacantTile.Y && SudoWalls.Contains(ajacantTile))
+                    || (CurrentTile.Y < ajacantTile.Y && mode != Mode.EATEN && monsterGate.Contains(ajacantTile)))
+                    {
+                        distance = INFINITY;
+                    }
+
+                    distances.Add(distance);
                 }
 
 
