@@ -43,9 +43,10 @@ namespace FormsPixelGameEngine
         private PacMan pacman;
         private Blinky blinky;
         private Pinky pinky;
+        private Inky inky;
         private Clyde clyde;
 
-        private GameObject pinkyTarget;
+        private GameObject InkyTarget;
 
         private Dictionary<int, int> digits;
 
@@ -81,16 +82,19 @@ namespace FormsPixelGameEngine
             blinky = (Blinky)AddGameObject(new Blinky(this, world, pacman));
             clyde = (Clyde)AddGameObject(new Clyde(this, world, pacman));
             pinky = (Pinky)AddGameObject(new Pinky(this, world, pacman));
-            pinkyTarget = AddGameObject(new GameObject(0, 0, tileset.GetTileSourceRect(324)));
+            inky = (Inky)AddGameObject(new Inky(this, world, pacman, blinky));
+            InkyTarget = AddGameObject(new GameObject(0, 0, tileset.GetTileSourceRect(324)));
 
             // start game
             
             PlaySound(Properties.Resources.game_start);
             QueueTask(Time.FOUR_SECOND, () =>
             {
-                pacman.Locked = blinky.Locked = false;
-
-                QueueTask(Time.FOUR_SECOND, () => clyde.Locked = pinky.Locked = false);
+                pacman.Locked   =
+                blinky.Locked   =
+                clyde.Locked    =
+                pinky.Locked    =
+                inky.Locked     = false;
 
                 for (int i = 0; i < 5; i++)
                     world.ClearTile(571 + i);
@@ -136,7 +140,7 @@ namespace FormsPixelGameEngine
         protected override void Render()
         {
             base.Render();
-            world.PlaceObject(pinkyTarget, pinky.TargetTile);
+            world.PlaceObject(InkyTarget, inky.TargetTile);
         }
 
         // TEXT MANAGMENT
