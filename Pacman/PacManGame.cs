@@ -89,11 +89,23 @@ namespace FormsPixelGameEngine
             PlaySound(Properties.Resources.game_start);
             QueueTask(Time.FOUR_SECOND, () =>
             {
-                pacman.Locked   =
-                blinky.Locked   =
-                clyde.Locked    =
-                pinky.Locked    =
-                inky.Locked     = false;
+                pacman.Locked   = false;
+                blinky.Locked   = false;
+
+                QueueTask(Time.SECOND, () => 
+                {
+                    inky.Locked     = false;    
+
+                    QueueTask(Time.SECOND, () => 
+                    {
+                        pinky.Locked    = false; 
+
+                        QueueTask(Time.SECOND, () => 
+                        {
+                            clyde.Locked    = false;        
+                        });
+                    });
+                });
 
                 for (int i = 0; i < 5; i++)
                     world.ClearTile(571 + i);
