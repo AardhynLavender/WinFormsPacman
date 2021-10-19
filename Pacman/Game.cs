@@ -22,7 +22,7 @@ namespace FormsPixelGameEngine
     {
         // CONSTANTS
 
-        private const int TICKRATE = 5;
+        private const int TICKRATE = 12;
 
         // FIELDS
 
@@ -91,7 +91,7 @@ namespace FormsPixelGameEngine
         public Action Quit
             { get; set; }
 
-        public static int TickRate
+        public int TickRate
             => TICKRATE;
 
         public long Tick 

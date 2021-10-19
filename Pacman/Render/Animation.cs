@@ -44,7 +44,7 @@ namespace FormsPixelGameEngine.Render
         { 
             this.game           = game;
             this.gameObject     = gameObject;
-            this.speed          = speed / Game.TickRate;
+            this.speed          = speed / game.TickRate;
             this.onAnimationEnd = (onAnimationEnd is null) ? () => { } : onAnimationEnd;
             this.loop           = loop;
             this.loopCap        = loopCap;

@@ -52,7 +52,6 @@ namespace FormsPixelGameEngine.GameObjects.Tiles
             Y = world.Y + (tile.Y * tileset.Size);
         }
 
-
         // PROPERTIES
 
         public World World 

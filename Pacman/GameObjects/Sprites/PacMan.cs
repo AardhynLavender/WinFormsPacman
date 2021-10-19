@@ -39,7 +39,7 @@ namespace FormsPixelGameEngine.GameObjects.Sprites
 
         // animation
 
-        private const int ANIMATION     = 20;
+        private const int ANIMATION     = 50;
         private const int DIRECTIONS    = 4;
 
         // tile infomation
@@ -70,7 +70,7 @@ namespace FormsPixelGameEngine.GameObjects.Sprites
         {
             // initatlize fields
 
-            speed               = 1f;
+            speed               = 1.33f;
             directionHistory    = new List<Direction>();
             locked              = true;
             offsetX = offsetY   = 3;

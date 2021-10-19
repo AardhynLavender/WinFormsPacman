@@ -22,7 +22,7 @@ namespace FormsPixelGameEngine.GameObjects
         // CONSTANT AND STATIC MEMBERS
 
         protected const int STANDARD_Z = 100;
-        protected static TileSet tileset = null;
+        protected static TileSet tileset;
 
         // FIELDS
 
@@ -136,11 +136,9 @@ namespace FormsPixelGameEngine.GameObjects
             set => screen = value; 
         }
 
-        // STATIC PROPERTIES
-
         public static TileSet Texture 
         {
-            private get => tileset; 
+            get => tileset; 
             set => tileset = value; 
         }
 

@@ -68,14 +68,14 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
         protected const int EATEN_UP        = 516;
         protected const int EATEN_DOWN      = 518;
 
-        private const int SUDO_WALLS        = 4;
+        private const int PSEUDO_WALLS      = 4;
         private const int GATE_TILES        = 2;
 
         private const int OFFSET_X          = 4;
         private const int OFFSET_Y          = 3;
 
         // directional trajectories
-        protected static Vector2D[] Directions =
+        protected readonly Vector2D[] Directions =
         new Vector2D[DIRECTIONS]
         {
             new Vector2D(0,-1),
@@ -85,8 +85,8 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
         };
 
         // tiles that ghosts can't turn UP into
-        private static Vector2D[] SudoWalls =
-        new Vector2D[SUDO_WALLS]
+        private readonly Vector2D[] PseudoWall =
+        new Vector2D[PSEUDO_WALLS]
         {
             new Vector2D(12,13),
             new Vector2D(15,13),
@@ -95,7 +95,7 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
         };
 
         // tiles that ghosts can't turn DOWN into
-        private static Vector2D[] monsterGate =
+        private readonly Vector2D[] monsterGate =
         new Vector2D[GATE_TILES]
         {
             new Vector2D(13,15),
@@ -190,22 +190,21 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
                 for (int i = 0; i < DIRECTIONS; i++)
                 {
                     Vector2D directionTrajectory = Directions[i];
-                    Vector2D ajacantTile = new Vector2D(CurrentTile.X + directionTrajectory.X, CurrentTile.Y + directionTrajectory.Y);
+                    Vector2D adjacent = new Vector2D(CurrentTile.X + directionTrajectory.X, CurrentTile.Y + directionTrajectory.Y);
 
                     // get ajacant tile distance
-                    int distance = (int)Vector2D.GetAbsDistance(world.GetCoordinate(ajacantTile), world.GetCoordinate(targetTile));
+                    int distance = (int)Vector2D.GetAbsDistance(world.GetCoordinate(adjacent), world.GetCoordinate(targetTile));
 
-                    // set distance to INFINITY if the ajacant tile is a wall, 'sudowall', gate, or flank direction tile
-                    if (world.GetTileObject(ajacantTile).Wall || Trajectory.Invert().Equals(directionTrajectory)
-                    || (CurrentTile.Y > ajacantTile.Y && SudoWalls.Contains(ajacantTile))
-                    || (CurrentTile.Y < ajacantTile.Y && mode != Mode.EATEN && monsterGate.Contains(ajacantTile)))
+                    // set distance to INFINITY if the ajacant tile is a wall, 'pseudowall', gate, or flank direction tile
+                    if (world.GetTileObject(adjacent).Wall || Trajectory.Invert().Equals(directionTrajectory)
+                    || (CurrentTile.Y > adjacent.Y && PseudoWall.Contains(adjacent))
+                    || (CurrentTile.Y < adjacent.Y && mode != Mode.EATEN && monsterGate.Contains(adjacent)))
                     {
                         distance = INFINITY;
                     }
 
                     distances.Add(distance);
                 }
-
 
                 // set the ghosts trajectory and animation to the index of the first
                 //  instance of the shortest distance in the directions list<vector>

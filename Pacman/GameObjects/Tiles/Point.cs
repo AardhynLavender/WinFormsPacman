@@ -12,6 +12,7 @@
 //
 
 using FormsPixelGameEngine.Properties;
+using System;
 
 namespace FormsPixelGameEngine.GameObjects.Tiles
 {
@@ -24,7 +25,6 @@ namespace FormsPixelGameEngine.GameObjects.Tiles
         private static int count    = 0;
 
         // FIELDS
-        
 
         private int value;
 
