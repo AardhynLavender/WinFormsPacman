@@ -175,10 +175,16 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
             // slow down for tunnel
             // ...
 
+            if (X < world.X && Direction == Direction.LEFT) X = world.Width;
+            if (X > world.X + world.Width && Direction == Direction.RIGHT) X = world.X;
+
             currentTile = world.GetTile(x, y);
 
             // update target tile if centered on a tile
-            if (x % tileset.Size == 0 && y % tileset.Size == 0)
+            if (x % tileset.Size == 0 
+            && y % tileset.Size == 0 
+            && X < world.X + world.Width 
+            && X > world.X)
             {
                 // update target tile
                 targetTile = GetTargetTile();
@@ -209,10 +215,11 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
                 // set the ghosts trajectory and animation to the index of the first
                 //  instance of the shortest distance in the directions list<vector>
 
-                int directionIndex = distances.IndexOf(distances.Min());
+                int directionIndex  = distances.IndexOf(distances.Min());
 
-                Trajectory = Directions[directionIndex];
-                CurrentAnimation = directionalAnimations[directionIndex];
+                Trajectory          = Directions[directionIndex];
+                CurrentAnimation    = directionalAnimations[directionIndex];
+                direction           = (Direction)directionIndex;
             }
 
             if (!locked)
