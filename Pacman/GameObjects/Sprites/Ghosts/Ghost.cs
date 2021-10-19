@@ -172,19 +172,23 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
 
         public override void Update()
         {
+            // round position
+            int x = (int)Math.Round(this.x);
+            int y = (int)Math.Round(this.y);
+
             // slow down for tunnel
             // ...
 
-            if (X < world.X && Direction == Direction.LEFT) X = world.Width;
-            if (X > world.X + world.Width && Direction == Direction.RIGHT) X = world.X;
+            if (x < world.X && Direction == Direction.LEFT) X = world.Width;
+            if (x > world.X + world.Width && Direction == Direction.RIGHT) X = world.X;
 
             currentTile = world.GetTile(x, y);
 
             // update target tile if centered on a tile
             if (x % tileset.Size == 0 
             && y % tileset.Size == 0 
-            && X < world.X + world.Width 
-            && X > world.X)
+            && x < world.X + world.Width 
+            && x > world.X)
             {
                 // update target tile
                 targetTile = GetTargetTile();
