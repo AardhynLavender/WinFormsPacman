@@ -68,7 +68,6 @@ namespace FormsPixelGameEngine
             // create tileset and world
 
             tileset = new TileSet("Assets/tileset.tsx", "Assets/tileset.png");
-            GameObject.Texture = tileset;
 
             world = new World(this, "Assets/tilemap.tmx", 0, 0);
             AddGameObject(world);
@@ -79,11 +78,11 @@ namespace FormsPixelGameEngine
 
             // add ghosts
 
-            blinky = (Blinky)AddGameObject(new Blinky(this, world, pacman));
-            clyde = (Clyde)AddGameObject(new Clyde(this, world, pacman));
-            pinky = (Pinky)AddGameObject(new Pinky(this, world, pacman));
-            inky = (Inky)AddGameObject(new Inky(this, world, pacman, blinky));
-            InkyTarget = AddGameObject(new GameObject(0, 0, tileset.GetTileSourceRect(324)));
+            blinky      = (Blinky)AddGameObject(new Blinky(this, world, pacman));
+            clyde       = (Clyde)AddGameObject(new Clyde(this, world, pacman));
+            pinky       = (Pinky)AddGameObject(new Pinky(this, world, pacman));
+            inky        = (Inky)AddGameObject(new Inky(this, world, pacman, blinky));
+            InkyTarget  = AddGameObject(new GameObject(this, 0, 0, 324));
 
             // start game
             
@@ -130,6 +129,9 @@ namespace FormsPixelGameEngine
         public Vector2D PacManPosition 
             => pacman.CurrentTile;
 
+        public TileSet TileSet
+            => tileset;
+
         // GAME LOOP
 
         protected override void Process()
@@ -152,7 +154,7 @@ namespace FormsPixelGameEngine
             {
                 if (int.TryParse(character.ToString(), out int digit))
                     world.SetTile(
-                        new TileObject(index, world, tileset.GetTileSourceRect(digits[digit])),
+                        new TileObject(this, index, world, digits[digit]),
                         index++
                     );
 

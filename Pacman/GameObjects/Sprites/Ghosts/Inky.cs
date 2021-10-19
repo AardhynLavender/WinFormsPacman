@@ -97,8 +97,8 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
         protected override Vector2D GetTargetTile()
             => new Vector2D
             {
-                X = pacman.CurrentTile.X + Directions[(int)pacman.Direction].X * 2 - Vector2D.GetDifferenceVector(blinky.CurrentTile, blinky.TargetTile).X,
-                Y = pacman.CurrentTile.Y + Directions[(int)pacman.Direction].Y * 2 - Vector2D.GetDifferenceVector(blinky.CurrentTile, blinky.TargetTile).Y
+                X = pacman.CurrentTile.X + Directions[(int)pacman.Direction].X * 2 - Vector2D.GetDifferenceVector(blinky.CurrentTile, pacman.CurrentTile).X,
+                Y = pacman.CurrentTile.Y + Directions[(int)pacman.Direction].Y * 2 - Vector2D.GetDifferenceVector(blinky.CurrentTile, pacman.CurrentTile).Y
             };
     }
 }

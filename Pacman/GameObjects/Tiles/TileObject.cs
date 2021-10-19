@@ -28,12 +28,12 @@ namespace FormsPixelGameEngine.GameObjects.Tiles
 
         // CONSTRUCTORS
 
-        public TileObject(float x, float y)
+        public TileObject(Game game, float x, float y)
             : base(x, y)
         {  }
 
-        public TileObject(int index, World world, Rectangle sourceRect = new Rectangle())
-            : base(0, 0, sourceRect)
+        public TileObject(Game game, int index, World world, int textureIndex)
+            : base(game, 0, 0, textureIndex)
         {
             this.world = world;
 
@@ -42,8 +42,8 @@ namespace FormsPixelGameEngine.GameObjects.Tiles
             Y = world.Y + ((int)Math.Floor((float)index++ / (world.Width / tileset.Size)) * tileset.Size);
         }
 
-        public TileObject(Vector2D tile, World world, Rectangle sourceRect = new Rectangle())
-            : base(0, 0, sourceRect)
+        public TileObject(Game game, Vector2D tile, World world, int index)
+            : base(game, 0, 0, index)
         {
             this.world = world;
 

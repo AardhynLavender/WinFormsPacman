@@ -69,13 +69,13 @@ namespace FormsPixelGameEngine.GameObjects
                     if (int.TryParse(tile, out int index))
                     {
                         if (index == 0)
-                            AddTile(new TileObject(i, this));
+                            AddTile(new TileObject(game, i, this, -1));
 
                         else if (index == 23)
-                            AddTile(new Point(i, this));
+                            AddTile(new Point(game, i, this));
 
                         else
-                            AddTile(new TileObject(i, this, tileset.GetTileSourceRect(index - 1)))
+                            AddTile(new TileObject(game, i, this, index - 1))
                             .Wall = tileset.IsTileWall(index - 1);
                     }
                     i++;
@@ -113,7 +113,7 @@ namespace FormsPixelGameEngine.GameObjects
         {
             // remove tile from game and set world tile to blank
             tiles[tiles.FindIndex(tile => tile == tileObject)] 
-                = new TileObject(tileObject.X, tileObject.Y);
+                = new TileObject(game, tileObject.X, tileObject.Y);
 
             game.QueueFree(tileObject);
         }      
@@ -122,7 +122,7 @@ namespace FormsPixelGameEngine.GameObjects
         public void ClearTile(int index)
         {
             game.QueueFree(tiles[index]);
-            tiles[index] = AddTile(new TileObject(index, this));
+            tiles[index] = AddTile(new TileObject(game, index, this, -1));
         }
 
         // Gets the Tile Coordinate for the specified GameObject

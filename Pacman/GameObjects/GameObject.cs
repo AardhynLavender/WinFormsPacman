@@ -22,7 +22,6 @@ namespace FormsPixelGameEngine.GameObjects
         // CONSTANT AND STATIC MEMBERS
 
         protected const int STANDARD_Z = 100;
-        protected static TileSet tileset;
 
         // FIELDS
 
@@ -43,8 +42,10 @@ namespace FormsPixelGameEngine.GameObjects
 
         // game
 
-        protected PacManGame game;
+        protected Game game;
         protected GameScreen screen;
+        protected TileSet tileset 
+            => ((PacManGame)game).TileSet;
 
         // CONSTRUCTORS 
 
@@ -61,29 +62,34 @@ namespace FormsPixelGameEngine.GameObjects
         }
 
         // construct a textured object
-        public GameObject(float x, float y, Rectangle sourceRect, int z = STANDARD_Z, int tileSpanX = 1, int tileSpanY = 1)
+        public GameObject(Game game, float x, float y, int index, int z = STANDARD_Z, int tileSpanX = 1, int tileSpanY = 1)
         {
-            if (tileset is null) 
-                throw new System.Exception("[Game Object] GameObject class does not contain a definition for static member 'texture'");
+            if (game is null)
+                throw new System.Exception("[Game Object] GameObject requires a reference to Game");
+            else
+                this.game = game;
 
             // initalize fields
 
             this.x          = x;
             this.y          = y;
             this.z          = z;
-            this.sourceRect = sourceRect;
+
+            sourceRect = (index == -1 ) 
+                ? new Rectangle()
+                : tileset.GetTileSourceRect(index);
 
             offsetX = offsetY = 0;
 
             // span multuple tiles if specified
 
-            this.sourceRect.Width *= tileSpanX;
-            this.sourceRect.Height *= tileSpanY;
+            sourceRect.Width *= tileSpanX;
+            sourceRect.Height *= tileSpanY;
 
             // set width and height
 
-            width           = this.sourceRect.Width;
-            height          = this.sourceRect.Height;
+            width           = sourceRect.Width;
+            height          = sourceRect.Height;
         }
 
         // PROPERTIES
@@ -124,7 +130,7 @@ namespace FormsPixelGameEngine.GameObjects
             set => sourceRect = value;
         }
 
-        public PacManGame Game 
+        public Game Game 
         { 
             protected get => game; 
             set => game = value; 
@@ -136,11 +142,8 @@ namespace FormsPixelGameEngine.GameObjects
             set => screen = value; 
         }
 
-        public static TileSet Texture 
-        {
-            get => tileset; 
-            set => tileset = value; 
-        }
+        public TileSet Texture 
+            => tileset; 
 
         // METHODS
 

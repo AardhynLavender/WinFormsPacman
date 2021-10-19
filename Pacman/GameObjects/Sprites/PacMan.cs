@@ -66,7 +66,7 @@ namespace FormsPixelGameEngine.GameObjects.Sprites
         // CONSTRUCTOR
 
         public PacMan(float x, float y, World world, Game game)
-            : base(START_X, START_Y, UP, TILE_WIDTH, TILE_HEIGHT, new Vector2D(), world)
+            : base(game, START_X, START_Y, UP, TILE_WIDTH, TILE_HEIGHT, new Vector2D(), world)
         {
             // initatlize fields
 
@@ -144,7 +144,7 @@ namespace FormsPixelGameEngine.GameObjects.Sprites
             // get the current tile
 
             Vector2D previousTile = currentTile;
-            currentTile = world.GetTile(x, y); ;
+            currentTile = world.GetTile(x, y);
 
             // calculate the target tile based on the front most pixel
 
