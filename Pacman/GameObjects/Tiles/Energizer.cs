@@ -23,8 +23,8 @@ namespace FormsPixelGameEngine.GameObjects.Tiles
 
         // CONSTRUCTOR
 
-        public Energizer(Game game, int index, World world)
-            : base(game, index, world, 0)
+        public Energizer(int index, World world)
+            : base(index, world, 0)
         {
 
         }

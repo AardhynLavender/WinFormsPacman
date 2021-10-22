@@ -29,11 +29,9 @@ namespace FormsPixelGameEngine.GameObjects
 
         // CONSTRUCTOR
 
-        public World(PacManGame game, string tilemap, float x, float y)
+        public World(string tilemap, float x, float y)
             : base(x, y)
         {
-            Game = game;
-
             XElement xTileset;
 
             // try to load data as XML elements
@@ -69,13 +67,13 @@ namespace FormsPixelGameEngine.GameObjects
                     if (int.TryParse(tile, out int index))
                     {
                         if (index == 0)
-                            AddTile(new TileObject(game, i, this, -1));
+                            AddTile(new TileObject(i, this, -1));
 
                         else if (index == 23)
-                            AddTile(new Point(game, i, this));
+                            AddTile(new Point(i, this));
 
                         else
-                            AddTile(new TileObject(game, i, this, index - 1))
+                            AddTile(new TileObject(i, this, index - 1))
                             .Wall = tileset.IsTileWall(index - 1);
                     }
                     i++;
@@ -92,7 +90,7 @@ namespace FormsPixelGameEngine.GameObjects
 
         // removes each TileObject from the game
         public override void OnFreeGameObject()
-            => tiles.ForEach(tile => Game.QueueFree(tile));
+            => tiles.ForEach(tile => game.QueueFree(tile));
 
         // pushes a new tile to the worlds tile vector
         public TileObject AddTile(TileObject tileObject)
@@ -113,7 +111,7 @@ namespace FormsPixelGameEngine.GameObjects
         {
             // remove tile from game and set world tile to blank
             tiles[tiles.FindIndex(tile => tile == tileObject)] 
-                = new TileObject(game, tileObject.X, tileObject.Y);
+                = new TileObject(tileObject.X, tileObject.Y);
 
             game.QueueFree(tileObject);
         }      
@@ -122,7 +120,7 @@ namespace FormsPixelGameEngine.GameObjects
         public void ClearTile(int index)
         {
             game.QueueFree(tiles[index]);
-            tiles[index] = AddTile(new TileObject(game, index, this, -1));
+            tiles[index] = AddTile(new TileObject(index, this, -1));
         }
 
         // Gets the Tile Coordinate for the specified GameObject

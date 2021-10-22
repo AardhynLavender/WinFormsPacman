@@ -124,8 +124,8 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
 
         // CONSTRUCTOR
 
-        public Ghost(float x, float y, int index, World world, Game game, PacMan pacman)
-            : base(game, x, y, index, SIZE, SIZE, new Vector2D(), world)
+        public Ghost(float x, float y, int index, World world, PacMan pacman)
+            : base(x, y, index, SIZE, SIZE, new Vector2D(), world)
         {
             // initalize fields
 

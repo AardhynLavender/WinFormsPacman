@@ -39,8 +39,8 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
 
         // CONSTRUCTOR
 
-        public Blinky(Game game, World world, PacMan pacman)
-            : base(0, 0, TEXTURE_RIGHT, world, game, pacman)
+        public Blinky(World world, PacMan pacman)
+            : base(0, 0, TEXTURE_RIGHT, world, pacman)
         {
             // set position, speed, and direction
 

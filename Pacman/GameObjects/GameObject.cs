@@ -11,7 +11,7 @@
 //  to a screen.
 //
 
-
+using System;
 using System.Drawing;
 using FormsPixelGameEngine.Render;
 
@@ -22,6 +22,33 @@ namespace FormsPixelGameEngine.GameObjects
         // CONSTANT AND STATIC MEMBERS
 
         protected const int STANDARD_Z = 100;
+
+        //  static members explaination
+        //
+        //  static marks variables, properties, or functions in a class as members
+        //  of the type itself rather than any instance of it.
+        //  
+        //  a GameObject type by definition is part of a game, every GameObject instance
+        //  will reference the same Game type, and it will never change.
+        //  The same goes for GameScreen, and tileset.
+        //  
+        //  To me, this makes Game, screen, and tileset, static.
+        //
+        //  The needless copying of memory addresses though endless paramatalization of these
+        //  types in object initalization had static beenexluded offers very little gain in
+        //  terms of performace, but this model will scale to larger programs.
+        //
+        protected static PacManGame game;
+        protected static GameScreen screen;
+        protected static TileSet tileset;
+
+        // initalize static members
+        public static void Init(PacManGame game, GameScreen screen, TileSet tileset)
+        {
+            GameObject.game     = game;
+            GameObject.screen   = screen;
+            GameObject.tileset  = tileset;
+        }
 
         // FIELDS
 
@@ -40,34 +67,33 @@ namespace FormsPixelGameEngine.GameObjects
         protected int offsetX;
         protected int offsetY;
 
-        // game
-
-        protected Game game;
-        protected GameScreen screen;
-        protected TileSet tileset 
-            => ((PacManGame)game).TileSet;
-
         // CONSTRUCTORS 
 
         // construct a textureless object
-        public GameObject(float x, float y, int z = STANDARD_Z)
+        public GameObject(float x, float y)
         {
             // initalize fields
 
             this.x = x;
             this.y = y;
-            this.z = z;
 
+            z = STANDARD_Z;
             width = height = 0;
         }
 
         // construct a textured object
-        public GameObject(Game game, float x, float y, int index, int z = STANDARD_Z, int tileSpanX = 1, int tileSpanY = 1)
+        public GameObject(float x, float y, int index, int z = STANDARD_Z, int tileSpanX = 1, int tileSpanY = 1)
         {
+            // validate static assignment of GameObject type
+
             if (game is null)
-                throw new System.Exception("[Game Object] GameObject requires a reference to Game");
-            else
-                this.game = game;
+                throw new System.Exception("[Game Object] GameObject type requires a static reference to a 'Game' type");
+
+            if (screen is null)
+                throw new System.Exception("[Game Object] GameObject type requires a static reference to a 'GameScreen' type");
+
+            if (tileset is null)
+                throw new System.Exception("[Game Object] GameObject type requires a static reference to a 'TileSet' type");
 
             // initalize fields
 
@@ -130,21 +156,6 @@ namespace FormsPixelGameEngine.GameObjects
             set => sourceRect = value;
         }
 
-        public Game Game 
-        { 
-            protected get => game; 
-            set => game = value; 
-        }
-
-        public GameScreen Screen 
-        { 
-            protected get => screen; 
-            set => screen = value; 
-        }
-
-        public TileSet Texture 
-            => tileset; 
-
         // METHODS
 
         // draws the object to the screen
@@ -166,9 +177,5 @@ namespace FormsPixelGameEngine.GameObjects
         // called when the object is freed from the game
         public virtual void OnFreeGameObject()
         {  }
-
-        // raises or lowers the draw placment of the object
-        public void bringForward(int increment = 1) => z += increment;
-        public void pushBackward(int increment = 1) => z += -increment;
     }
 }

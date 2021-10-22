@@ -38,8 +38,8 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
 
         // CONSTRUCTOR
 
-        public Pinky(Game game, World world, PacMan pacman)
-            : base(0,0, TEXTURE_UP, world, game, pacman)
+        public Pinky(World world, PacMan pacman)
+            : base(0,0, TEXTURE_UP, world, pacman)
         {
             // set position, speed, and direction
 

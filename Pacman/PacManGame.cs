@@ -69,20 +69,22 @@ namespace FormsPixelGameEngine
 
             tileset = new TileSet("Assets/tileset.tsx", "Assets/tileset.png");
 
-            world = new World(this, "Assets/tilemap.tmx", 0, 0);
+            GameObject.Init(this, screen, tileset);
+
+            world = new World("Assets/tilemap.tmx", 0, 0);
             AddGameObject(world);
 
             // add pacman
 
-            pacman = (PacMan)AddGameObject(new PacMan(8, 64, world, this));
+            pacman = (PacMan)AddGameObject(new PacMan(world));
 
             // add ghosts
 
-            blinky      = (Blinky)AddGameObject(new Blinky(this, world, pacman));
-            clyde       = (Clyde)AddGameObject(new Clyde(this, world, pacman));
-            pinky       = (Pinky)AddGameObject(new Pinky(this, world, pacman));
-            inky        = (Inky)AddGameObject(new Inky(this, world, pacman, blinky));
-            InkyTarget  = AddGameObject(new GameObject(this, 0, 0, 324));
+            blinky      = (Blinky)AddGameObject(new Blinky(world, pacman));
+            clyde       = (Clyde)AddGameObject(new Clyde(world, pacman));
+            pinky       = (Pinky)AddGameObject(new Pinky(world, pacman));
+            inky        = (Inky)AddGameObject(new Inky(world, pacman, blinky));
+            InkyTarget  = AddGameObject(new GameObject(0, 0, 324));
 
             // start game
             
@@ -166,7 +168,7 @@ namespace FormsPixelGameEngine
             {
                 if (int.TryParse(character.ToString(), out int digit))
                     world.SetTile(
-                        new TileObject(this, index, world, digits[digit]),
+                        new TileObject(index, world, digits[digit]),
                         index++
                     );
 
@@ -179,10 +181,6 @@ namespace FormsPixelGameEngine
         // adds an object to the games processing pool
         public override GameObject AddGameObject(GameObject gameObject)
         {
-            // give the object a reference to its game and screen
-            gameObject.Game = this;
-            gameObject.Screen = screen;
-
             // call base method
             return base.AddGameObject(gameObject);
         }

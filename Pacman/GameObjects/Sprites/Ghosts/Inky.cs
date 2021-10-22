@@ -39,8 +39,8 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
 
         // CONSTRUCTOR
 
-        public Inky(Game game, World world, PacMan pacman, Blinky blinky)
-            : base(0,0, TEXTURE_UP, world, game, pacman)
+        public Inky(World world, PacMan pacman, Blinky blinky)
+            : base(0,0, TEXTURE_UP, world, pacman)
         {
             // Initalize fields
 

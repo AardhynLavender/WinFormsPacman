@@ -30,17 +30,17 @@ namespace FormsPixelGameEngine.GameObjects.Tiles
 
         // CONSTRUCTOR
 
-        public Point(Game game, int index, World world)
-            : base(game, index, world, TEXTURE)
+        public Point(int index, World world)
+            : base(index, world, TEXTURE)
         { value = VALUE; }
 
         public override void Update()
         {
             // does pacman collide with this tile?
-            if (((PacManGame)game).PacManPosition.Equals(world.GetTile(this)))
+            if (game.PacManPosition.Equals(world.GetTile(this)))
             {
                 // increment score and remove point
-                ((PacManGame)game).Score += value;
+                game.Score += value;
                 world.ClearTile(this);
                 
                 // play 'wah' and 'kah' alternating

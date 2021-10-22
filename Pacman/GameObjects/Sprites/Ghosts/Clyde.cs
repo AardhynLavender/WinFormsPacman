@@ -37,8 +37,8 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
 
         // CONSTRUCTOR
 
-        public Clyde(Game game, World world, PacMan pacman)
-            : base(0,0, TEXTURE_RIGHT, world, game, pacman)
+        public Clyde(World world, PacMan pacman)
+            : base(0,0, TEXTURE_RIGHT, world, pacman)
         {
             // set position, speed, and direction
 

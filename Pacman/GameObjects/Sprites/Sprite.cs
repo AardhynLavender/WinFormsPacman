@@ -36,8 +36,8 @@ namespace FormsPixelGameEngine.GameObjects.Sprites
 
         // CONSTRUCTOR
 
-        public Sprite(Game game, float x, float y, int index, int tileSpanX, int tileSpanY, Vector2D trajectory, World world)
-            : base(game, x, y, index, STANDARD_Z, tileSpanX, tileSpanY)
+        public Sprite(float x, float y, int index, int tileSpanX, int tileSpanY, Vector2D trajectory, World world)
+            : base(x, y, index, STANDARD_Z, tileSpanX, tileSpanY)
         {
             this.world = world;
             Trajectory = trajectory;

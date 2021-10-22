@@ -217,7 +217,7 @@ namespace FormsPixelGameEngine
         }
 
         // Queues a task to be called
-        public static void QueueTask(int milliseconds, Action callback)
+        public void QueueTask(int milliseconds, Action callback)
             => taskQueue.Add(new Task(callback, milliseconds, this));
 
         // ABSTRACT
