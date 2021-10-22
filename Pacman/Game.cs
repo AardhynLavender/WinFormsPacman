@@ -165,7 +165,7 @@ namespace FormsPixelGameEngine
             => deleteQueue.Add(gameObject);
 
         // removes a game objects if not null
-        private void free(GameObject gameObject)
+        private static void free(GameObject gameObject)
         {
             if (!(gameObject is null))
             {
@@ -175,7 +175,7 @@ namespace FormsPixelGameEngine
         }
 
         // frees the objects in the queue
-        protected void freeQueue()
+        protected static void freeQueue()
         {
             // using for loop because it is lock free
             for (int i = 0; i < deleteQueue.Count; i++)
@@ -185,20 +185,20 @@ namespace FormsPixelGameEngine
         }
 
         // checks if an object is currently being processed by the game
-        public bool IsInGame(GameObject gameObject) 
+        public static bool IsInGame(GameObject gameObject) 
             => gameObjects.Contains(gameObject);
 
         // ANIMATION MANAGMENT
 
         // adds an animaion to the game for processing
-        public Animation AddAnimation(Animation animation)
+        public static Animation AddAnimation(Animation animation)
         {
             animations.Add(animation);
             return animations.Last();
         }
 
         // removes an animation from the game
-        public void RemoveAnimation(Animation animation)
+        public static void RemoveAnimation(Animation animation)
             => animations.Remove(animation);
 
         // plays the provided sound stream
@@ -217,7 +217,7 @@ namespace FormsPixelGameEngine
         }
 
         // Queues a task to be called
-        public void QueueTask(int milliseconds, Action callback)
+        public static void QueueTask(int milliseconds, Action callback)
             => taskQueue.Add(new Task(callback, milliseconds, this));
 
         // ABSTRACT
