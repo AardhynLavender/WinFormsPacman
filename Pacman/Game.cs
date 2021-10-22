@@ -38,10 +38,10 @@ namespace FormsPixelGameEngine
 
         // object and task managment
 
-        protected List<GameObject> gameObjects;
-        protected List<GameObject> deleteQueue;
-        protected List<Animation> animations;
-        private List<Task> taskQueue;
+        protected static List<GameObject> gameObjects;
+        protected static List<GameObject> deleteQueue;
+        protected static List<Animation> animations;
+        private static List<Task> taskQueue;
 
         // physics
 
