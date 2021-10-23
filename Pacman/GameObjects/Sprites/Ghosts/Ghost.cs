@@ -75,7 +75,7 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
         private const int OFFSET_Y          = 3;
 
         // directional trajectories
-        protected readonly Vector2D[] Directions =
+        protected static readonly Vector2D[] Directions =
         new Vector2D[DIRECTIONS]
         {
             new Vector2D(0,-1),
@@ -85,7 +85,7 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
         };
 
         // tiles that ghosts can't turn UP into
-        private readonly Vector2D[] PseudoWall =
+        private static readonly Vector2D[] PseudoWall =
         new Vector2D[PSEUDO_WALLS]
         {
             new Vector2D(12,13),
@@ -95,7 +95,7 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
         };
 
         // tiles that ghosts can't turn DOWN into
-        private readonly Vector2D[] monsterGate =
+        private static readonly Vector2D[] monsterGate =
         new Vector2D[GATE_TILES]
         {
             new Vector2D(13,15),
@@ -110,8 +110,8 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
         protected Vector2D targetTile;
         protected Vector2D scatterTile;
 
-        protected Vector2D homeTile;
-        protected int houseWaitTime;
+        private Vector2D homeTile;
+        private int houseWaitTime;
 
         protected Animation frightened;
 
@@ -149,6 +149,10 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
         public Vector2D TargetTile 
             => targetTile;
 
+        private bool inTunnel
+            => (currentTile.X < 6 || currentTile.X > 21)
+                && currentTile.Y == 17;
+         
         // METHODS
 
         // reverse direction and set target tile to
@@ -175,9 +179,6 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
             // round position
             int x = (int)Math.Round(this.x);
             int y = (int)Math.Round(this.y);
-
-            // slow down for tunnel
-            // ...
 
             if (x < world.X && Direction == Direction.LEFT) X = world.Width;
             if (x > world.X + world.Width && Direction == Direction.RIGHT) X = world.X;
@@ -207,8 +208,8 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
 
                     // set distance to INFINITY if the ajacant tile is a wall, 'pseudowall', gate, or flank direction tile
                     if (world.GetTileObject(adjacent).Wall || Trajectory.Invert().Equals(directionTrajectory)
-                    || (CurrentTile.Y > adjacent.Y && PseudoWall.Contains(adjacent))
-                    || (CurrentTile.Y < adjacent.Y && mode != Mode.EATEN && monsterGate.Contains(adjacent)))
+                        || (CurrentTile.Y > adjacent.Y && PseudoWall.Contains(adjacent))
+                        || (CurrentTile.Y < adjacent.Y && mode != Mode.EATEN && monsterGate.Contains(adjacent)))
                     {
                         distance = INFINITY;
                     }
@@ -219,15 +220,22 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
                 // set the ghosts trajectory and animation to the index of the first
                 //  instance of the shortest distance in the directions list<vector>
 
-                int directionIndex  = distances.IndexOf(distances.Min());
+                if (!inTunnel)
+                {
+                    int directionIndex  = distances.IndexOf(distances.Min());
 
-                Trajectory          = Directions[directionIndex];
-                CurrentAnimation    = directionalAnimations[directionIndex];
-                direction           = (Direction)directionIndex;
+                    Trajectory          = Directions[directionIndex];
+                    CurrentAnimation    = directionalAnimations[directionIndex];
+                    direction           = (Direction)directionIndex;
+                }
             }
 
-            if (!locked)
+            // dont update if traveling tunnel on an even tick or the ghost is locked
+            if (!locked
+                && !(inTunnel && game.Tick % 2 == 0))
+            { 
                 base.Update();
+            }
         }
-    }
+    } 
 }
