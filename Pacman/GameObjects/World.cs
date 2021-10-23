@@ -66,15 +66,18 @@ namespace FormsPixelGameEngine.GameObjects
                 {
                     if (int.TryParse(tile, out int index))
                     {
-                        if (index == 0)
+                        if (--index == -1)
                             AddTile(new TileObject(i, this, -1));
 
-                        else if (index == 23)
+                        else if (index == 22)
                             AddTile(new Point(i, this));
 
+                        else if (index == 23)
+                            AddTile(new Energizer(i, this));
+
                         else
-                            AddTile(new TileObject(i, this, index - 1))
-                            .Wall = tileset.IsTileWall(index - 1);
+                            AddTile(new TileObject(i, this, index))
+                            .Wall = tileset.IsTileWall(index);
                     }
                     i++;
                 });
