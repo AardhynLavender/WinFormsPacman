@@ -58,7 +58,7 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
         private const int INFINITY          = 1000;
         protected const int DIRECTIONS      = 4;
         protected const int SIZE            = 2;
-        private const int TUNNEL_DIVISOR    = 2;
+        private const int TUNNEL_DIVISOR    = 3;
         protected const int ANIMATIONS      = 2;
         protected const int ANIMATION_SPEED = Time.HUNDREDTH_SECOND;
 
@@ -230,9 +230,9 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
                 }
             }
 
-            // dont update if traveling tunnel on an even tick or the ghost is locked
+            // dont update if traveling tunnel on a TUNNEL_DIVISOR tick or if the ghost is locked
             if (!locked
-                && !(inTunnel && game.Tick % 2 == 0))
+                && !(inTunnel && game.Tick % TUNNEL_DIVISOR == 0))
             { 
                 base.Update();
             }
