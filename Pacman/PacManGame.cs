@@ -187,6 +187,15 @@ namespace FormsPixelGameEngine
 
         // EVENTS
 
+        // Frighten the ghosts
+        public void Frighten()
+        {
+            blinky.Frighten();
+            pinky.Frighten();
+            inky.Frighten();
+            clyde.Frighten();
+        }
+
         public override void StartGame()
         {
             base.StartGame();
