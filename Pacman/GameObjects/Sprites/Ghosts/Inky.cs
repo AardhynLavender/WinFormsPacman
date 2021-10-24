@@ -51,6 +51,8 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
             X = START_X;
             Y = START_Y;
 
+            scatterTile = new Vector2D(27, 35);
+
             Trajectory = Directions[(int)Direction.LEFT];
 
             speed = 1.0f;
@@ -90,9 +92,6 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
         }
 
         // METHODS
-
-        public override void Scatter()
-            => throw new System.NotImplementedException();
 
         protected override Vector2D GetTargetTile()
             => new Vector2D

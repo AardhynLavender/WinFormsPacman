@@ -35,7 +35,7 @@ namespace FormsPixelGameEngine.GameObjects
         //  To me, this makes Game, screen, and tileset, static.
         //
         //  The needless copying of memory addresses though endless paramatalization of these
-        //  types in object initalization had static beenexluded offers very little gain in
+        //  types in object initalization had static been exluded offers very little gain in
         //  terms of performace, but this model will scale to larger programs.
         //
         protected static PacManGame game;

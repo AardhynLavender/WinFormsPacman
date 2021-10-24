@@ -157,7 +157,11 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
 
         // reverse direction and set target tile to
         // applicable map corner
-        public abstract void Scatter();
+        public void Scatter()
+        {
+            mode = Mode.SCATTER;
+            targetTile = scatterTile;
+        }
 
         // calculate the target tile
         protected abstract Vector2D GetTargetTile();
@@ -191,8 +195,26 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
             && x < world.X + world.Width 
             && x > world.X)
             {
-                // update target tile
-                targetTile = GetTargetTile();
+                // update target tile based on mode
+                switch (mode)
+                {
+                    case Mode.CHASE: 
+                        // chase pacman
+                        targetTile = GetTargetTile();
+                        break;
+
+                    case Mode.SCATTER:
+                        // scatter to corner
+                        targetTile = scatterTile;
+                        break;
+
+                    case Mode.EATEN:
+                        // return to ghost house
+                        targetTile = homeTile;
+                        break;
+
+                    default:break;
+                }
 
                 // store distances to 'target tile' from tiles ajacant to the 'current tile'
                 List<int> distances = new List<int>(DIRECTIONS);
@@ -220,9 +242,19 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
                 // set the ghosts trajectory and animation to the index of the first
                 //  instance of the shortest distance in the directions list<vector>
 
-                if (!inTunnel)
+                if (!inTunnel && distances.Where(d => d == INFINITY).Count() > 1)
                 {
-                    int directionIndex  = distances.IndexOf(distances.Min());
+                    int directionIndex;
+                    if (mode == Mode.FRIGHTENED)
+                        // pick a random tile that is not an INFINATE distance from pacman
+                        do 
+                            directionIndex = random.Next(DIRECTIONS);
+
+                        while (distances[directionIndex] == INFINITY);
+
+                    else
+                        // pick the first closest tile to PacMan
+                        directionIndex = distances.IndexOf(distances.Min());
 
                     Trajectory          = Directions[directionIndex];
                     CurrentAnimation    = directionalAnimations[directionIndex];

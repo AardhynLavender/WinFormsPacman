@@ -45,11 +45,12 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
             X = START_X;
             Y = START_Y;
 
+            scatterTile = new Vector2D(0,35);
+
             Trajectory = Directions[(int)Direction.LEFT];
 
             speed = 1.0f;
 
-            scatterTile = new Vector2D(0,35);
 
             // configure animations
 
@@ -90,9 +91,6 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
 
 
         // METHODS
-
-        public override void Scatter()
-            => throw new NotImplementedException();
 
         protected override Vector2D GetTargetTile()
             => Vector2D.GetAbsDistance(currentTile, pacman.CurrentTile) > 8 
