@@ -67,6 +67,10 @@ namespace FormsPixelGameEngine.GameObjects.Sprites
 
         public Vector2D Trajectory;
 
+        protected bool inTunnel
+            => (currentTile.X < 6 || currentTile.X > 21)
+                && currentTile.Y == 17;
+
         public bool Locked
         {
             get => locked;
