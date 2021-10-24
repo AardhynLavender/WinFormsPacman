@@ -96,17 +96,15 @@ namespace FormsPixelGameEngine
 
                 QueueTask(Time.SECOND, () => 
                 {
-                    inky.Locked     = false;    
+                    inky.Locked = false;    
 
                     QueueTask(Time.SECOND, () => 
                     {
-                        pinky.Locked    = false; 
+                        pinky.Locked = false; 
 
                         QueueTask(Time.SECOND, () => 
                         {
-                            clyde.Locked    = false;
-
-                            QueueTask(Time.SECOND * 5, () => Scatter());
+                            clyde.Locked = false;
                         });
                     });
                 });
@@ -176,15 +174,6 @@ namespace FormsPixelGameEngine
 
                 else throw new Exception("text rendering has not yet been implimented!");
             });
-        }
-
-        // OBJECT MANAGMENT 
-
-        // adds an object to the games processing pool
-        public override GameObject AddGameObject(GameObject gameObject)
-        {
-            // call base method
-            return base.AddGameObject(gameObject);
         }
 
         // EVENTS
