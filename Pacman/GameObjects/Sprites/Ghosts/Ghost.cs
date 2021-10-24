@@ -103,6 +103,16 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
             new Vector2D(14,15)
         };
 
+        private static readonly int[] eatenTextures =
+        new int[DIRECTIONS]
+        {
+            EATEN_UP,
+            EATEN_RIGHT,
+            EATEN_DOWN,
+            EATEN_LEFT
+        };
+
+
         // FIELDS
 
         protected PacMan pacman;
@@ -112,8 +122,8 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
 
         protected Vector2D targetTile;
         protected Vector2D scatterTile;
+        protected Vector2D homeTile;
 
-        private Vector2D homeTile;
         private int houseWaitTime;
 
         protected Animation frightened;
@@ -138,6 +148,8 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
             offsetX     = OFFSET_X;
             offsetY     = OFFSET_Y;
 
+            homeTile = world.GetTile(this);
+
             // create frightened animation
 
             frightened = new Animation(game, this, new List<Rectangle>(ANIMATIONS)
@@ -161,16 +173,26 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
         // applicable map corner
         public void Scatter()
         {
-            mode = Mode.SCATTER;
+            if (mode == Mode.EATEN && !currentTile.Equals(homeTile));
+            else
+            {
+                mode = Mode.SCATTER;
+                speed = 1.0f;
 
-            // reverse direction
-            Trajectory.X *= -1;
-            Trajectory.Y *= -1;
+                // reverse direction
+                Trajectory.X *= -1;
+                Trajectory.Y *= -1;
+            }
         }
 
         public void Chase()
         {
-            mode = Mode.CHASE;
+            if (mode == Mode.EATEN && !currentTile.Equals(homeTile));
+            else
+            {
+                mode = Mode.CHASE;
+                speed = 1.0f;
+            }
         }
 
         // reverse direction and set mode to FRIGHTENED
@@ -193,6 +215,7 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
         public void Eat()
         {
             mode = Mode.EATEN;
+            speed = 1.0f;
         }
 
         public override void Update()
@@ -217,11 +240,17 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
             // get the ghosts current tile
             currentTile = world.GetTile(x, y);
 
+            if (mode == Mode.FRIGHTENED && currentTile.Equals(pacman.CurrentTile))
+                Eat();
+
+            if (mode == Mode.EATEN && currentTile.Equals(homeTile))
+                Chase();
+
             // update target tile if centered on a tile
             if (x % tileset.Size == 0 
-            && y % tileset.Size == 0 
-            && x < world.X + world.Width 
-            && x > world.X)
+                && y % tileset.Size == 0 
+                && x < world.X + world.Width 
+                && x > world.X)
             {
                 // update target tile based on mode
                 switch (mode)
@@ -229,16 +258,19 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
                     case Mode.CHASE: 
                         // chase pacman
                         targetTile = GetTargetTile();
+                        speed = 1.0f;
                         break;
 
                     case Mode.SCATTER:
                         // scatter to corner
                         targetTile = scatterTile;
+                        speed = 1.0f;
                         break;
 
                     case Mode.EATEN:
                         // return to ghost house
                         targetTile = homeTile;
+                        speed = 2.0f;
                         break;
 
                     default:break;
@@ -274,7 +306,7 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
                 {
                     int directionIndex;
                     if (mode == Mode.FRIGHTENED)
-                        // pick a random tile that is not an INFINATE distance from pacman
+                        // pick a random tile that is not an INFINITE distance from pacman
                         do 
                             directionIndex = game.Random.Next(DIRECTIONS);
 
@@ -287,12 +319,16 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
                     Trajectory          = Directions[directionIndex];
                     direction           = (Direction)directionIndex;
 
-                    if (mode != Mode.FRIGHTENED)
+                    if (mode == Mode.EATEN)
+                    {
+                        CurrentAnimation.Stop();
+                        SourceRect = tileset.GetTileSourceRect(eatenTextures[directionIndex], SIZE, SIZE);
+                    }
+                    else if (mode != Mode.FRIGHTENED)
                         CurrentAnimation = directionalAnimations[directionIndex];
+
                 }
             }
-
-            Console.WriteLine(updateDiv);
 
             // update if div is 0
             if (!locked && game.Tick % updateDiv == 0)

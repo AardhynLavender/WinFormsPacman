@@ -90,6 +90,7 @@
       <SubType>Designer</SubType>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include=".editorconfig" />
     <None Include="Assets\tilemap.tmx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

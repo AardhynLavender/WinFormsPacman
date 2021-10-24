@@ -38,19 +38,13 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
         // CONSTRUCTOR
 
         public Clyde(World world, PacMan pacman)
-            : base(0,0, TEXTURE_RIGHT, world, pacman)
+            : base(START_X, START_Y, TEXTURE_RIGHT, world, pacman)
         {
-            // set position, speed, and direction
-
-            X = START_X;
-            Y = START_Y;
+            // initalize fields
 
             scatterTile = new Vector2D(0,35);
-
-            Trajectory = Directions[(int)Direction.LEFT];
-
-            speed = 1.0f;
-
+            Trajectory  = Directions[(int)Direction.LEFT];
+            speed       = 1.0f;
 
             // configure animations
 

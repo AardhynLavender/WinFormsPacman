@@ -39,18 +39,13 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
         // CONSTRUCTOR
 
         public Pinky(World world, PacMan pacman)
-            : base(0,0, TEXTURE_UP, world, pacman)
+            : base(START_X,START_Y, TEXTURE_UP, world, pacman)
         {
-            // set position, speed, and direction
-
-            X = START_X;
-            Y = START_Y;
+            // initalize fields
 
             scatterTile = new Vector2D(0,2);
-
-            Trajectory = Directions[(int)Direction.LEFT];
-
-            speed = 1.0f;
+            Trajectory  = Directions[(int)Direction.LEFT];
+            speed       = 1.0f;
 
             // configure animations
 
