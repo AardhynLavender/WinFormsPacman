@@ -100,6 +100,9 @@ namespace FormsPixelGameEngine
         public long RunningTime 
             => gameTime.ElapsedMilliseconds;
 
+        public Random Random
+            => random;
+
         // LOOPS
 
         protected virtual void Process()
