@@ -240,9 +240,11 @@ namespace FormsPixelGameEngine.GameObjects.Sprites
                 : Direction;
 
             // move UP if not already going UP
+            // and not in tunnel
             // and the next tile is not a wall            
             if (InputManager.Up 
                 && direction != Direction.UP
+                && !inTunnel
                 && !world.GetTileObject(new Vector2D(currentTile.X, currentTile.Y - 1)).Wall)
             {
                 Direction = Direction.UP;
@@ -250,9 +252,11 @@ namespace FormsPixelGameEngine.GameObjects.Sprites
             }
 
             // move DOWN if not already going DOWN
+            // and not in tunnel
             // and the next tile is not a wall            
             else if (InputManager.Down 
                 && direction != Direction.DOWN 
+                && !inTunnel
                 && !world.GetTileObject(new Vector2D(currentTile.X, currentTile.Y + 1)).Wall)
             {
                 Direction = Direction.DOWN;
