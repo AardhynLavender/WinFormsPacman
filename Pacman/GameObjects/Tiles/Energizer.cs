@@ -52,6 +52,7 @@ namespace FormsPixelGameEngine.GameObjects.Tiles
             {
                 world.ClearTile(this);
                 game.Score += 50;
+                game.Frighten();
             }
         }
     }

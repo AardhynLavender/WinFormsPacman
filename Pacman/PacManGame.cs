@@ -185,6 +185,15 @@ namespace FormsPixelGameEngine
             pinky.Frighten();
             inky.Frighten();
             clyde.Frighten();
+
+            // chase again after 6 seconds
+            QueueTask(Time.SECOND * 6, () =>
+            {
+                blinky.Chase();
+                pinky.Chase();
+                inky.Chase();
+                clyde.Chase();
+            });
         }
 
         public void Scatter()

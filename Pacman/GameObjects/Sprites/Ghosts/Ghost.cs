@@ -55,24 +55,25 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
     {
         // CONSTANT AND STATIC MEMBERS
 
-        private const int INFINITY          = 1000;
-        protected const int DIRECTIONS      = 4;
-        protected const int SIZE            = 2;
-        private const int TUNNEL_DIVISOR    = 2;
-        protected const int ANIMATIONS      = 2;
-        protected const int ANIMATION_SPEED = Time.HUNDREDTH_SECOND;
+        private const int INFINITY              = 1000;
+        protected const int DIRECTIONS          = 4;
+        protected const int SIZE                = 2;
+        private const int TUNNEL_DIVISOR        = 2;
+        private const int FRIGHTENED_DIVISOR    = 2;
+        protected const int ANIMATIONS          = 2;
+        protected const int ANIMATION_SPEED     = Time.HUNDREDTH_SECOND;
 
-        protected const int FRIGHTENED      = 504;
-        protected const int EATEN_RIGHT     = 512;
-        protected const int EATEN_LEFT      = 514;
-        protected const int EATEN_UP        = 516;
-        protected const int EATEN_DOWN      = 518;
+        protected const int FRIGHTENED          = 504;
+        protected const int EATEN_RIGHT         = 512;
+        protected const int EATEN_LEFT          = 514;
+        protected const int EATEN_UP            = 516;
+        protected const int EATEN_DOWN          = 518;
 
-        private const int PSEUDO_WALLS      = 4;
-        private const int GATE_TILES        = 2;
+        private const int PSEUDO_WALLS          = 4;
+        private const int GATE_TILES            = 2;
 
-        private const int OFFSET_X          = 4;
-        private const int OFFSET_Y          = 3;
+        private const int OFFSET_X              = 4;
+        private const int OFFSET_Y              = 3;
 
         // directional trajectories
         protected static readonly Vector2D[] Directions =
@@ -106,6 +107,8 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
 
         protected PacMan pacman;
         protected Mode mode;
+
+        private int updateDiv;
 
         protected Vector2D targetTile;
         protected Vector2D scatterTile;
@@ -141,7 +144,7 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
             {
                 tileset.GetTileSourceRect(FRIGHTENED, SIZE, SIZE),
                 tileset.GetTileSourceRect(FRIGHTENED + SIZE, SIZE, SIZE)
-            }, ANIMATION_SPEED, loop: true);
+            }, Time.TENTH_SECOND, loop: true);
         }
 
         // PROPERTIES
@@ -165,10 +168,25 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
             Trajectory.Y *= -1;
         }
 
+        public void Chase()
+        {
+            mode = Mode.CHASE;
+        }
+
         // reverse direction and set mode to FRIGHTENED
         public void Frighten()
         {
             mode = Mode.FRIGHTENED;
+
+            CurrentAnimation = frightened;
+            frightened.Start();
+
+            // reverse direction
+            if (!inTunnel)
+            {
+                Trajectory.X *= -1;
+                Trajectory.Y *= -1;
+            }
         }
 
         // set mode to EATEN
@@ -179,13 +197,24 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
 
         public override void Update()
         {
+            if (inTunnel)
+                updateDiv = TUNNEL_DIVISOR;
+
+            else if (mode == Mode.FRIGHTENED)
+                updateDiv = FRIGHTENED_DIVISOR;
+
+            else
+                updateDiv = 1;
+
             // round position
             int x = (int)Math.Round(this.x);
             int y = (int)Math.Round(this.y);
 
+            // teleport in tunnel
             if (x < world.X && Direction == Direction.LEFT) X = world.Width;
             if (x > world.X + world.Width && Direction == Direction.RIGHT) X = world.X;
 
+            // get the ghosts current tile
             currentTile = world.GetTile(x, y);
 
             // update target tile if centered on a tile
@@ -256,17 +285,18 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
                         directionIndex = distances.IndexOf(distances.Min());
 
                     Trajectory          = Directions[directionIndex];
-                    CurrentAnimation    = directionalAnimations[directionIndex];
                     direction           = (Direction)directionIndex;
+
+                    if (mode != Mode.FRIGHTENED)
+                        CurrentAnimation = directionalAnimations[directionIndex];
                 }
             }
 
-            // dont update if traveling tunnel on a TUNNEL_DIVISOR tick or if the ghost is locked
-            if (!locked
-                && !(inTunnel && game.Tick % TUNNEL_DIVISOR == 0))
-            { 
+            Console.WriteLine(updateDiv);
+
+            // update if div is 0
+            if (!locked && game.Tick % updateDiv == 0)
                 base.Update();
-            }
         }
     } 
 }
