@@ -104,7 +104,9 @@ namespace FormsPixelGameEngine
 
                         QueueTask(Time.SECOND, () => 
                         {
-                            clyde.Locked    = false;        
+                            clyde.Locked    = false;
+
+                            QueueTask(Time.SECOND * 5, () => Scatter());
                         });
                     });
                 });
@@ -194,6 +196,14 @@ namespace FormsPixelGameEngine
             pinky.Frighten();
             inky.Frighten();
             clyde.Frighten();
+        }
+
+        public void Scatter()
+        {
+            blinky.Scatter();
+            pinky.Scatter();
+            inky.Scatter();
+            clyde.Scatter();
         }
 
         public override void StartGame()

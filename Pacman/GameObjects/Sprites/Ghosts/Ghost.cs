@@ -58,7 +58,7 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
         private const int INFINITY          = 1000;
         protected const int DIRECTIONS      = 4;
         protected const int SIZE            = 2;
-        private const int TUNNEL_DIVISOR    = 3;
+        private const int TUNNEL_DIVISOR    = 2;
         protected const int ANIMATIONS      = 2;
         protected const int ANIMATION_SPEED = Time.HUNDREDTH_SECOND;
 
@@ -131,7 +131,7 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
 
             this.pacman = pacman;
             locked      = true;
-            mode        = Mode.CHASE;
+            mode        = Mode.CHASE; 
             offsetX     = OFFSET_X;
             offsetY     = OFFSET_Y;
 
@@ -148,23 +148,22 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
 
         public Vector2D TargetTile 
             => targetTile;
-
-        private bool inTunnel
-            => (currentTile.X < 6 || currentTile.X > 21)
-                && currentTile.Y == 17;
          
         // METHODS
+
+        // calculate the target tile
+        protected abstract Vector2D GetTargetTile();
 
         // reverse direction and set target tile to
         // applicable map corner
         public void Scatter()
         {
             mode = Mode.SCATTER;
-            targetTile = scatterTile;
-        }
 
-        // calculate the target tile
-        protected abstract Vector2D GetTargetTile();
+            // reverse direction
+            Trajectory.X *= -1;
+            Trajectory.Y *= -1;
+        }
 
         // reverse direction and set mode to FRIGHTENED
         public void Frighten()
@@ -242,13 +241,13 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
                 // set the ghosts trajectory and animation to the index of the first
                 //  instance of the shortest distance in the directions list<vector>
 
-                if (!inTunnel && distances.Where(d => d == INFINITY).Count() > 1)
+                if (!inTunnel)
                 {
                     int directionIndex;
                     if (mode == Mode.FRIGHTENED)
                         // pick a random tile that is not an INFINATE distance from pacman
                         do 
-                            directionIndex = random.Next(DIRECTIONS);
+                            directionIndex = game.Random.Next(DIRECTIONS);
 
                         while (distances[directionIndex] == INFINITY);
 
