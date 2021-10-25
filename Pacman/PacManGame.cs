@@ -222,6 +222,7 @@ namespace FormsPixelGameEngine
             });
 
             QueueTask(milliseconds, () => pacman.Frozen = false);
+
         }
 
         public override void StartGame()

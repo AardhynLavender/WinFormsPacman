@@ -226,6 +226,9 @@ namespace FormsPixelGameEngine.GameObjects.Sprites
             // set the correct animation
             CurrentAnimation = directionalAnimations[(int)direction];
 
+            if (Frozen)
+                CurrentAnimation.Animating = false;
+
             // update the sprite
             base.Update();
         }
