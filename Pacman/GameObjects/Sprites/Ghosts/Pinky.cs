@@ -49,29 +49,10 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
 
             // configure animations
 
-            up = new Animation(game, this, new List<Rectangle>
-            {
-                tileset.GetTileSourceRect(TEXTURE_UP, SIZE, SIZE),
-                tileset.GetTileSourceRect(TEXTURE_UP + SIZE, SIZE, SIZE)
-            }, ANIMATION, loop: true);
-
-            right = new Animation(game, this, new List<Rectangle>
-            {
-                tileset.GetTileSourceRect(TEXTURE_RIGHT, SIZE, SIZE),
-                tileset.GetTileSourceRect(TEXTURE_RIGHT + SIZE, SIZE, SIZE)
-            }, ANIMATION, loop: true);
-
-            down = new Animation(game, this, new List<Rectangle>
-            {
-                tileset.GetTileSourceRect(TEXTURE_DOWN, SIZE, SIZE),
-                tileset.GetTileSourceRect(TEXTURE_DOWN + SIZE, SIZE, SIZE)
-            }, ANIMATION, loop: true);
-
-            left = new Animation(game, this, new List<Rectangle>
-            {
-                tileset.GetTileSourceRect(TEXTURE_LEFT, SIZE, SIZE),
-                tileset.GetTileSourceRect(TEXTURE_LEFT + SIZE, SIZE, SIZE)
-            }, ANIMATION, loop: true);
+            up      = new Animation(game, tileset, this, SIZE, TEXTURE_UP, 2, ANIMATION);
+            right   = new Animation(game, tileset, this, SIZE, TEXTURE_RIGHT, 2, ANIMATION);
+            down    = new Animation(game, tileset, this, SIZE, TEXTURE_DOWN, 2, ANIMATION);
+            left    = new Animation(game, tileset, this, SIZE, TEXTURE_LEFT, 2, ANIMATION);
 
             directionalAnimations = new Animation[DIRECTIONS]
             { up, right, down, left };

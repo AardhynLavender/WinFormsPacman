@@ -151,13 +151,7 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
             homeTile = world.GetTile(this);
 
             // create frightened animation
-
-            frightened = new Animation(game, this, new List<Rectangle>(ANIMATIONS)
-            {
-                tileset.GetTileSourceRect(FRIGHTENED, SIZE, SIZE),
-                tileset.GetTileSourceRect(FRIGHTENED + SIZE, SIZE, SIZE)
-            }, 
-            Time.TENTH_SECOND, loop: true);
+            frightened = new Animation(game, tileset, this, SIZE, FRIGHTENED, 2, Time.TENTH_SECOND);
         }
 
         // PROPERTIES

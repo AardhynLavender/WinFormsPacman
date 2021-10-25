@@ -1,10 +1,14 @@
 ﻿
-// 
-//  Animation Class
+//
+//  Animation
+//  Created 25/10/2021
+//
+//  WinForms PacMan v0.0.1
+//  Aardhyn Lavender 2021
 //
 //  Animates the texture of a given object by updating
-//  its texture from a set of images or tiles based
-//  on the gameloop of the provided Game.
+//  its texture from a provided range, size, and starting
+//  index
 //
 
 using System;
@@ -13,47 +17,67 @@ using System.Drawing;
 
 using FormsPixelGameEngine.Utility;
 using FormsPixelGameEngine.GameObjects;
+using FormsPixelGameEngine.GameObjects.Sprites.Ghosts;
 
 namespace FormsPixelGameEngine.Render
 {
     class Animation
     {
-        private int frameCount;
-        private int speed;
+        // FIELDS
+
         private bool animating;
+        
+        private int speed;
         private bool loop;
         private int loopCap;
         private long loops;
+
         private Action onAnimationEnd;
 
+        // TODO :: convert to static memebers too
         private Game game;
+        private TileSet tileset;
         private GameObject gameObject;
 
-        private List<Rectangle> tileFrames;
         private Rectangle orignalRect;
         private int currentFrame;
+        private int size;
+        private int startIndex;
+        private int frameCount;
 
-        public bool Animating 
-        { 
+        public bool Animating
+        {
             get => animating;
             set => animating = value;
         }
 
-        // Construct with generic list of tile coordinates
-        public Animation(Game game, GameObject gameObject, List<Rectangle> textures, int speed, Action onAnimationEnd = null, bool loop = true, int loopCap = -1)
-        { 
+        // CONSTRUCTOR
+
+        public Animation(Game game, TileSet tileset, GameObject gameObject, int size, int startIndex, int frameCount, int speed, Action onAnimationEnd = null, bool loop = true, int loopCap = -1)
+        {
             this.game           = game;
+            this.tileset        = tileset;
             this.gameObject     = gameObject;
+            this.size           = size;
+            this.startIndex     = startIndex;
             this.speed          = speed / game.TickRate;
-            this.onAnimationEnd = (onAnimationEnd is null) ? () => { } : onAnimationEnd;
             this.loop           = loop;
             this.loopCap        = loopCap;
+            this.frameCount     = frameCount;
+
+            this.onAnimationEnd = (onAnimationEnd is null) 
+                ? () => { } // empty lambda
+                : onAnimationEnd;
 
             orignalRect         = gameObject.SourceRect;
-            tileFrames          = textures;
-            frameCount          = textures.Count;
             animating           = false;
         }
+
+        // PROPERTIES
+
+
+
+        // METHODS
 
         public void Update()
         {
@@ -69,34 +93,32 @@ namespace FormsPixelGameEngine.Render
                     else if (loops > loopCap)
                     {
                         // stop animating and call the Action Delegate
-                        animating = false;
+                        Stop();
                         onAnimationEnd();
                         return;
                     }
                 }
 
                 // update the source rect for the tileset
-                gameObject.SourceRect = tileFrames[currentFrame];
+                gameObject.SourceRect = tileset.GetTileSourceRect(startIndex + (currentFrame * size), size, size);
 
                 currentFrame++;
             }
         }
-
+    
+        // starts animation
         public void Start()
             => animating = true;
 
+        // pauses animation
         public void Stop()
-        {
-            animating = false;
-            gameObject.SourceRect = orignalRect;
-        }
+            => animating = false;
 
-        // resets the animation to its original state
+        // pauses and reverts texture
         public void Reset()
         {
             Stop();
-            gameObject.SourceRect = orignalRect;
-            loops = currentFrame = 0;
+            gameObject.SourceRect = orignalRect ;
         }
     }
 }

@@ -33,13 +33,15 @@ namespace FormsPixelGameEngine.GameObjects.Tiles
         public Energizer(int index, World world)
             : base(index, world, TEXTURE)
         {
-            strobe = Game.AddAnimation(new Animation(game, this, new List<Rectangle>
+            /*strobe = Game.AddAnimation(new Animation(game, this, new List<Rectangle>
             {
                 sourceRect,
                 new Rectangle()
             }, Time.TENTH_SECOND));
 
-            strobe.Start();
+            strobe 
+
+            strobe.Start();*/
         }
 
         // METHODS

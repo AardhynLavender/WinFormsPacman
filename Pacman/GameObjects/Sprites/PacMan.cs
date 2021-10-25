@@ -13,12 +13,11 @@
 //  when their mode is FRIGHTENED
 //
 
+using FormsPixelGameEngine.Render;
+using FormsPixelGameEngine.Utility;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
-
-using FormsPixelGameEngine.Render;
-using FormsPixelGameEngine.Utility;
 
 namespace FormsPixelGameEngine.GameObjects.Sprites
 {
@@ -44,9 +43,8 @@ namespace FormsPixelGameEngine.GameObjects.Sprites
 
         // tile infomation
 
-        private const int TILE_WIDTH    = 2;
-        private const int TILE_HEIGHT   = 2;
-        private const int TILE_HEADER   = 7;
+        private const int SIZE_TILES = 2;
+        private const int TILE_HEADER = 7;
 
         // FIELDS
 
@@ -66,7 +64,7 @@ namespace FormsPixelGameEngine.GameObjects.Sprites
         // CONSTRUCTOR
 
         public PacMan(World world)
-            : base(START_X, START_Y, UP, TILE_WIDTH, TILE_HEIGHT, new Vector2D(), world)
+            : base(START_X, START_Y, UP, SIZE_TILES, SIZE_TILES, new Vector2D(), world)
         {
             // initatlize fields
 
@@ -77,47 +75,19 @@ namespace FormsPixelGameEngine.GameObjects.Sprites
 
             // create animations
 
-            up = new Animation(game, this, new List<Rectangle>
-            {
-                tileset.GetTileSourceRect(UP, TILE_WIDTH , TILE_WIDTH),
-                tileset.GetTileSourceRect(UP + TILE_WIDTH, TILE_WIDTH , TILE_WIDTH)
-            },
-            ANIMATION, loop: true);
-
-            down = new Animation(game, this, new List<Rectangle>
-            {
-                tileset.GetTileSourceRect(DOWN, TILE_WIDTH , TILE_WIDTH),
-                tileset.GetTileSourceRect(DOWN + TILE_WIDTH, TILE_WIDTH , TILE_WIDTH)
-            },
-            ANIMATION, loop: true);
-
-            left = new Animation(game, this, new List<Rectangle>
-            {
-                tileset.GetTileSourceRect(LEFT, TILE_WIDTH , TILE_WIDTH),
-                tileset.GetTileSourceRect(LEFT + TILE_WIDTH, TILE_WIDTH , TILE_WIDTH)
-            },
-            ANIMATION, loop: true);
-
-            right = new Animation(game, this, new List<Rectangle>
-            {
-                tileset.GetTileSourceRect(RIGHT, TILE_WIDTH , TILE_WIDTH),
-                tileset.GetTileSourceRect(RIGHT + TILE_WIDTH, TILE_WIDTH , TILE_WIDTH)
-            },
-            ANIMATION, loop: true);
+            up      = new Animation(game, tileset, this, SIZE_TILES, UP, 2, ANIMATION);
+            right   = new Animation(game, tileset, this, SIZE_TILES, RIGHT, 2, ANIMATION);
+            down    = new Animation(game, tileset, this, SIZE_TILES, DOWN, 2, ANIMATION);
+            left    = new Animation(game, tileset, this, SIZE_TILES, LEFT, 2, ANIMATION);
 
             // store directional animations in an array    
             directionalAnimations = new Animation[DIRECTIONS]
             { up, right, down, left };
 
-            // start animations
+            Array.ForEach(directionalAnimations, a => a.Start());
 
-            up.Start();
-            down.Start();
-            left.Start();
-            right.Start();
-
-            direction = Direction.UP;
-            currentAnimation = directionalAnimations[(int)direction];
+            direction           = Direction.UP;
+            currentAnimation    = directionalAnimations[(int)direction];
         }
 
         // PROPERTIES
