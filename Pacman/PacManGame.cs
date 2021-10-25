@@ -22,14 +22,17 @@ using FormsPixelGameEngine.GameObjects.Sprites.Ghosts;
 
 using FormsPixelGameEngine.Render;
 using FormsPixelGameEngine.Utility;
+using System.Diagnostics;
 
 namespace FormsPixelGameEngine
 {
     class PacManGame : Game
     {
-        // CONSTANTS
+        // CONSTANT AND STATIC MEMBERS
 
         private const int DIGITS = 10;
+
+        private static readonly int[] = new int[]
 
         // FIELDS
 
@@ -37,6 +40,8 @@ namespace FormsPixelGameEngine
         private int hiScore;
 
         private List<TileObject> scoreDisplay;
+
+        private Stopwatch modeTracker;
 
         private TileSet tileset;
         private World world;
@@ -48,8 +53,6 @@ namespace FormsPixelGameEngine
         private Inky inky;
         private Clyde clyde;
         private List<Ghost> ghosts;
-
-        private GameObject InkyTarget;
 
         private Dictionary<int, int> digits;
 
@@ -91,13 +94,13 @@ namespace FormsPixelGameEngine
             ghosts = new List<Ghost>(4)
             { blinky, inky, pinky, clyde };
 
-            InkyTarget  = AddGameObject(new GameObject(0, 0, 324));
-
             // start game
             
             PlaySound(Properties.Resources.game_start);
             QueueTask(Time.FOUR_SECOND, () =>
             {
+                modeTracker.Start();
+
                 pacman.Locked   = false;
                 blinky.Locked   = false;
 
@@ -163,7 +166,6 @@ namespace FormsPixelGameEngine
         protected override void Render()
         {
             base.Render();
-            world.PlaceObject(InkyTarget, inky.TargetTile);
         }
 
         // TEXT MANAGMENT
@@ -184,6 +186,15 @@ namespace FormsPixelGameEngine
         }
 
         // EVENTS
+
+        public void PauseModeTracker()
+            => modeTracker.Stop();
+
+        public void ResumeModeTracker()
+            => modeTracker.Start();
+
+        public void ResteModeTracker()
+            => modeTracker.Reset();
 
         // Frighten the ghosts
         public void Frighten()

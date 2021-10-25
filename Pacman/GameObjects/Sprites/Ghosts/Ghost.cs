@@ -112,7 +112,6 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
             EATEN_LEFT
         };
 
-
         // FIELDS
 
         protected PacMan pacman;
@@ -144,7 +143,7 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
 
             this.pacman = pacman;
             locked      = true;
-            mode        = Mode.CHASE; 
+            mode        = Mode.SCATTER; 
             offsetX     = OFFSET_X;
             offsetY     = OFFSET_Y;
 
