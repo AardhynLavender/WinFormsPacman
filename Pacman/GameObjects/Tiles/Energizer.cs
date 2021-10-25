@@ -40,7 +40,6 @@ namespace FormsPixelGameEngine.GameObjects.Tiles
             }, Time.TENTH_SECOND));
 
             strobe.Start();
-
         }
 
         // METHODS

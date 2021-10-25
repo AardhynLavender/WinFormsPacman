@@ -116,7 +116,7 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
         // FIELDS
 
         protected PacMan pacman;
-        protected Mode mode;
+        private Mode mode;
 
         private int updateDiv;
 
@@ -156,14 +156,18 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
             {
                 tileset.GetTileSourceRect(FRIGHTENED, SIZE, SIZE),
                 tileset.GetTileSourceRect(FRIGHTENED + SIZE, SIZE, SIZE)
-            }, Time.TENTH_SECOND, loop: true);
+            }, 
+            Time.TENTH_SECOND, loop: true);
         }
 
         // PROPERTIES
 
-        public Vector2D TargetTile 
+        public Vector2D TargetTile
             => targetTile;
-         
+
+        public Mode Mode
+            => mode; 
+
         // METHODS
 
         // calculate the target tile
@@ -176,6 +180,7 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
             if (mode == Mode.EATEN && !currentTile.Equals(homeTile));
             else
             {
+                CurrentAnimation.Start();
                 mode = Mode.SCATTER;
                 speed = 1.0f;
 
@@ -190,6 +195,7 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
             if (mode == Mode.EATEN && !currentTile.Equals(homeTile));
             else
             {
+                CurrentAnimation.Start();
                 mode = Mode.CHASE;
                 speed = 1.0f;
             }
@@ -214,8 +220,14 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
         // set mode to EATEN
         public void Eat()
         {
-            mode = Mode.EATEN;
-            speed = 1.0f;
+            if (mode != Mode.EATEN);
+            {
+                CurrentAnimation.Stop();
+                mode = Mode.EATEN;
+
+                game.PlaySound(Properties.Resources.eat_ghost);
+                game.Freeze(Time.SECOND);
+            }
         }
 
         public override void Update()
@@ -234,8 +246,11 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
             int y = (int)Math.Round(this.y);
 
             // teleport in tunnel
-            if (x < world.X && Direction == Direction.LEFT) X = world.Width;
-            if (x > world.X + world.Width && Direction == Direction.RIGHT) X = world.X;
+            if (x < world.X && Direction == Direction.LEFT) 
+                X = world.Width;
+
+            if (x > world.X + world.Width && Direction == Direction.RIGHT) 
+                X = world.X;
 
             // get the ghosts current tile
             currentTile = world.GetTile(x, y);
@@ -301,7 +316,6 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
 
                 // set the ghosts trajectory and animation to the index of the first
                 //  instance of the shortest distance in the directions list<vector>
-
                 if (!inTunnel)
                 {
                     int directionIndex;
@@ -316,18 +330,17 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
                         // pick the first closest tile to PacMan
                         directionIndex = distances.IndexOf(distances.Min());
 
-                    Trajectory          = Directions[directionIndex];
-                    direction           = (Direction)directionIndex;
-
-                    if (mode == Mode.EATEN)
-                    {
-                        CurrentAnimation.Stop();
-                        SourceRect = tileset.GetTileSourceRect(eatenTextures[directionIndex], SIZE, SIZE);
-                    }
-                    else if (mode != Mode.FRIGHTENED)
-                        CurrentAnimation = directionalAnimations[directionIndex];
-
+                    Trajectory = Directions[directionIndex];
+                    direction = (Direction)directionIndex;
                 }
+
+                // set animation / texture
+
+                if (mode == Mode.EATEN)
+                    sourceRect = tileset.GetTileSourceRect(eatenTextures[(int)direction], SIZE, SIZE);
+
+                else if (mode != Mode.FRIGHTENED)
+                    CurrentAnimation = directionalAnimations[(int)direction];
             }
 
             // update if div is 0

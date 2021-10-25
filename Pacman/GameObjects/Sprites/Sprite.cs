@@ -26,6 +26,7 @@ namespace FormsPixelGameEngine.GameObjects.Sprites
         protected float localY;
 
         protected bool locked;
+        private bool frozen;
         protected float speed;
 
         protected World world;
@@ -76,16 +77,24 @@ namespace FormsPixelGameEngine.GameObjects.Sprites
             get => locked;
             set => locked = value;
         }
+        public bool Frozen 
+        {
+            get => frozen;
+            set => frozen = value; 
+        }
 
         // METHODS
 
         public override void Update()  
         {
-            x += Trajectory.X * speed;
-            y += Trajectory.Y * speed;
+            if (!frozen)
+            { 
+                x += Trajectory.X * speed;
+                y += Trajectory.Y * speed;
 
-            localX = (int)Math.Floor(x % tileset.Size);
-            localY = (int)Math.Floor(y % tileset.Size);
+                localX = (int)Math.Floor(x % tileset.Size);
+                localY = (int)Math.Floor(y % tileset.Size);
+            }
         }
 
         public override void Draw()

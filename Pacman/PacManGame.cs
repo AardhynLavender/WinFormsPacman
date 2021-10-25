@@ -13,6 +13,7 @@
 using System;
 using System.Collections.Generic;
 using System.Media;
+using System.Linq;
 
 using FormsPixelGameEngine.GameObjects;
 using FormsPixelGameEngine.GameObjects.Tiles;
@@ -41,10 +42,12 @@ namespace FormsPixelGameEngine
         private World world;
 
         private PacMan pacman;
+
         private Blinky blinky;
         private Pinky pinky;
         private Inky inky;
         private Clyde clyde;
+        private List<Ghost> ghosts;
 
         private GameObject InkyTarget;
 
@@ -84,6 +87,10 @@ namespace FormsPixelGameEngine
             clyde       = (Clyde)AddGameObject(new Clyde(world, pacman));
             pinky       = (Pinky)AddGameObject(new Pinky(world, pacman));
             inky        = (Inky)AddGameObject(new Inky(world, pacman, blinky));
+
+            ghosts = new List<Ghost>(4)
+            { blinky, inky, pinky, clyde };
+
             InkyTarget  = AddGameObject(new GameObject(0, 0, 324));
 
             // start game
@@ -181,27 +188,40 @@ namespace FormsPixelGameEngine
         // Frighten the ghosts
         public void Frighten()
         {
-            blinky.Frighten();
-            pinky.Frighten();
-            inky.Frighten();
-            clyde.Frighten();
+            // frighten the ghosts
+            ghosts.ForEach(g => g.Frighten());
 
             // chase again after 6 seconds
             QueueTask(Time.SECOND * 6, () =>
-            {
-                blinky.Chase();
-                pinky.Chase();
-                inky.Chase();
-                clyde.Chase();
-            });
+                ghosts.Where(g => g.Mode != Mode.EATEN).ToList().ForEach(g => g.Chase())
+            );
         }
 
         public void Scatter()
         {
-            blinky.Scatter();
-            pinky.Scatter();
-            inky.Scatter();
-            clyde.Scatter();
+            ghosts.Where(g => g.Mode != Mode.EATEN).ToList()
+            .ForEach(g => g.Scatter());
+        }
+
+        // freezes all sprites except eaten ghosts
+        public void Freeze(int milliseconds)
+        {
+            pacman.Frozen = true;
+
+            ghosts.Where(g => g.Mode != Mode.EATEN)
+            .ToList().ForEach(g =>
+            {
+                g.Frozen = true;
+                QueueTask(milliseconds, () => g.Frozen = false);
+
+                if (g.CurrentAnimation.Animating)
+                {
+                    g.CurrentAnimation.Animating = false;
+                    QueueTask(milliseconds, () => g.CurrentAnimation.Animating = true);
+                }
+            });
+
+            QueueTask(milliseconds, () => pacman.Frozen = false);
         }
 
         public override void StartGame()

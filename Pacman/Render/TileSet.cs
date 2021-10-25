@@ -107,9 +107,13 @@ namespace FormsPixelGameEngine.Render
             if (index > tileCount) 
                 throw new Exception("[TileSet] > tile index out of range");
 
-            Rectangle sourceRect = tileTextures[index];
-            sourceRect.Width *= spanX;
-            sourceRect.Height *= spanY;
+            Rectangle sourceRect = new Rectangle();
+            if (index > -1)
+            {
+                sourceRect          = tileTextures[index];
+                sourceRect.Width    *= spanX;
+                sourceRect.Height   *= spanY;
+            }
 
             return sourceRect;
         }
