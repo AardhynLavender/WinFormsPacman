@@ -32,7 +32,40 @@ namespace FormsPixelGameEngine
 
         private const int DIGITS = 10;
 
-        private static readonly int[] = new int[]
+        private static readonly int[,] modeTimes = new int[3, 8]
+        {
+            {
+                // level 1
+                Time.SEVEN_SECOND,
+                Time.TWENTY_SECOND,
+                Time.SEVEN_SECOND,
+                Time.TWENTY_SECOND,
+                Time.FIVE_SECOND,
+                Time.TWENTY_SECOND,
+                Time.FIVE_SECOND,
+                -1
+
+            },{ // levels 2 > 4
+                Time.SEVEN_SECOND,
+                Time.TWENTY_SECOND,
+                Time.SEVEN_SECOND,
+                Time.TWENTY_SECOND,
+                Time.FIVE_SECOND,
+                1033,
+                1,
+                -1
+
+            },{ // Levels 5 > 255
+                Time.FIVE_SECOND,
+                Time.TWENTY_SECOND,
+                Time.FIVE_SECOND,
+                Time.TWENTY_SECOND,
+                Time.FIVE_SECOND,
+                1037,
+                1,
+                -1
+            }
+        };
 
         // FIELDS
 
@@ -42,6 +75,8 @@ namespace FormsPixelGameEngine
         private List<TileObject> scoreDisplay;
 
         private Stopwatch modeTracker;
+        private Mode currentMode;
+        private int modeIndex;
 
         private TileSet tileset;
         private World world;
@@ -59,9 +94,11 @@ namespace FormsPixelGameEngine
         // CONSTRUCTOR
 
         public PacManGame(GameScreen screen, SoundPlayer media, System.Windows.Forms.Timer ticker)
-            : base (screen, media,ticker)
+            : base(screen, media, ticker)
         {
             // initalize fileds
+
+            modeTracker = new Stopwatch();
 
             digits = new Dictionary<int, int>(DIGITS)
             {
@@ -71,13 +108,28 @@ namespace FormsPixelGameEngine
 
             scoreDisplay = new List<TileObject>();
 
-            // create tileset and world
+            // create tileset
 
             tileset = new TileSet("Assets/tileset.tsx", "Assets/tileset.png");
 
+            // configure GameObject
+
             GameObject.Init(this, screen, tileset);
 
+            // calculate default mode absolute switching times
+
+            modeIndex = 0;
+            for (int i = 0; i < modeTimes.GetLength(0); i++)
+                for (int j = 1; j < modeTimes.GetLength(1) - 1; j++)
+                    modeTimes[i, j] += modeTimes[i, j - 1];
+
+            for (int i = 0; i < modeTimes.GetLength(1); i++)
+                Console.WriteLine(modeTimes[0, i] + "\t" + i);
+
+            // create world
+
             world = new World("Assets/tilemap.tmx", 0, 0);
+
             AddGameObject(world);
 
             // add pacman
@@ -99,7 +151,7 @@ namespace FormsPixelGameEngine
             PlaySound(Properties.Resources.game_start);
             QueueTask(Time.FOUR_SECOND, () =>
             {
-                modeTracker.Start();
+                ResumeModeTracker();
 
                 pacman.Locked   = false;
                 blinky.Locked   = false;
@@ -156,11 +208,33 @@ namespace FormsPixelGameEngine
         public TileSet TileSet
             => tileset;
 
+        public Mode CurrentMode 
+            => currentMode;
+
         // GAME LOOP
 
         protected override void Process()
         {
             base.Process();
+
+            if (modeIndex < 8)
+            {
+                if (modeTracker.ElapsedMilliseconds > modeTimes[0, modeIndex])
+                {
+                    currentMode = modeIndex++ % 2 == 0
+                        ? Mode.CHASE
+                        : Mode.SCATTER;
+
+                    Console.WriteLine(currentMode + " : " + modeIndex);
+
+                    ghosts.Where(g => g.Mode != Mode.EATEN).ToList().ForEach(g => g.Revert());
+                }
+            }
+            else
+            {
+                ghosts.Where(g => g.Mode != Mode.EATEN).ToList().ForEach(g => g.Revert());
+                currentMode = Mode.CHASE;
+            }
         }
 
         protected override void Render()
@@ -199,13 +273,18 @@ namespace FormsPixelGameEngine
         // Frighten the ghosts
         public void Frighten()
         {
+            // pause mode tracker
+            PauseModeTracker();
+
             // frighten the ghosts
             ghosts.ForEach(g => g.Frighten());
 
             // chase again after 6 seconds
             QueueTask(Time.SECOND * 6, () =>
-                ghosts.Where(g => g.Mode != Mode.EATEN).ToList().ForEach(g => g.Chase())
-            );
+            {
+                ResumeModeTracker();
+                ghosts.Where(g => g.Mode != Mode.EATEN).ToList().ForEach(g => g.Revert());
+            });
         }
 
         public void Scatter()

@@ -223,6 +223,16 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
             }
         }
 
+        // reverts the ghosts back to either CHASE or SCATTER
+        public void Revert()
+        {
+            if (game.CurrentMode == Mode.CHASE)
+                Chase();
+
+            else
+                Scatter();
+        }
+
         public override void Update()
         {
             if (inTunnel)
@@ -252,7 +262,7 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
                 Eat();
 
             if (mode == Mode.EATEN && currentTile.Equals(homeTile))
-                Chase();
+                Revert();
 
             // update target tile if centered on a tile
             if (x % tileset.Size == 0 

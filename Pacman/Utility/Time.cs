@@ -21,6 +21,12 @@ namespace FormsPixelGameEngine.Utility
         public const int TWO_SECOND             = SECOND * 2;
         public const int THREE_SECOND           = SECOND * 3;
         public const int FOUR_SECOND            = SECOND * 4;
+        public const int FIVE_SECOND            = SECOND * 5;
+
+        public const int SEVEN_SECOND           = SECOND * 7;
+        public const int TWENTY_SECOND          = SECOND * 20;
+
+
 
     }
 }
