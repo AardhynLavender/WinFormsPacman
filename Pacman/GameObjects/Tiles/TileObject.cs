@@ -24,6 +24,7 @@ namespace FormsPixelGameEngine.GameObjects.Tiles
         // FIELDS
 
         protected World world;
+        private int textureIndex;
         private bool wall;
 
         // CONSTRUCTORS
@@ -35,6 +36,7 @@ namespace FormsPixelGameEngine.GameObjects.Tiles
         public TileObject(int index, World world, int textureIndex)
             : base(0, 0, textureIndex)
         {
+            this.textureIndex = textureIndex;
             this.world = world;
 
             // determine index from tile coordinate
@@ -42,9 +44,10 @@ namespace FormsPixelGameEngine.GameObjects.Tiles
             Y = world.Y + ((int)Math.Floor((float)index++ / (world.Width / tileset.Size)) * tileset.Size);
         }
 
-        public TileObject(Vector2D tile, World world, int index)
-            : base(0, 0, index)
+        public TileObject(Vector2D tile, World world, int textureIndex)
+            : base(0, 0, textureIndex)
         {
+            this.textureIndex = textureIndex;
             this.world = world;
 
             // convert cartesian point to tile coordinate
@@ -53,6 +56,9 @@ namespace FormsPixelGameEngine.GameObjects.Tiles
         }
 
         // PROPERTIES
+
+        public int TextureIndex 
+            => textureIndex;
 
         public World World 
         { set => world = value; }
