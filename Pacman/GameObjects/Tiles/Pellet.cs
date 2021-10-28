@@ -16,7 +16,7 @@ using System;
 
 namespace FormsPixelGameEngine.GameObjects.Tiles
 {
-    class Point : TileObject
+    class Pellet : TileObject
     {
         // CONSTANT AND STATIC MEMEBERS
 
@@ -30,7 +30,7 @@ namespace FormsPixelGameEngine.GameObjects.Tiles
 
         // CONSTRUCTOR
 
-        public Point(int index, World world)
+        public Pellet(int index, World world)
             : base(index, world, TEXTURE)
         { value = VALUE; }
 

@@ -75,7 +75,7 @@ namespace FormsPixelGameEngine.GameObjects
                             AddTile(new TileObject(i, this, -1));
 
                         else if (index == 22)
-                            AddTile(new Point(i, this));
+                            AddTile(new Pellet(i, this));
 
                         else if (index == 23)
                             AddTile(new Energizer(i, this));
