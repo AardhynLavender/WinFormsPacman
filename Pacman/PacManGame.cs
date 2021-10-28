@@ -171,7 +171,7 @@ namespace FormsPixelGameEngine
                     });
                 });
 
-                for (int i = 0; i < 5; i++)
+                for (int i = 0; i < "ready!".Length; i++)
                     world.ClearTile(571 + i);
             });
         }
