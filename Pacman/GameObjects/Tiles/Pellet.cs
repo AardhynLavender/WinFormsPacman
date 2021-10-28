@@ -41,6 +41,7 @@ namespace FormsPixelGameEngine.GameObjects.Tiles
             {
                 // increment score and remove point
                 game.Score += value;
+                game.ConsumePellet();
                 world.ClearTile(this);
                 
                 // play 'wah' and 'kah' alternating

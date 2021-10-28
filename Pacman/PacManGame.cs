@@ -30,9 +30,15 @@ namespace FormsPixelGameEngine
     {
         // CONSTANT AND STATIC MEMBERS
 
-        private const int DIGITS = 10;
+        private const int DIGITS        = 10;
+        private const int GHOSTS        = 4;
+        private const int LEVEL_PELLETS = 240;
+        private const int LEVEL_MAX     = 255;
+        private const int MODE_SWITCHES = 7;
+        private const int SWITCH_SETS   = 3;
 
-        private static readonly int[,] modeTimes = new int[3, 8]
+        private static readonly int[,] modeTimes = 
+        new int[SWITCH_SETS, MODE_SWITCHES + 1]
         {
             {
                 // level 1
@@ -69,10 +75,12 @@ namespace FormsPixelGameEngine
 
         // FIELDS
 
+        private List<TileObject> scoreDisplay;
         private int score;
         private int hiScore;
 
-        private List<TileObject> scoreDisplay;
+        private int pelletCount;
+        private int level;
 
         private Stopwatch modeTracker;
         private Mode currentMode;
@@ -123,9 +131,6 @@ namespace FormsPixelGameEngine
                 for (int j = 1; j < modeTimes.GetLength(1) - 1; j++)
                     modeTimes[i, j] += modeTimes[i, j - 1];
 
-            for (int i = 0; i < modeTimes.GetLength(1); i++)
-                Console.WriteLine(modeTimes[0, i] + "\t" + i);
-
             // create world
 
             world = new World("Assets/tilemap.tmx", 0, 0);
@@ -138,12 +143,12 @@ namespace FormsPixelGameEngine
 
             // add ghosts
 
-            blinky      = (Blinky)AddGameObject(new Blinky(world, pacman));
-            clyde       = (Clyde)AddGameObject(new Clyde(world, pacman));
-            pinky       = (Pinky)AddGameObject(new Pinky(world, pacman));
-            inky        = (Inky)AddGameObject(new Inky(world, pacman, blinky));
+            blinky = (Blinky)AddGameObject(new Blinky(world, pacman));
+            clyde = (Clyde)AddGameObject(new Clyde(world, pacman));
+            pinky = (Pinky)AddGameObject(new Pinky(world, pacman));
+            inky = (Inky)AddGameObject(new Inky(world, pacman, blinky));
 
-            ghosts = new List<Ghost>(4)
+            ghosts = new List<Ghost>(GHOSTS)
             { blinky, inky, pinky, clyde };
 
             world.Ghosts = ghosts;
@@ -155,25 +160,23 @@ namespace FormsPixelGameEngine
             {
                 ResumeModeTracker();
 
-                pacman.Locked   = false;
-                blinky.Locked   = false;
+                pacman.Locked = false;
+                blinky.Locked = false;
 
-                QueueTask(Time.SECOND, () => 
+                QueueTask(Time.SECOND, () =>
                 {
-                    inky.Locked = false;    
+                    inky.Locked = false;
 
-                    QueueTask(Time.SECOND, () => 
+                    QueueTask(Time.SECOND, () =>
                     {
-                        pinky.Locked = false; 
+                        pinky.Locked = false;
 
-                        QueueTask(Time.SECOND, () => 
+                        QueueTask(Time.SECOND, () =>
                         {
                             clyde.Locked = false;
                         });
                     });
                 });
-
-                WinLevel();
 
                 for (int i = 0; i < "ready!".Length; i++)
                     world.ClearTile(571 + i);
@@ -221,7 +224,8 @@ namespace FormsPixelGameEngine
         {
             base.Process();
 
-            if (modeIndex < 7 && modeTracker.ElapsedMilliseconds > modeTimes[0, modeIndex])
+            if (modeIndex < MODE_SWITCHES 
+                && modeTracker.ElapsedMilliseconds > modeTimes[0, modeIndex])
             {
                 currentMode = modeIndex++ % 2 == 0
                     ? Mode.CHASE
@@ -255,6 +259,15 @@ namespace FormsPixelGameEngine
             });
         }
 
+        // LEVEL MANAGMENT
+
+        public void ConsumePellet()
+        {
+            Console.WriteLine(pelletCount);
+            if (++pelletCount == LEVEL_PELLETS)
+                winLevel();
+        }
+
         // EVENTS
 
         public void PauseModeTracker()
@@ -263,7 +276,7 @@ namespace FormsPixelGameEngine
         public void ResumeModeTracker()
             => modeTracker.Start();
 
-        public void ResteModeTracker()
+        public void ResetModeTracker()
             => modeTracker.Reset();
 
         // Frighten the ghosts
@@ -312,19 +325,93 @@ namespace FormsPixelGameEngine
         }
 
         // reset eveything and update the level counter
-        public void WinLevel()
+        private void winLevel()
         {
-            QueueTask(Time.SECOND, () =>
+            if (++level < LEVEL_MAX)
             {
-                world.OffsetTiles(-168, Time.HALF_SECOND, tile => tile.Wall);
+                ResetModeTracker();
+                pacman.Frozen = true;
+
+                ghosts.ForEach(ghost =>
+                {
+                    ghost.Frozen = true;
+                    QueueFree(ghost);
+                }); 
+
+                // wall strobe animation
                 QueueTask(Time.SECOND, () =>
                 {
                     world.OffsetTiles(-168, Time.HALF_SECOND, tile => tile.Wall);
                     QueueTask(Time.SECOND, () =>
                     {
                         world.OffsetTiles(-168, Time.HALF_SECOND, tile => tile.Wall);
+                        QueueTask(Time.SECOND, () =>
+                        {
+                            world.OffsetTiles(-168, Time.HALF_SECOND, tile => tile.Wall);
+
+                            QueueFree(pacman);
+                            QueueFree(world);
+
+                            QueueTask(Time.HALF_SECOND, () => {
+                                newLevel();
+                            });
+                        });
                     });
                 });
+            }
+            else
+            {
+                // special level 255 end game screen...
+            }
+        }
+
+        private void newLevel()
+        {
+            // reset world
+            world = new World("Assets/tilemap.tmx", 0, 0);
+
+            // reset pacman
+            pacman  = (PacMan)AddGameObject(new PacMan(world));
+
+            // create a new set of ghosts and pacman
+            blinky  = (Blinky)AddGameObject(new Blinky(world, pacman));
+            clyde   = (Clyde)AddGameObject(new Clyde(world, pacman));
+            pinky   = (Pinky)AddGameObject(new Pinky(world, pacman));
+            inky    = (Inky)AddGameObject(new Inky(world, pacman, blinky));
+
+            ghosts  = new List<Ghost>(GHOSTS)
+                    { blinky, inky, pinky, clyde };
+
+            // reset score
+
+            Score = 0;
+            pelletCount = 0;
+
+            PlaySound(Properties.Resources.game_start);
+            QueueTask(Time.FOUR_SECOND, () =>
+            {
+                ResumeModeTracker();
+
+                pacman.Locked = false;
+                blinky.Locked = false;
+
+                QueueTask(Time.SECOND, () =>
+                {
+                    inky.Locked = false;
+
+                    QueueTask(Time.SECOND, () =>
+                    {
+                        pinky.Locked = false;
+
+                        QueueTask(Time.SECOND, () =>
+                        {
+                            clyde.Locked = false;
+                        });
+                    });
+                });
+
+                for (int i = 0; i < "ready!".Length; i++)
+                    world.ClearTile(571 + i);
             });
         }
 

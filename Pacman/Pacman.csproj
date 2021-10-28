@@ -61,7 +61,7 @@
     <Compile Include="GameObjects\Sprites\Ghosts\Pinky.cs" />
     <Compile Include="GameObjects\Sprites\PacMan.cs" />
     <Compile Include="GameObjects\Tiles\Energizer.cs" />
-    <Compile Include="GameObjects\Tiles\Point.cs" />
+    <Compile Include="GameObjects\Tiles\Pellet.cs" />
     <Compile Include="GameObjects\Sprites\Sprite.cs" />
     <Compile Include="GameObjects\Tiles\TileObject.cs" />
     <Compile Include="GameObjects\World.cs" />
