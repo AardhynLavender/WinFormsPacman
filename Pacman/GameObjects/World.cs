@@ -18,6 +18,7 @@ using System.Xml.Linq;
 using FormsPixelGameEngine.Utility;
 using FormsPixelGameEngine.GameObjects.Tiles;
 using FormsPixelGameEngine.GameObjects.Sprites.Ghosts;
+using System.Linq;
 
 namespace FormsPixelGameEngine.GameObjects
 {
@@ -223,6 +224,18 @@ namespace FormsPixelGameEngine.GameObjects
                         ghosts.ForEach(ghost => ghost.Frozen = false);
                 });
             }
+        }
+
+        public void OffsetTiles(int offset, int time, Func<TileObject, bool> predicate)
+        {
+            tiles.Where(predicate).ToList().ForEach(tile =>
+            {
+                tile.SourceRect = tileset.GetTileSourceRect(tile.TextureIndex + offset);
+
+                game.QueueTask(time, () =>
+                    tile.SourceRect = tileset.GetTileSourceRect(tile.TextureIndex)
+                );
+            });
         }
     }
 }
