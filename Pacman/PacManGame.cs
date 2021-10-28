@@ -146,8 +146,10 @@ namespace FormsPixelGameEngine
             ghosts = new List<Ghost>(4)
             { blinky, inky, pinky, clyde };
 
+            world.Ghosts = ghosts;
+
             // start game
-            
+
             PlaySound(Properties.Resources.game_start);
             QueueTask(Time.FOUR_SECOND, () =>
             {

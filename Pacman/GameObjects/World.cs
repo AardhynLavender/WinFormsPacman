@@ -17,6 +17,7 @@ using System.Xml.Linq;
 
 using FormsPixelGameEngine.Utility;
 using FormsPixelGameEngine.GameObjects.Tiles;
+using FormsPixelGameEngine.GameObjects.Sprites.Ghosts;
 
 namespace FormsPixelGameEngine.GameObjects
 {
@@ -26,12 +27,15 @@ namespace FormsPixelGameEngine.GameObjects
 
         private int widthTiles;
         private List<TileObject> tiles;
+        private List<Ghost> ghosts;
 
         // CONSTRUCTOR
 
         public World(string tilemap, float x, float y)
             : base(x, y)
         {
+            // Create world from tilemap
+
             XElement xTileset;
 
             // try to load data as XML elements
@@ -88,6 +92,9 @@ namespace FormsPixelGameEngine.GameObjects
 
         public int WidthTiles 
             => widthTiles;
+
+        public List<Ghost> Ghosts
+        { set => ghosts = value; }
 
         // METHODS
 
@@ -165,28 +172,55 @@ namespace FormsPixelGameEngine.GameObjects
         // cycles the maps tiles in the specified direction 
         public void Slide(Direction direction, int step = 1)
         {
+            // freeze the ghosts during the slide -- things'll go real bad if we dont do this ;-)
+            ghosts.ForEach(ghost => ghost.Frozen = true);
+
             if (direction == Direction.LEFT)
             {
                 game.QueueTask(0, () =>
                 {
+                    // cycle tiles to the right
                     tiles.ForEach(tile =>
                         tile.X = (tile.X + tileset.Size * 2) % width
                     );
 
+                    // cycle ghosts to the right
+                    ghosts.ForEach(ghost =>
+                    {
+                        ghost.X = (ghost.X + tileset.Size * 2) % width;
+                    });
+
+                    // recursively slide until a full cycle has compleated
                     if (step < widthTiles / 2)
                         Slide(direction, ++step);
+
+                    else
+                        // unfreeze the ghosts
+                        ghosts.ForEach(ghost => ghost.Frozen = false);
                 });
             }
             else if (direction == Direction.RIGHT)
             {
                 game.QueueTask(0, () =>
                 {
+                    // cycle tiles to the left
                     tiles.ForEach(tile =>
                         tile.X = (tile.X + width - tileset.Size * 2) % width
                     );
 
+                    // cycle ghosts to the left
+                    ghosts.ForEach(ghost =>
+                    {
+                        ghost.X = (ghost.X + width - tileset.Size * 2) % width;
+                    });
+
+                    // recursively slide until a full cycle has compleated
                     if (step < widthTiles / 2)
                         Slide(direction, ++step);
+
+                    else
+                        // unfreeze the ghosts
+                        ghosts.ForEach(ghost => ghost.Frozen = false);
                 });
             }
         }

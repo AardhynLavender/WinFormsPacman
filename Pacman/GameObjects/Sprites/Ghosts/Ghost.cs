@@ -174,12 +174,11 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
             else
             {
                 CurrentAnimation.Start();
+
                 mode = Mode.SCATTER;
                 speed = 1.0f;
 
-                // reverse direction
-                Trajectory.X *= -1;
-                Trajectory.Y *= -1;
+                reverseDirection();
             }
         }
 
@@ -189,8 +188,11 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
             else
             {
                 CurrentAnimation.Start();
+
                 mode = Mode.CHASE;
                 speed = 1.0f;
+
+                reverseDirection();
             }
         }
 
@@ -202,12 +204,7 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
             CurrentAnimation = frightened;
             frightened.Start();
 
-            // reverse direction
-            if (!inTunnel)
-            {
-                Trajectory.X *= -1;
-                Trajectory.Y *= -1;
-            }
+            reverseDirection();
         }
 
         // set mode to EATEN
@@ -231,6 +228,16 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
 
             else
                 Scatter();
+        }
+
+        private void reverseDirection()
+        {
+            // reverse direction
+            if (!inTunnel)
+            {
+                Trajectory.X *= -1;
+                Trajectory.Y *= -1;
+            }
         }
 
         public override void Update()
