@@ -173,6 +173,8 @@ namespace FormsPixelGameEngine
                     });
                 });
 
+                WinLevel();
+
                 for (int i = 0; i < "ready!".Length; i++)
                     world.ClearTile(571 + i);
             });
@@ -307,6 +309,23 @@ namespace FormsPixelGameEngine
 
             QueueTask(milliseconds, () => pacman.Frozen = false);
 
+        }
+
+        // reset eveything and update the level counter
+        public void WinLevel()
+        {
+            QueueTask(Time.SECOND, () =>
+            {
+                world.OffsetTiles(-168, Time.HALF_SECOND, tile => tile.Wall);
+                QueueTask(Time.SECOND, () =>
+                {
+                    world.OffsetTiles(-168, Time.HALF_SECOND, tile => tile.Wall);
+                    QueueTask(Time.SECOND, () =>
+                    {
+                        world.OffsetTiles(-168, Time.HALF_SECOND, tile => tile.Wall);
+                    });
+                });
+            });
         }
 
         public override void StartGame()
