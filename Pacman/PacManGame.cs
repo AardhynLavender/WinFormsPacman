@@ -217,23 +217,15 @@ namespace FormsPixelGameEngine
         {
             base.Process();
 
-            if (modeIndex < 8)
+            if (modeIndex < 7 && modeTracker.ElapsedMilliseconds > modeTimes[0, modeIndex])
             {
-                if (modeTracker.ElapsedMilliseconds > modeTimes[0, modeIndex])
-                {
-                    currentMode = modeIndex++ % 2 == 0
-                        ? Mode.CHASE
-                        : Mode.SCATTER;
+                currentMode = modeIndex++ % 2 == 0
+                    ? Mode.CHASE
+                    : Mode.SCATTER;
 
-                    Console.WriteLine(currentMode + " : " + modeIndex);
+                Console.WriteLine(currentMode + " : " + modeIndex);
 
-                    ghosts.Where(g => g.Mode != Mode.EATEN).ToList().ForEach(g => g.Revert());
-                }
-            }
-            else
-            {
                 ghosts.Where(g => g.Mode != Mode.EATEN).ToList().ForEach(g => g.Revert());
-                currentMode = Mode.CHASE;
             }
         }
 
