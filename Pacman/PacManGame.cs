@@ -277,7 +277,10 @@ namespace FormsPixelGameEngine
             => modeTracker.Start();
 
         public void ResetModeTracker()
-            => modeTracker.Reset();
+        {
+            modeTracker.Reset();
+            modeIndex = 0;
+        }
 
         // Frighten the ghosts
         public void Frighten()
@@ -418,6 +421,8 @@ namespace FormsPixelGameEngine
         public override void StartGame()
         {
             base.StartGame();
+
+
         }
 
         protected override void SaveGame()
