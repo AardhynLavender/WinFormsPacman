@@ -163,21 +163,6 @@ namespace FormsPixelGameEngine
                 pacman.Locked = false;
                 blinky.Locked = false;
 
-                QueueTask(Time.SECOND, () =>
-                {
-                    inky.Locked = false;
-
-                    QueueTask(Time.SECOND, () =>
-                    {
-                        pinky.Locked = false;
-
-                        QueueTask(Time.SECOND, () =>
-                        {
-                            clyde.Locked = false;
-                        });
-                    });
-                });
-
                 for (int i = 0; i < "ready!".Length; i++)
                     world.ClearTile(571 + i);
             });
@@ -224,17 +209,7 @@ namespace FormsPixelGameEngine
         {
             base.Process();
 
-            if (modeIndex < MODE_SWITCHES 
-                && modeTracker.ElapsedMilliseconds > modeTimes[0, modeIndex])
-            {
-                currentMode = modeIndex++ % 2 == 0
-                    ? Mode.CHASE
-                    : Mode.SCATTER;
-
-                Console.WriteLine(currentMode + " : " + modeIndex);
-
-                ghosts.Where(g => g.Mode != Mode.EATEN).ToList().ForEach(g => g.Revert());
-            }
+            setGhostMode();
         }
 
         protected override void Render()
@@ -266,6 +241,36 @@ namespace FormsPixelGameEngine
             Console.WriteLine(pelletCount);
             if (++pelletCount == LEVEL_PELLETS)
                 winLevel();
+        }
+
+        // Determines the mode the ghosts should default
+        // to based on the level and level timer.
+        private void setGhostMode()
+        {
+            // determine the correct mode set
+            int modeSet = (modeIndex < 2)
+                ? 0
+                : (modeIndex < 5)
+                    ? 1
+                    : 2;
+
+            // set the ghosts default mode
+            if (modeIndex < MODE_SWITCHES
+                && modeTracker.ElapsedMilliseconds > modeTimes[modeSet, modeIndex])
+            {
+                currentMode = modeIndex++ % 2 == 0
+                    ? Mode.CHASE
+                    : Mode.SCATTER;
+
+                Console.WriteLine(currentMode + " : " + modeIndex);
+
+                ghosts.Where(g => g.Mode != Mode.EATEN).ToList().ForEach(g => g.Revert());
+            }
+        }
+
+        private void tryReleaseGhosts()
+        {
+
         }
 
         // EVENTS
@@ -397,21 +402,6 @@ namespace FormsPixelGameEngine
 
                 pacman.Locked = false;
                 blinky.Locked = false;
-
-                QueueTask(Time.SECOND, () =>
-                {
-                    inky.Locked = false;
-
-                    QueueTask(Time.SECOND, () =>
-                    {
-                        pinky.Locked = false;
-
-                        QueueTask(Time.SECOND, () =>
-                        {
-                            clyde.Locked = false;
-                        });
-                    });
-                });
 
                 for (int i = 0; i < "ready!".Length; i++)
                     world.ClearTile(571 + i);
