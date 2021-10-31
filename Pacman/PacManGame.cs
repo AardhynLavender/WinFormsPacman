@@ -143,10 +143,10 @@ namespace FormsPixelGameEngine
 
             // add ghosts
 
-            blinky = (Blinky)AddGameObject(new Blinky(world, pacman));
-            clyde = (Clyde)AddGameObject(new Clyde(world, pacman));
-            pinky = (Pinky)AddGameObject(new Pinky(world, pacman));
-            inky = (Inky)AddGameObject(new Inky(world, pacman, blinky));
+            blinky  = (Blinky)AddGameObject(new Blinky(world, pacman));
+            clyde   = (Clyde)AddGameObject(new Clyde(world, pacman, 60));
+            pinky   = (Pinky)AddGameObject(new Pinky(world, pacman));
+            inky    = (Inky)AddGameObject(new Inky(world, pacman, blinky, 30));
 
             ghosts = new List<Ghost>(GHOSTS)
             { blinky, inky, pinky, clyde };
@@ -160,8 +160,12 @@ namespace FormsPixelGameEngine
             {
                 ResumeModeTracker();
 
-                pacman.Locked = false;
-                blinky.Locked = false;
+                pacman.Locked   =
+                pacman.Frozen   = 
+                blinky.Locked   = 
+                pinky.Locked    = 
+                inky.Locked     = 
+                clyde.Locked    = false;
 
                 for (int i = 0; i < "ready!".Length; i++)
                     world.ClearTile(571 + i);
@@ -238,7 +242,29 @@ namespace FormsPixelGameEngine
 
         public void ConsumePellet()
         {
-            Console.WriteLine(pelletCount);
+            // find the highest ranked ghost in the ghost house
+            List<Ghost> housedGhosts = (
+                from    ghost 
+                in      ghosts
+                where   ghost.AtHome
+                orderby ghost.PreferenceRank
+                select  ghost
+            ).ToList();
+
+            Console.WriteLine(housedGhosts.Count);
+
+            if (housedGhosts.Count > 0)
+            {
+                // release the ghost if it reaches it's pellet count limit
+                Ghost preferedGhost = housedGhosts.First();
+                if (!preferedGhost.IncrementPelletCounter())
+                {
+                    preferedGhost.AtHome =
+                    preferedGhost.Locked =
+                    preferedGhost.Frozen = false;
+                }
+            }
+
             if (++pelletCount == LEVEL_PELLETS)
                 winLevel();
         }
@@ -261,8 +287,6 @@ namespace FormsPixelGameEngine
                 currentMode = modeIndex++ % 2 == 0
                     ? Mode.CHASE
                     : Mode.SCATTER;
-
-                Console.WriteLine(currentMode + " : " + modeIndex);
 
                 ghosts.Where(g => g.Mode != Mode.EATEN).ToList().ForEach(g => g.Revert());
             }
@@ -383,9 +407,9 @@ namespace FormsPixelGameEngine
 
             // create a new set of ghosts and pacman
             blinky  = (Blinky)AddGameObject(new Blinky(world, pacman));
-            clyde   = (Clyde)AddGameObject(new Clyde(world, pacman));
+            clyde   = (Clyde)AddGameObject(new Clyde(world, pacman, 60));
             pinky   = (Pinky)AddGameObject(new Pinky(world, pacman));
-            inky    = (Inky)AddGameObject(new Inky(world, pacman, blinky));
+            inky    = (Inky)AddGameObject(new Inky(world, pacman, blinky, 30));
 
             ghosts  = new List<Ghost>(GHOSTS)
                     { blinky, inky, pinky, clyde };
@@ -400,8 +424,8 @@ namespace FormsPixelGameEngine
             {
                 ResumeModeTracker();
 
-                pacman.Locked = false;
-                blinky.Locked = false;
+                pacman.Locked = 
+                pacman.Frozen = false;
 
                 for (int i = 0; i < "ready!".Length; i++)
                     world.ClearTile(571 + i);

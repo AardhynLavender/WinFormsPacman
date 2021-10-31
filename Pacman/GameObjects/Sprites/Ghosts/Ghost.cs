@@ -123,7 +123,9 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
         protected Vector2D scatterTile;
         protected Vector2D homeTile;
 
-        private int houseWaitTime;
+        protected int preferenceRank;
+        private int pelletLimit;
+        private int pelletCounter;
 
         protected Animation frightened;
 
@@ -136,18 +138,20 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
 
         // CONSTRUCTOR
 
-        public Ghost(float x, float y, int index, World world, PacMan pacman)
+        public Ghost(float x, float y, int index, int pelletLimit, World world, PacMan pacman)
             : base(x, y, index, SIZE, SIZE, new Vector2D(), world)
         {
             // initalize fields
 
-            this.pacman = pacman;
-            locked      = true;
-            mode        = Mode.SCATTER; 
-            offsetX     = OFFSET_X;
-            offsetY     = OFFSET_Y;
+            this.pacman         = pacman;
+            this.pelletLimit    = pelletLimit;
 
-            homeTile = world.GetTile(this);
+            locked              = true;
+            mode                = Mode.SCATTER;
+            offsetX             = OFFSET_X;
+            offsetY             = OFFSET_Y;
+            homeTile            = world.GetTile(this);
+            AtHome              = true;
 
             // create frightened animation
             frightened = new Animation(game, tileset, this, SIZE, FRIGHTENED, 2, Time.TENTH_SECOND);
@@ -159,7 +163,21 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
             => targetTile;
 
         public Mode Mode
-            => mode; 
+            => mode;
+
+        public bool AtHome;
+
+        // The personal count of dots pacman has eaten while being 'prefered ghost'
+        public int PelletCounter
+            => pelletCounter;
+
+        // The dots to count before permited leaving the ghost house
+        public int PelletLimit
+            => pelletLimit;
+
+        // How the ghost ranks against other ghost types
+        public int PreferenceRank
+            => preferenceRank;
 
         // METHODS
 
@@ -170,7 +188,7 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
         // applicable map corner
         public void Scatter()
         {
-            if (mode == Mode.EATEN && !currentTile.Equals(homeTile));
+            if (mode == Mode.EATEN && !currentTile.Equals(homeTile)) ;
             else
             {
                 CurrentAnimation.Start();
@@ -184,7 +202,7 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
 
         public void Chase()
         {
-            if (mode == Mode.EATEN && !currentTile.Equals(homeTile));
+            if (mode == Mode.EATEN && !currentTile.Equals(homeTile)) ;
             else
             {
                 CurrentAnimation.Start();
@@ -210,7 +228,7 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
         // set mode to EATEN
         public void Eat()
         {
-            if (mode != Mode.EATEN);
+            if (mode != Mode.EATEN) ;
             {
                 CurrentAnimation.Stop();
                 mode = Mode.EATEN;
@@ -230,6 +248,9 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
                 Scatter();
         }
 
+        public bool IncrementPelletCounter()
+            => ++pelletCounter < PelletLimit;
+
         private void reverseDirection()
         {
             // reverse direction
@@ -239,6 +260,8 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
                 Trajectory.Y *= -1;
             }
         }
+
+        // UPDATING
 
         public override void Update()
         {
@@ -277,10 +300,15 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
                 && x < world.X + world.Width 
                 && x > world.X)
             {
+                Frozen = AtHome;
+
+                if (AtHome)
+                    targetTile = homeTile;
+
                 // update target tile based on mode
-                switch (mode)
+                else switch (mode)
                 {
-                    case Mode.CHASE: 
+                    case Mode.CHASE:
                         // chase pacman
                         targetTile = GetTargetTile();
                         speed = 1.0f;
@@ -298,7 +326,7 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
                         speed = 2.0f;
                         break;
 
-                    default:break;
+                    default: break;
                 }
 
                 // store distances to 'target tile' from tiles ajacant to the 'current tile'

@@ -32,6 +32,8 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
         private const int TEXTURE_UP    = 260;
         private const int TEXTURE_DOWN  = 264;
 
+        private const int PELLET_LIMIT  = 0;
+
         // FIELDS
 
 
@@ -39,13 +41,20 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
         // CONSTRUCTOR
 
         public Pinky(World world, PacMan pacman)
-            : base(START_X,START_Y, TEXTURE_UP, world, pacman)
+            : base(START_X, START_Y, TEXTURE_UP, PELLET_LIMIT, world, pacman)
         {
+
             // initalize fields
 
-            scatterTile = new Vector2D(0,2);
-            Trajectory  = Directions[(int)Direction.LEFT];
-            speed       = 1.0f;
+            preferenceRank  = 2;
+            scatterTile     = new Vector2D(0,2);
+            homeTile        = new Vector2D(13, 17);
+            Trajectory      = Directions[(int)Direction.LEFT];
+            speed           = 1.0f;
+
+            Vector2D start = world.GetCoordinate(homeTile);
+            x = start.X;
+            y = start.Y;
 
             // configure animations
 

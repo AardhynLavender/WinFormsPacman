@@ -40,13 +40,15 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
         // CONSTRUCTOR
 
         public Blinky(World world, PacMan pacman)
-            : base(START_X, START_Y, TEXTURE_RIGHT, world, pacman)
+            : base(START_X, START_Y, TEXTURE_RIGHT, 0, world, pacman)
         {
             // initalize fields
 
-            scatterTile = new Vector2D(23, 0);
-            Trajectory  = Directions[(int)Direction.LEFT];
-            speed       = 1.0f;
+            scatterTile     = new Vector2D(23, 0);
+            homeTile        = new Vector2D(13, 17);
+            Trajectory      = Directions[(int)Direction.LEFT];
+            speed           = 1.0f;
+            AtHome          = false;
 
             // configure animations
 

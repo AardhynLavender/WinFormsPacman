@@ -39,15 +39,22 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
 
         // CONSTRUCTOR
 
-        public Inky(World world, PacMan pacman, Blinky blinky)
-            : base(START_X, START_Y, TEXTURE_UP, world, pacman)
+        public Inky(World world, PacMan pacman, Blinky blinky, int pelletLimit)
+            : base(START_X, START_Y, TEXTURE_UP, pelletLimit, world, pacman)
         {
             // Initalize fields
 
-            this.blinky = blinky;
-            scatterTile = new Vector2D(27, 35);
-            Trajectory  = Directions[(int)Direction.LEFT];
-            speed       = 1.0f;
+            preferenceRank  = 3;
+
+            this.blinky     = blinky;
+            scatterTile     = new Vector2D(27, 35);
+            homeTile        = new Vector2D(11, 17);
+            Trajectory      = Directions[(int)Direction.LEFT];
+            speed           = 1.0f;
+
+            Vector2D start = world.GetCoordinate(homeTile);
+            x = start.X;
+            y = start.Y;
 
             // configure animations
 

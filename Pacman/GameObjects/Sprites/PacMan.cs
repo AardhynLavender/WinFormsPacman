@@ -71,6 +71,7 @@ namespace FormsPixelGameEngine.GameObjects.Sprites
             speed               = 1.33f;
             directionHistory    = new List<Direction>();
             locked              = true;
+            Frozen              = true;
             offsetX = offsetY   = 3;
 
             // create animations
@@ -86,7 +87,7 @@ namespace FormsPixelGameEngine.GameObjects.Sprites
 
             Array.ForEach(directionalAnimations, a => a.Start());
 
-            direction           = Direction.UP;
+            direction           = Direction.LEFT;
             currentAnimation    = directionalAnimations[(int)direction];
         }
 
