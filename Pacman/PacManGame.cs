@@ -242,28 +242,7 @@ namespace FormsPixelGameEngine
 
         public void ConsumePellet()
         {
-            // find the highest ranked ghost in the ghost house
-            List<Ghost> housedGhosts = (
-                from    ghost 
-                in      ghosts
-                where   ghost.AtHome
-                orderby ghost.PreferenceRank
-                select  ghost
-            ).ToList();
-
-            Console.WriteLine(housedGhosts.Count);
-
-            if (housedGhosts.Count > 0)
-            {
-                // release the ghost if it reaches it's pellet count limit
-                Ghost preferedGhost = housedGhosts.First();
-                if (!preferedGhost.IncrementPelletCounter())
-                {
-                    preferedGhost.AtHome =
-                    preferedGhost.Locked =
-                    preferedGhost.Frozen = false;
-                }
-            }
+            tryReleaseGhosts();
 
             if (++pelletCount == LEVEL_PELLETS)
                 winLevel();
@@ -294,7 +273,26 @@ namespace FormsPixelGameEngine
 
         private void tryReleaseGhosts()
         {
+            // find the highest ranked ghost in the ghost house
+            List<Ghost> housedGhosts = (
+                from ghost
+                in ghosts
+                where ghost.AtHome
+                orderby ghost.PreferenceRank
+                select ghost
+            ).ToList();
 
+            if (housedGhosts.Count > 0)
+            {
+                // release the ghost if it reaches it's pellet count limit
+                Ghost preferedGhost = housedGhosts.First();
+                if (!preferedGhost.IncrementPelletCounter())
+                {
+                    preferedGhost.AtHome =
+                    preferedGhost.Locked =
+                    preferedGhost.Frozen = false;
+                }
+            }
         }
 
         // EVENTS
@@ -318,7 +316,7 @@ namespace FormsPixelGameEngine
             PauseModeTracker();
 
             // frighten the ghosts
-            ghosts.ForEach(g => g.Frighten());
+            ghosts.Where(g => !g.AtHome).ToList().ForEach(g => g.Frighten());
 
             // chase again after 6 seconds
             QueueTask(Time.SECOND * 6, () =>
@@ -326,12 +324,6 @@ namespace FormsPixelGameEngine
                 ResumeModeTracker();
                 ghosts.Where(g => g.Mode != Mode.EATEN).ToList().ForEach(g => g.Revert());
             });
-        }
-
-        public void Scatter()
-        {
-            ghosts.Where(g => g.Mode != Mode.EATEN).ToList()
-            .ForEach(g => g.Scatter());
         }
 
         // freezes all sprites except eaten ghosts
@@ -424,6 +416,7 @@ namespace FormsPixelGameEngine
             {
                 ResumeModeTracker();
 
+                blinky.Locked =
                 pacman.Locked = 
                 pacman.Frozen = false;
 
