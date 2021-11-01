@@ -8,17 +8,29 @@
 //
 
 using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+
+using FormsPixelGameEngine.Utility;
 
 namespace FormsPixelGameEngine.Render
 {
-    public sealed class GameScreen
+    sealed class GameScreen
     {
+        // STATIC MEMBERS
+
+        private const int COLORS = 6;
+
+        private static readonly Pen[] 
+        colors = new Pen[COLORS] 
+        {
+            Pens.White,
+            Pens.Yellow,
+            Pens.Red,
+            Pens.Pink,
+            Pens.LightCyan,
+            Pens.Orange
+        };
+
         // FIELDS
 
         private int width;
@@ -88,6 +100,16 @@ namespace FormsPixelGameEngine.Render
             Buffer.PixelOffsetMode      = System.Drawing.Drawing2D.PixelOffsetMode.Half;
             Buffer.InterpolationMode    = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
         }
+
+        // draws a line on the screen
+        public void DrawLine(Vector2D a, Vector2D b, Colour color)
+            => buffer.DrawLine(
+                colors[(int)color],
+                a.X * scale,
+                a.Y * scale,
+                b.X * scale,
+                b.Y * scale 
+            );
 
         // clears the screen
         public void Clear()

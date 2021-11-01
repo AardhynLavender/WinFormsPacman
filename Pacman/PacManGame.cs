@@ -422,11 +422,16 @@ namespace FormsPixelGameEngine
             });
         }
 
+        // DEBUG
+
+        public void DrawLine(Vector2D a, Vector2D b, Colour colour)
+            => QueueDraw(() => screen.DrawLine(a, b, colour));
+
+        // ABSTRACT
+
         public override void StartGame()
         {
             base.StartGame();
-
-
         }
 
         protected override void SaveGame()

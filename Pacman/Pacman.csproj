@@ -76,6 +76,7 @@
     <Compile Include="Render\Animation.cs" />
     <Compile Include="Render\GameScreen.cs" />
     <Compile Include="Render\TileSet.cs" />
+    <Compile Include="Utility\Colour.cs" />
     <Compile Include="Utility\Direction.cs" />
     <Compile Include="Utility\InputManager.cs" />
     <Compile Include="Utility\Mode.cs" />
