@@ -111,6 +111,19 @@ namespace FormsPixelGameEngine.Render
                 b.Y * scale 
             );
 
+        // draws an elipse on the screen
+        public void DrawEllipse(Vector2D p, float r, Colour color)
+        {
+            r *= scale;
+            buffer.DrawEllipse(
+                colors[(int)color],
+                p.X * scale - r,
+                p.Y * scale - r,
+                r * 2,
+                r * 2
+            );
+        }
+
         // clears the screen
         public void Clear()
             => Buffer.FillRectangle(Brushes.Black, new Rectangle(0, 0, WidthScaled, HeightScaled));

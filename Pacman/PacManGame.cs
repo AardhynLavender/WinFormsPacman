@@ -443,6 +443,9 @@ namespace FormsPixelGameEngine
         public void DrawLine(Vector2D a, Vector2D b, Colour colour)
             => QueueDraw(() => screen.DrawLine(a, b, colour));
 
+        public void DrawEllipse(Vector2D p, float r, Colour colour)
+            => QueueDraw(() => screen.DrawEllipse(p, r, colour));
+
         // ABSTRACT
 
         public override void StartGame()
