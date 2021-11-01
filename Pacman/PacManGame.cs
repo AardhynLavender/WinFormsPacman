@@ -85,6 +85,7 @@ namespace FormsPixelGameEngine
         private Stopwatch modeTracker;
         private Mode currentMode;
         private int modeIndex;
+        private long exitFrightenTime;
 
         private TileSet tileset;
         private World world;
@@ -204,12 +205,16 @@ namespace FormsPixelGameEngine
         public Mode CurrentMode 
             => currentMode;
 
+        private bool frightened
+            => exitFrightenTime != 0;
+
         // GAME LOOP
 
         protected override void Process()
         {
             base.Process();
 
+            tryExitFrighten();
             setGhostMode();
         }
 
@@ -306,21 +311,32 @@ namespace FormsPixelGameEngine
             modeIndex = 0;
         }
 
-        // Frighten the ghosts
-        public void Frighten()
+        // Resume standard mode switch, revert the ghosts, and reset the exit frighten flag
+        private void tryExitFrighten()
         {
-            // pause mode tracker
-            PauseModeTracker();
-
-            // frighten the ghosts
-            ghosts.Where(g => !g.AtHome).ToList().ForEach(g => g.Frighten());
-
-            // chase again after 6 seconds
-            QueueTask(Time.SECOND * 6, () =>
+            // is it time to exit frightened mode?
+            if (RunningTime > exitFrightenTime && frightened)
             {
                 ResumeModeTracker();
                 ghosts.Where(g => g.Mode != Mode.EATEN).ToList().ForEach(g => g.Revert());
-            });
+                exitFrightenTime = 0;
+            }
+        }
+
+        // Frighten the ghosts
+        public void Frighten()
+        {
+            if (!frightened)
+            {
+                // pause mode tracker
+                PauseModeTracker();
+
+                // frighten the ghosts
+                ghosts.Where(g => !g.AtHome).ToList().ForEach(g => g.Frighten());
+            }
+
+            // chase again after 6 seconds
+            exitFrightenTime = RunningTime + Time.SECOND * 6;
         }
 
         // freezes all sprites except eaten ghosts
