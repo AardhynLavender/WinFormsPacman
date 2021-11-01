@@ -28,6 +28,7 @@ namespace FormsPixelGameEngine.GameObjects.Sprites
         protected bool locked;
         private bool frozen;
         protected float speed;
+        private bool hidden;
 
         protected World world;
         protected Vector2D currentTile;
@@ -40,8 +41,11 @@ namespace FormsPixelGameEngine.GameObjects.Sprites
         public Sprite(float x, float y, int index, int tileSpanX, int tileSpanY, Vector2D trajectory, World world)
             : base(x, y, index, STANDARD_Z, tileSpanX, tileSpanY)
         {
+            // initalize fields
+
             this.world = world;
             Trajectory = trajectory;
+            hidden = false;
         }
 
         // PROPERTIES
@@ -77,18 +81,24 @@ namespace FormsPixelGameEngine.GameObjects.Sprites
             get => locked;
             set => locked = value;
         }
-        public bool Frozen 
+        public bool Frozen
         {
             get => frozen;
-            set => frozen = value; 
+            set => frozen = value;
         }
 
         // METHODS
 
-        public override void Update()  
+        public void Hide()
+            => hidden = true;
+
+        public void Show()
+            => hidden = false;
+
+        public override void Update()
         {
             if (!frozen)
-            { 
+            {
                 x += Trajectory.X * speed;
                 y += Trajectory.Y * speed;
 
@@ -98,6 +108,9 @@ namespace FormsPixelGameEngine.GameObjects.Sprites
         }
 
         public override void Draw()
-            => screen.Copy(tileset.Texture, sourceRect, new Rectangle((int)x - offsetX, (int)y - offsetY, width, height));
+        {
+            if (!hidden)
+                screen.Copy(tileset.Texture, sourceRect, new Rectangle((int)x - offsetX, (int)y - offsetY, width, height));
+        }
     }
 }
