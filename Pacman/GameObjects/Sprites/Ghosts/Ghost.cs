@@ -248,6 +248,12 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
                 Scatter();
         }
 
+        private bool InGhostHouse()
+            => currentTile.X >= 10
+            && currentTile.X <= 17
+            && currentTile.Y >= 15
+            && currentTile.Y <= 19;
+
         public bool IncrementPelletCounter()
             => ++pelletCounter < PelletLimit;
 
@@ -282,8 +288,11 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
             if (x < world.X && Direction == Direction.LEFT) 
                 X = world.Width;
 
-            if (x > world.X + world.Width && Direction == Direction.RIGHT) 
+            if (x > world.X + world.Width && Direction == Direction.RIGHT)
                 X = world.X;
+
+            // get the ghosts current tile
+            currentTile = world.GetTile(x, y);
 
             // get the ghosts current tile
             currentTile = world.GetTile(x, y);
@@ -300,10 +309,9 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
                 && x < world.X + world.Width 
                 && x > world.X)
             {
-                Frozen = AtHome;
 
-                if (AtHome)
-                    targetTile = homeTile;
+                if (InGhostHouse() && mode != Mode.EATEN)
+                    targetTile = AtHome ? homeTile : new Vector2D(13,14);
 
                 // update target tile based on mode
                 else switch (mode)

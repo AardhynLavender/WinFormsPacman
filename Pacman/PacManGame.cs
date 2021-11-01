@@ -161,11 +161,8 @@ namespace FormsPixelGameEngine
                 ResumeModeTracker();
 
                 pacman.Locked   =
-                pacman.Frozen   = 
                 blinky.Locked   = 
-                pinky.Locked    = 
-                inky.Locked     = 
-                clyde.Locked    = false;
+                pacman.Frozen   = false;
 
                 for (int i = 0; i < "ready!".Length; i++)
                     world.ClearTile(571 + i);
