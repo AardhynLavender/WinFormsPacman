@@ -22,6 +22,7 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
         // CONSTANTS
 
         private const int ANIMATION     = Time.TWENTYTH_SECOND;
+        private const Colour COLOUR     = Colour.ORANCE;
 
         private const int START_X       = 107;
         private const int START_Y       = 112;
@@ -38,7 +39,7 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
         // CONSTRUCTOR
 
         public Clyde(World world, PacMan pacman, int pelletLimit)
-            : base(START_X, START_Y, TEXTURE_RIGHT, pelletLimit, world, pacman)
+            : base(START_X, START_Y, TEXTURE_RIGHT, pelletLimit, world, pacman, COLOUR)
         {
             // initalize fields
 

@@ -23,10 +23,11 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
     {
         // CONSTANTS
 
-        private const int ANIMATION = Time.TWENTYTH_SECOND;
+        private const int ANIMATION     = Time.TWENTYTH_SECOND;
+        private const Colour COLOUR     = Colour.RED;
 
-        private const int START_X = 107;
-        private const int START_Y = 112;
+        private const int START_X       = 107;
+        private const int START_Y       = 112;
 
         private const int TEXTURE_RIGHT = 168;
         private const int TEXTURE_LEFT  = 172;
@@ -40,7 +41,7 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
         // CONSTRUCTOR
 
         public Blinky(World world, PacMan pacman)
-            : base(START_X, START_Y, TEXTURE_RIGHT, 0, world, pacman)
+            : base(START_X, START_Y, TEXTURE_RIGHT, 0, world, pacman, COLOUR)
         {
             // initalize fields
 

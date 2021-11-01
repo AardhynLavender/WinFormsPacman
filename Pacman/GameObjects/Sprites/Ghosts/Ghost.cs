@@ -127,6 +127,8 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
         private int pelletLimit;
         private int pelletCounter;
 
+        protected Colour Colour;
+
         protected Animation frightened;
 
         protected Animation right;
@@ -138,13 +140,14 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
 
         // CONSTRUCTOR
 
-        public Ghost(float x, float y, int index, int pelletLimit, World world, PacMan pacman)
+        public Ghost(float x, float y, int index, int pelletLimit, World world, PacMan pacman, Colour colour)
             : base(x, y, index, SIZE, SIZE, new Vector2D(), world)
         {
             // initalize fields
 
             this.pacman         = pacman;
             this.pelletLimit    = pelletLimit;
+            this.Colour         = colour;
 
             locked              = true;
             mode                = Mode.SCATTER;
@@ -180,6 +183,27 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
             => preferenceRank;
 
         // METHODS
+
+        // print debugging infomation 
+
+        protected virtual void debugDraw()
+        {
+            // fetch current and target tiles
+
+            Vector2D a = world.GetCoordinate(currentTile);
+            Vector2D b = world.GetCoordinate(targetTile);
+
+            // offset tiles to centroids
+
+            a.X += 4;
+            b.X += 4;
+            a.Y += 4;
+            b.Y += 4;
+
+            // draw a line
+
+            game.DrawLine(a, b, Colour);
+        }
 
         // calculate the target tile
         protected abstract Vector2D GetTargetTile();
@@ -386,7 +410,11 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
 
                 else if (mode != Mode.FRIGHTENED)
                     CurrentAnimation = directionalAnimations[(int)direction];
+
             }
+
+            // debug
+            debugDraw();
 
             // update if div is 0
             if (!locked && game.Tick % updateDiv == 0)
