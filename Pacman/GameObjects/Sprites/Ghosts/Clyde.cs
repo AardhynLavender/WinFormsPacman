@@ -21,16 +21,18 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
     {
         // CONSTANTS
 
-        private const int ANIMATION     = Time.TWENTYTH_SECOND;
-        private const Colour COLOUR     = Colour.ORANCE;
+        private const int ANIMATION         = Time.TWENTYTH_SECOND;
+        private const Colour COLOUR         = Colour.ORANCE;
 
-        private const int START_X       = 107;
-        private const int START_Y       = 112;
+        private const float SCATTER_RADIUS  = 8;
 
-        private const int TEXTURE_RIGHT = 420;
-        private const int TEXTURE_LEFT  = 424;
-        private const int TEXTURE_UP    = 428;
-        private const int TEXTURE_DOWN  = 432;
+        private const int START_X           = 107;
+        private const int START_Y           = 112;
+
+        private const int TEXTURE_RIGHT     = 420;
+        private const int TEXTURE_LEFT      = 424;
+        private const int TEXTURE_UP        = 428;
+        private const int TEXTURE_DOWN      = 432;
 
         // FIELDS
 
@@ -74,8 +76,17 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
 
         // METHODS
 
+        protected override void debugDraw()
+        {
+            base.debugDraw();
+
+            // draw scatter radius
+            if (Mode == Mode.CHASE)
+                game.DrawEllipse(world.GetCoordinate(currentTile), SCATTER_RADIUS * tileset.Size, Colour);
+        }
+
         protected override Vector2D GetTargetTile()
-            => Vector2D.GetAbsDistance(currentTile, pacman.CurrentTile) > 8 
+            => Vector2D.GetAbsDistance(currentTile, pacman.CurrentTile) > SCATTER_RADIUS
                 ? pacman.CurrentTile 
                 : scatterTile;
     }
