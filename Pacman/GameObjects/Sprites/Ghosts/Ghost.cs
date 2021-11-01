@@ -294,12 +294,11 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
             // get the ghosts current tile
             currentTile = world.GetTile(x, y);
 
-            // get the ghosts current tile
-            currentTile = world.GetTile(x, y);
-
+            // eat if occupying the same tile as pacman
             if (mode == Mode.FRIGHTENED && currentTile.Equals(pacman.CurrentTile))
                 Eat();
 
+            // revert to standard mode when home after being eaten
             if (mode == Mode.EATEN && currentTile.Equals(homeTile))
                 Revert();
 

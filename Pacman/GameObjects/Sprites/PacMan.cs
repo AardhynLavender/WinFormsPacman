@@ -68,7 +68,7 @@ namespace FormsPixelGameEngine.GameObjects.Sprites
         {
             // initatlize fields
 
-            speed               = 1.33f;
+            speed               = 1.0f;
             directionHistory    = new List<Direction>();
             locked              = true;
             Frozen              = true;
