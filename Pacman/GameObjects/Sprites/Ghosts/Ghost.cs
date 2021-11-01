@@ -188,21 +188,24 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
 
         protected virtual void debugDraw()
         {
-            // fetch current and target tiles
+            if (mode != Mode.FRIGHTENED)
+            {
+                // fetch current and target tiles
 
-            Vector2D a = world.GetCoordinate(currentTile);
-            Vector2D b = world.GetCoordinate(targetTile);
+                Vector2D a = world.GetCoordinate(currentTile);
+                Vector2D b = world.GetCoordinate(targetTile);
 
-            // offset tiles to centroids
+                // offset tiles to centroids
 
-            a.X += 4;
-            b.X += 4;
-            a.Y += 4;
-            b.Y += 4;
+                a.X += 4;
+                b.X += 4;
+                a.Y += 4;
+                b.Y += 4;
 
-            // draw a line
+                // draw a line
 
-            game.DrawLine(a, b, Colour);
+                game.DrawLine(a, b, Colour);
+            }
         }
 
         // calculate the target tile
