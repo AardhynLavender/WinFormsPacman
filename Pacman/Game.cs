@@ -42,6 +42,7 @@ namespace FormsPixelGameEngine
         protected static List<GameObject> deleteQueue;
         protected static List<Animation> animations;
         private static List<Task> taskQueue;
+        private static List<Task> drawQueue;
 
         // physics
 
@@ -70,6 +71,7 @@ namespace FormsPixelGameEngine
             deleteQueue             = new List<GameObject>();
             animations              = new List<Animation>();
             taskQueue               = new List<Task>();
+            drawQueue               = new List<Task>();
 
             // raise processing flags
 
@@ -139,6 +141,11 @@ namespace FormsPixelGameEngine
 
             foreach (GameObject gameObject in gameObjects) 
                 gameObject.Draw();
+
+            // run the tasks in the drawing queue
+            drawQueue.Where(task => !task.Called).ToList().ForEach(
+                task => task.TryRun()
+            );
 
             screen.Present();
         }
@@ -222,6 +229,11 @@ namespace FormsPixelGameEngine
         // Queues a task to be called
         public void QueueTask(int milliseconds, Action callback)
             => taskQueue.Add(new Task(callback, milliseconds, this));
+
+        // queues a task to be called just before render presentation
+        // use this method for last minute drawing to the screen
+        public void QueueDraw(Action callback)
+            => drawQueue.Add(new Task(callback, 0, this));
 
         // ABSTRACT
 
