@@ -31,6 +31,7 @@ namespace FormsPixelGameEngine.GameObjects.Sprites
         private const int START_Y       = 208;
 
         // texture indices
+        private const int STATIONARY    = 0;
         private const int UP            = 88;
         private const int DOWN          = 96;
         private const int LEFT          = 92;
@@ -64,7 +65,7 @@ namespace FormsPixelGameEngine.GameObjects.Sprites
         // CONSTRUCTOR
 
         public PacMan(World world)
-            : base(START_X, START_Y, UP, SIZE_TILES, SIZE_TILES, new Vector2D(), world)
+            : base(START_X, START_Y, STATIONARY, SIZE_TILES, SIZE_TILES, new Vector2D(), world)
         {
             // initatlize fields
 
