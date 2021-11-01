@@ -186,10 +186,7 @@ namespace FormsPixelGameEngine.GameObjects
                     );
 
                     // cycle ghosts to the right
-                    ghosts.ForEach(ghost =>
-                    {
-                        ghost.X = (ghost.X + tileset.Size * 2) % width;
-                    });
+                    ghosts.ForEach(ghost => ghost.Hide());
 
                     // recursively slide until a full cycle has compleated
                     if (step < widthTiles / 2)
@@ -197,7 +194,11 @@ namespace FormsPixelGameEngine.GameObjects
 
                     else
                         // unfreeze the ghosts
-                        ghosts.ForEach(ghost => ghost.Frozen = false);
+                        ghosts.ForEach(ghost =>
+                        {
+                            ghost.Show();
+                            ghost.Frozen = false;
+                        });
                 });
             }
             else if (direction == Direction.RIGHT)
@@ -210,10 +211,7 @@ namespace FormsPixelGameEngine.GameObjects
                     );
 
                     // cycle ghosts to the left
-                    ghosts.ForEach(ghost =>
-                    {
-                        ghost.X = (ghost.X + width - tileset.Size * 2) % width;
-                    });
+                    ghosts.ForEach(ghost => ghost.Hide());
 
                     // recursively slide until a full cycle has compleated
                     if (step < widthTiles / 2)
@@ -221,7 +219,11 @@ namespace FormsPixelGameEngine.GameObjects
 
                     else
                         // unfreeze the ghosts
-                        ghosts.ForEach(ghost => ghost.Frozen = false);
+                        ghosts.ForEach(ghost =>
+                        {
+                            ghost.Show();
+                            ghost.Frozen = false; 
+                        });
                 });
             }
         }
