@@ -382,6 +382,7 @@ namespace FormsPixelGameEngine
         {
             // reset world
             world = new World("Assets/tilemap.tmx", 0, 0);
+            if (!gameObjects.Contains(world)) AddGameObject(world);
 
             // reset pacman
             pacman  = (PacMan)AddGameObject(new PacMan(world));
@@ -394,6 +395,8 @@ namespace FormsPixelGameEngine
 
             ghosts  = new List<Ghost>(GHOSTS)
                     { blinky, inky, pinky, clyde };
+
+            world.Ghosts = ghosts;
 
             // reset score
 
@@ -428,40 +431,7 @@ namespace FormsPixelGameEngine
         {
             base.StartGame();
 
-
-            world = new World("Assets/tilemap.tmx", 0, 0);
-            AddGameObject(world);
-
-            // add pacman
-
-            pacman  = (PacMan)AddGameObject(new PacMan(world));
-
-            // add ghosts
-
-            blinky  = (Blinky)AddGameObject(new Blinky(world, pacman));
-            clyde   = (Clyde)AddGameObject(new Clyde(world, pacman, 60));
-            pinky   = (Pinky)AddGameObject(new Pinky(world, pacman));
-            inky    = (Inky)AddGameObject(new Inky(world, pacman, blinky, 30));
-
-            ghosts = new List<Ghost>(GHOSTS)
-            { blinky, inky, pinky, clyde };
-
-            world.Ghosts = ghosts;
-
-            // start game
-
-            PlaySound(Properties.Resources.game_start);
-            QueueTask(Time.FOUR_SECOND, () =>
-            {
-                ResumeModeTracker();
-
-                pacman.Locked =
-                blinky.Locked =
-                pacman.Frozen = false;
-
-                for (int i = 0; i < "ready!".Length; i++)
-                    world.ClearTile(571 + i);
-            });
+            newLevel();
         }
 
         protected override void SaveGame()
