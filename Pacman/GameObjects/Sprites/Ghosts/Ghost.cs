@@ -417,7 +417,9 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
             }
 
             // debug
-            debugDraw();
+
+            if (game.Debug)
+                debugDraw();
 
             // update if div is 0
             if (!locked && game.Tick % updateDiv == 0)

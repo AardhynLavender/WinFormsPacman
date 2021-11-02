@@ -75,6 +75,8 @@ namespace FormsPixelGameEngine
 
         // FIELDS
 
+        private bool debug;
+
         private List<TileObject> scoreDisplay;
         private int score;
         private int hiScore;
@@ -136,38 +138,7 @@ namespace FormsPixelGameEngine
 
             world = new World("Assets/tilemap.tmx", 0, 0);
 
-            AddGameObject(world);
-
-            // add pacman
-
-            pacman = (PacMan)AddGameObject(new PacMan(world));
-
-            // add ghosts
-
-            blinky  = (Blinky)AddGameObject(new Blinky(world, pacman));
-            clyde   = (Clyde)AddGameObject(new Clyde(world, pacman, 60));
-            pinky   = (Pinky)AddGameObject(new Pinky(world, pacman));
-            inky    = (Inky)AddGameObject(new Inky(world, pacman, blinky, 30));
-
-            ghosts = new List<Ghost>(GHOSTS)
-            { blinky, inky, pinky, clyde };
-
-            world.Ghosts = ghosts;
-
-            // start game
-
-            PlaySound(Properties.Resources.game_start);
-            QueueTask(Time.FOUR_SECOND, () =>
-            {
-                ResumeModeTracker();
-
-                pacman.Locked   =
-                blinky.Locked   = 
-                pacman.Frozen   = false;
-
-                for (int i = 0; i < "ready!".Length; i++)
-                    world.ClearTile(571 + i);
-            });
+            StartGame();
         }
 
         // PROPERTIES
@@ -195,6 +166,9 @@ namespace FormsPixelGameEngine
                 DisplayText(hiScore.ToString(), 40);
             }
         }
+
+        public bool Debug
+            => debug;
 
         public Vector2D PacManPosition 
             => pacman.CurrentTile;
@@ -451,6 +425,39 @@ namespace FormsPixelGameEngine
         public override void StartGame()
         {
             base.StartGame();
+
+            AddGameObject(world);
+
+            // add pacman
+
+            pacman  = (PacMan)AddGameObject(new PacMan(world));
+
+            // add ghosts
+
+            blinky  = (Blinky)AddGameObject(new Blinky(world, pacman));
+            clyde   = (Clyde)AddGameObject(new Clyde(world, pacman, 60));
+            pinky   = (Pinky)AddGameObject(new Pinky(world, pacman));
+            inky    = (Inky)AddGameObject(new Inky(world, pacman, blinky, 30));
+
+            ghosts = new List<Ghost>(GHOSTS)
+            { blinky, inky, pinky, clyde };
+
+            world.Ghosts = ghosts;
+
+            // start game
+
+            PlaySound(Properties.Resources.game_start);
+            QueueTask(Time.FOUR_SECOND, () =>
+            {
+                ResumeModeTracker();
+
+                pacman.Locked =
+                blinky.Locked =
+                pacman.Frozen = false;
+
+                for (int i = 0; i < "ready!".Length; i++)
+                    world.ClearTile(571 + i);
+            });
         }
 
         protected override void SaveGame()
