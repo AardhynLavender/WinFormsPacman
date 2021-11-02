@@ -75,10 +75,14 @@ namespace FormsPixelGameEngine
             base.OnMouseDown(e);
 
             #region check for conditions to move the window without a title bar
-            if (e.Button == MouseButtons.Left && e.Y < 50 && e.X < Width - 40)
+            if (e.Button == MouseButtons.Left && e.Y < 30 && e.X < Width)
             {
-                ReleaseCapture();
-                SendMessage(Handle, WM_NCLBUTTONDOWN, HT_CAPTION, 0);
+                if (e.X < Width - 30)
+                {
+                    ReleaseCapture();
+                    SendMessage(Handle, WM_NCLBUTTONDOWN, HT_CAPTION, 0);
+                }
+                else Application.Exit();
             }
             #endregion
         }
