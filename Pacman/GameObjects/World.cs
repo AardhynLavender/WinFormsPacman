@@ -239,5 +239,8 @@ namespace FormsPixelGameEngine.GameObjects
                 );
             });
         }
+
+        public void OffsetTile(int offset, TileObject tile)
+            => tile.SourceRect = tileset.GetTileSourceRect(tile.TextureIndex + offset);
     }
 }

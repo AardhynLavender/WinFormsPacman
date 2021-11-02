@@ -54,6 +54,7 @@
     </Compile>
     <Compile Include="Game.cs" />
     <Compile Include="GameObjects\GameObject.cs" />
+    <Compile Include="GameObjects\Menu\Menu.cs" />
     <Compile Include="GameObjects\Sprites\Ghosts\Blinky.cs" />
     <Compile Include="GameObjects\Sprites\Ghosts\Clyde.cs" />
     <Compile Include="GameObjects\Sprites\Ghosts\Ghost.cs" />
@@ -92,6 +93,7 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include=".editorconfig" />
+    <None Include="Assets\menu.tmx" />
     <None Include="Assets\tilemap.tmx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

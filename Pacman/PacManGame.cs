@@ -19,6 +19,7 @@ using FormsPixelGameEngine.GameObjects;
 using FormsPixelGameEngine.GameObjects.Tiles;
 using FormsPixelGameEngine.GameObjects.Sprites;
 using FormsPixelGameEngine.GameObjects.Sprites.Ghosts;
+using FormsPixelGameEngine.GameObjects.Menu;
 
 using FormsPixelGameEngine.Render;
 using FormsPixelGameEngine.Utility;
@@ -134,11 +135,9 @@ namespace FormsPixelGameEngine
                 for (int j = 1; j < modeTimes.GetLength(1) - 1; j++)
                     modeTimes[i, j] += modeTimes[i, j - 1];
 
-            // create world
+            // create and run menu
 
-            world = new World("Assets/tilemap.tmx", 0, 0);
-
-            StartGame();
+            Menu menu = (Menu)AddGameObject(new Menu());
         }
 
         // PROPERTIES
@@ -168,7 +167,10 @@ namespace FormsPixelGameEngine
         }
 
         public bool Debug
-            => debug;
+        { 
+            get => debug; 
+            set => debug = value; 
+        }
 
         public Vector2D PacManPosition 
             => pacman.CurrentTile;
@@ -426,6 +428,8 @@ namespace FormsPixelGameEngine
         {
             base.StartGame();
 
+
+            world = new World("Assets/tilemap.tmx", 0, 0);
             AddGameObject(world);
 
             // add pacman
