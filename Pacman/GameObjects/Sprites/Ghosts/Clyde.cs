@@ -60,7 +60,7 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
             up      = new Animation(game, tileset, this, SIZE, TEXTURE_UP, 2, ANIMATION);
             right   = new Animation(game, tileset, this, SIZE, TEXTURE_RIGHT, 2, ANIMATION);
             down    = new Animation(game, tileset, this, SIZE, TEXTURE_DOWN, 2, ANIMATION);
-            left     = new Animation(game, tileset, this, SIZE, TEXTURE_LEFT, 2, ANIMATION);
+            left    = new Animation(game, tileset, this, SIZE, TEXTURE_LEFT, 2, ANIMATION);
 
             directionalAnimations = new Animation[DIRECTIONS]
             { up, right, down, left };
@@ -81,8 +81,12 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
             base.debugDraw();
 
             // draw scatter radius
-            if (Mode == Mode.CHASE)
+            if (Mode == Mode.CHASE 
+                && !locked 
+                && !Frozen)
+            {
                 game.DrawEllipse(world.GetCoordinate(currentTile), SCATTER_RADIUS * tileset.Size, Colour);
+            }
         }
 
         protected override Vector2D GetTargetTile()

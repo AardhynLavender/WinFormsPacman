@@ -79,12 +79,7 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
             base.debugDraw();
 
             if (Mode == Mode.CHASE)
-            {
-                Vector2D pivot = pacman.CurrentTile;
-                pivot.Y -= 2;
-                game.DrawLine(world.GetCoordinate(blinky.CurrentTile), world.GetCoordinate(pivot), Colour);
-                game.DrawLine(world.GetCoordinate(pivot), world.GetCoordinate(targetTile), Colour);
-            }
+                game.DrawLine(world.GetCoordinate(blinky.CurrentTile), world.GetCoordinate(targetTile), Colour);
         }
 
         protected override Vector2D GetTargetTile()

@@ -188,7 +188,7 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
 
         protected virtual void debugDraw()
         {
-            if (mode != Mode.FRIGHTENED)
+            if (mode != Mode.FRIGHTENED && !locked)
             {
                 // fetch current and target tiles
 
