@@ -172,6 +172,9 @@ namespace FormsPixelGameEngine
             set => debug = value; 
         }
 
+        public PacMan Pacman
+            => pacman;
+        
         public Vector2D PacManPosition 
             => pacman.CurrentTile;
 

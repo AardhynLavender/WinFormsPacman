@@ -39,6 +39,8 @@ namespace FormsPixelGameEngine.Render
         private Graphics buffer;
         private Graphics display;
         private float scale;
+        private Rectangle src;
+        private Rectangle dest;
 
         // PROPERTIES
 
@@ -89,6 +91,9 @@ namespace FormsPixelGameEngine.Render
             HeightScaled                = height;
             Scale                       = scale;
 
+            src = new Rectangle(0, 0, width, height);
+            dest = new Rectangle(0, 0, WidthScaled, HeightScaled);
+
             // create buffer
 
             bufferImage                 = new Bitmap(WidthScaled, HeightScaled);
@@ -98,31 +103,16 @@ namespace FormsPixelGameEngine.Render
             // configure buffer
 
             Buffer.PixelOffsetMode      = System.Drawing.Drawing2D.PixelOffsetMode.Half;
-            Buffer.InterpolationMode    = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
+            display.InterpolationMode    = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
         }
 
         // draws a line on the screen
         public void DrawLine(Vector2D a, Vector2D b, Colour color)
-            => buffer.DrawLine(
-                colors[(int)color],
-                a.X * scale,
-                a.Y * scale,
-                b.X * scale,
-                b.Y * scale 
-            );
+            => buffer.DrawLine(colors[(int)color], a.X, a.Y, b.X, b.Y);
 
         // draws an elipse on the screen
         public void DrawEllipse(Vector2D p, float r, Colour color)
-        {
-            r *= scale;
-            buffer.DrawEllipse(
-                colors[(int)color],
-                p.X * scale - r,
-                p.Y * scale - r,
-                r * 2,
-                r * 2
-            );
-        }
+            => buffer.DrawEllipse(colors[(int)color], p.X - r, p.Y - r, r *= 2, r);
 
         // clears the screen
         public void Clear()
@@ -130,19 +120,10 @@ namespace FormsPixelGameEngine.Render
 
         // copies the buffer to the screen
         public void Copy(Image texture, Rectangle src, Rectangle dest)
-        {
-            // apply pixel scaling
-            dest.X      = (int)Math.Round(dest.X * Scale);
-            dest.Y      = (int)Math.Round(dest.Y * Scale);
-            dest.Width  = (int)Math.Round(dest.Width * Scale);
-            dest.Height = (int)Math.Round(dest.Height * Scale);
-
-            // draw the scalled image to the buffer
-            Buffer.DrawImage(texture, dest, src, GraphicsUnit.Pixel);
-        }
+            => Buffer.DrawImage(texture, dest, src, GraphicsUnit.Pixel);
 
         // presents the buffer to the display
         public void Present()
-            => display.DrawImage(bufferImage, 0, 0, WidthScaled, HeightScaled);
+            => display.DrawImage(bufferImage, dest, src, GraphicsUnit.Pixel);
     }
 }

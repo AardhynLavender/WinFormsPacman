@@ -48,6 +48,7 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
             scatterTile     = new Vector2D(23, 0);
             homeTile        = new Vector2D(13, 17);
             Trajectory      = Directions[(int)Direction.LEFT];
+            offsetX         = OFFSET_X;
             speed           = 1.0f;
             AtHome          = false;
 

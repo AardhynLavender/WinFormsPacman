@@ -72,7 +72,7 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
         private const int PSEUDO_WALLS          = 4;
         private const int GATE_TILES            = 2;
 
-        private const int OFFSET_X              = 4;
+        protected const int OFFSET_X            = 4;
         private const int OFFSET_Y              = 3;
 
         // directional trajectories
@@ -151,7 +151,7 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
 
             locked              = true;
             mode                = Mode.SCATTER;
-            offsetX             = OFFSET_X;
+            offsetX             = 0;
             offsetY             = OFFSET_Y;
             homeTile            = world.GetTile(this);
             AtHome              = true;
@@ -330,37 +330,48 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
                 Revert();
 
             // update target tile if centered on a tile
-            if (x % tileset.Size == 0 
-                && y % tileset.Size == 0 
-                && x < world.X + world.Width 
+            if (x % tileset.Size == 0
+                && y % tileset.Size == 0
+                && x < world.X + world.Width
                 && x > world.X)
             {
 
                 if (InGhostHouse() && mode != Mode.EATEN)
-                    targetTile = AtHome ? homeTile : new Vector2D(13,14);
+                {
+                    offsetX = 0;
+                    targetTile = AtHome ? homeTile : new Vector2D(13, 14);
+                }
 
                 // update target tile based on mode
-                else switch (mode)
-                {
-                    case Mode.CHASE:
-                        // chase pacman
-                        targetTile = GetTargetTile();
-                        speed = 1.0f;
-                        break;
+                else {
+                    if (offsetX == 0)
+                    {
+                        offsetX = OFFSET_X;
+                        X += OFFSET_X;
+                    }
 
-                    case Mode.SCATTER:
-                        // scatter to corner
-                        targetTile = scatterTile;
-                        speed = 1.0f;
-                        break;
+                    switch (mode)
+                    {
+                        case Mode.CHASE:
+                            // chase pacman
+                            targetTile = GetTargetTile();
+                            speed = 1.0f;
+                            break;
 
-                    case Mode.EATEN:
-                        // return to ghost house
-                        targetTile = homeTile;
-                        speed = 2.0f;
-                        break;
+                        case Mode.SCATTER:
+                            // scatter to corner
+                            targetTile = scatterTile;
+                            speed = 1.0f;
+                            break;
 
-                    default: break;
+                        case Mode.EATEN:
+                            // return to ghost house
+                            targetTile = homeTile;
+                            speed = 2.0f;
+                            break;
+
+                        default: break;
+                    }
                 }
 
                 // store distances to 'target tile' from tiles ajacant to the 'current tile'
