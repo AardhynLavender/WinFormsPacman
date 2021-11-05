@@ -48,7 +48,7 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
             // initalize fields
 
             preferenceRank  = 2;
-            scatterTile     = new Vector2D(0,2);
+            scatterTile     = new Vector2D(0,3);
             homeTile        = new Vector2D(13, 17);
             Trajectory      = Directions[(int)Direction.LEFT];
             speed           = 1.0f;
