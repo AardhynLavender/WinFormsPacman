@@ -130,6 +130,7 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
         protected Colour Colour;
 
         protected Animation frightened;
+        private Animation flashing;
 
         protected Animation right;
         protected Animation left;
@@ -158,6 +159,9 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
 
             // create frightened animation
             frightened = new Animation(game, tileset, this, SIZE, FRIGHTENED, 2, Time.TENTH_SECOND);
+
+            // create the frightened flashing animation
+            flashing = new Animation(game, tileset, this, SIZE, FRIGHTENED, 4, Time.TENTH_SECOND);
         }
 
         // PROPERTIES
@@ -275,6 +279,13 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
                 Scatter();
         }
 
+        // flashes the ghost indicating a mode switch from FRIGHTENED
+        public void Flash()
+        {
+            CurrentAnimation = flashing;
+            CurrentAnimation.Start();
+        }
+
         private bool InGhostHouse()
             => currentTile.X >= 10
             && currentTile.X <= 17
@@ -335,7 +346,6 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
                 && x < world.X + world.Width
                 && x > world.X)
             {
-
                 if (InGhostHouse() && mode != Mode.EATEN)
                 {
                     offsetX = 0;
@@ -397,8 +407,7 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
                     distances.Add(distance);
                 }
 
-                // set the ghosts trajectory and animation to the index of the first
-                //  instance of the shortest distance in the directions list<vector>
+                // set the ghosts trajectory
                 if (!inTunnel)
                 {
                     int directionIndex;

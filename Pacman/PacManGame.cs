@@ -37,6 +37,7 @@ namespace FormsPixelGameEngine
         private const int LEVEL_MAX     = 255;
         private const int MODE_SWITCHES = 7;
         private const int SWITCH_SETS   = 3;
+        private const int FLASH_TIME    = Time.TWO_SECOND;
 
         private static readonly int[,] modeTimes = 
         new int[SWITCH_SETS, MODE_SWITCHES + 1]
@@ -89,6 +90,7 @@ namespace FormsPixelGameEngine
         private Mode currentMode;
         private int modeIndex;
         private long exitFrightenTime;
+        private bool flashing;
 
         private TileSet tileset;
         private World world;
@@ -293,12 +295,22 @@ namespace FormsPixelGameEngine
         // Resume standard mode switch, revert the ghosts, and reset the exit frighten flag
         private void tryExitFrighten()
         {
-            // is it time to exit frightened mode?
-            if (RunningTime > exitFrightenTime && frightened)
+            if (frightened)
             {
-                ResumeModeTracker();
-                ghosts.Where(g => g.Mode != Mode.EATEN).ToList().ForEach(g => g.Revert());
-                exitFrightenTime = 0;
+                // is it time to exit FRIGHTENED mode?
+                if (RunningTime > exitFrightenTime)
+                {
+                    ResumeModeTracker();
+                    ghosts.Where(g => g.Mode != Mode.EATEN).ToList().ForEach(g => g.Revert());
+                    exitFrightenTime = 0;
+                    flashing = false;
+                } 
+                // is it nearly time to exit FRIGHTENED mode?
+                else if (!flashing && exitFrightenTime - RunningTime < FLASH_TIME)
+                {
+                    flashing = true;
+                    ghosts.Where(g => g.Mode != Mode.EATEN).ToList().ForEach(g => g.Flash());
+                }
             }
         }
 
