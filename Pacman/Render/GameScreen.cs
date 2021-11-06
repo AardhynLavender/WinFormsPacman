@@ -27,7 +27,7 @@ namespace FormsPixelGameEngine.Render
             Pens.Yellow,
             Pens.Red,
             Pens.Pink,
-            Pens.LightCyan,
+            Pens.Cyan,
             Pens.Orange
         };
 

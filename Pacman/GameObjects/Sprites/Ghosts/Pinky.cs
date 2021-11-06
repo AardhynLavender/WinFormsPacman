@@ -42,7 +42,7 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
         // CONSTRUCTOR
 
         public Pinky(World world, PacMan pacman)
-            : base(START_X, START_Y, TEXTURE_UP, PELLET_LIMIT, world, pacman, COLOUR)
+            : base(START_X, START_Y, TEXTURE_UP, PELLET_LIMIT, 408, world, pacman, COLOUR)
         {
 
             // initalize fields

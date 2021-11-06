@@ -34,6 +34,8 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
         private const int TEXTURE_UP    = 344;
         private const int TEXTURE_DOWN  = 348;
 
+        private const int PIVOT_DISTANCE = 4;
+
         // FIELDS
 
         private Blinky blinky;
@@ -41,7 +43,7 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
         // CONSTRUCTOR
 
         public Inky(World world, PacMan pacman, Blinky blinky, int pelletLimit)
-            : base(START_X, START_Y, TEXTURE_UP, pelletLimit, world, pacman, COLOUR)
+            : base(START_X, START_Y, TEXTURE_UP, pelletLimit, 450, world, pacman, COLOUR)
         {
             // Initalize fields
 
@@ -79,14 +81,26 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
             base.debugDraw();
 
             if (Mode == Mode.CHASE)
-                game.DrawLine(world.GetCoordinate(blinky.CurrentTile), world.GetCoordinate(targetTile), Colour);
+            {
+                Vector2D a = world.GetCoordinate(blinky.CurrentTile);
+                Vector2D b = world.GetCoordinate(targetTile);
+
+                int d = tileset.Size / 2;
+
+                a.X += d;
+                a.Y += d;
+                b.X += d;
+                b.Y += d;
+
+                game.DrawLine(a, b, Colour);
+            }
         }
 
         protected override Vector2D GetTargetTile()
             => new Vector2D
             {
-                X = pacman.CurrentTile.X + Directions[(int)pacman.Direction].X * 4 - Vector2D.GetDifferenceVector(blinky.CurrentTile, pacman.CurrentTile).X,
-                Y = pacman.CurrentTile.Y + Directions[(int)pacman.Direction].Y * 4 - Vector2D.GetDifferenceVector(blinky.CurrentTile, pacman.CurrentTile).Y
+                X = pacman.CurrentTile.X + Directions[(int)pacman.Direction].X * PIVOT_DISTANCE - Vector2D.GetDifferenceVector(blinky.CurrentTile, pacman.CurrentTile).X,
+                Y = pacman.CurrentTile.Y + Directions[(int)pacman.Direction].Y * PIVOT_DISTANCE - Vector2D.GetDifferenceVector(blinky.CurrentTile, pacman.CurrentTile).Y
             };
     }
 }

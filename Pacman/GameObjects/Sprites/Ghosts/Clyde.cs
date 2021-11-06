@@ -41,7 +41,7 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
         // CONSTRUCTOR
 
         public Clyde(World world, PacMan pacman, int pelletLimit)
-            : base(START_X, START_Y, TEXTURE_RIGHT, pelletLimit, world, pacman, COLOUR)
+            : base(START_X, START_Y, TEXTURE_RIGHT, pelletLimit, 492, world, pacman, COLOUR)
         {
             // initalize fields
 

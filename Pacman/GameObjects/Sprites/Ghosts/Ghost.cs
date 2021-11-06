@@ -75,6 +75,9 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
         protected const int OFFSET_X            = 4;
         private const int OFFSET_Y              = 3;
 
+        private const int SELECTOR_ANIMATIONS   = 7;
+        private const int SELECTOR_RATE         = Time.TWENTYTH_SECOND;
+
         // directional trajectories
         protected static readonly Vector2D[] Directions =
         new Vector2D[DIRECTIONS]
@@ -123,6 +126,9 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
         protected Vector2D scatterTile;
         protected Vector2D homeTile;
 
+        private GameObject tileSelector;
+        private Animation SelectorRotation;
+
         protected int preferenceRank;
         private int pelletLimit;
         private int pelletCounter;
@@ -141,15 +147,15 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
 
         // CONSTRUCTOR
 
-        public Ghost(float x, float y, int index, int pelletLimit, World world, PacMan pacman, Colour colour)
+        public Ghost(float x, float y, int index, int pelletLimit, int tileTexture, World world, PacMan pacman, Colour colour)
             : base(x, y, index, SIZE, SIZE, new Vector2D(), world)
         {
             // initalize fields
 
             this.pacman         = pacman;
             this.pelletLimit    = pelletLimit;
-            this.Colour         = colour;
-
+            
+            Colour              = colour;
             locked              = true;
             mode                = Mode.SCATTER;
             offsetX             = 0;
@@ -162,7 +168,14 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
 
             // create the frightened flashing animation
             flashing = new Animation(game, tileset, this, SIZE, FRIGHTENED, 4, Time.TENTH_SECOND);
-        }
+
+            if (game.Debug)
+            {
+                tileSelector        = game.AddGameObject(new GameObject(0, 0, tileTexture, 200, 1, 1));
+                SelectorRotation    = Game.AddAnimation(new Animation(game, tileset, tileSelector, 1, tileTexture, SELECTOR_ANIMATIONS, SELECTOR_RATE));
+                SelectorRotation.Start();
+            }
+        } 
 
         // PROPERTIES
 
@@ -209,6 +222,19 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
                 // draw a line
 
                 game.DrawLine(a, b, Colour);
+
+                // update target tile selector
+
+                world.PlaceObject(tileSelector, targetTile);
+            }
+        }
+
+        public override void OnFreeGameObject()
+        {
+            if (game.Debug)
+            {
+                game.QueueFree(tileSelector);
+                Game.RemoveAnimation(SelectorRotation);
             }
         }
 

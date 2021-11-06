@@ -41,7 +41,7 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
         // CONSTRUCTOR
 
         public Blinky(World world, PacMan pacman)
-            : base(START_X, START_Y, TEXTURE_RIGHT, 0, world, pacman, COLOUR)
+            : base(START_X, START_Y, TEXTURE_RIGHT, 0, 366, world, pacman, COLOUR)
         {
             // initalize fields
 
