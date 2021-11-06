@@ -274,12 +274,15 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
         // reverse direction and set mode to FRIGHTENED
         public void Frighten()
         {
-            mode = Mode.FRIGHTENED;
+            if (mode != Mode.FRIGHTENED)
+            {
+                mode = Mode.FRIGHTENED;
 
+                reverseDirection();
+            }
+          
             CurrentAnimation = frightened;
             frightened.Start();
-
-            reverseDirection();
         }
 
         // set mode to EATEN

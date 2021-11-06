@@ -258,11 +258,11 @@ namespace FormsPixelGameEngine
         {
             // find the highest ranked ghost in the ghost house
             List<Ghost> housedGhosts = (
-                from ghost
-                in ghosts
-                where ghost.AtHome
+                from    ghost
+                in      ghosts
+                where   ghost.AtHome
                 orderby ghost.PreferenceRank
-                select ghost
+                select  ghost
             ).ToList();
 
             if (housedGhosts.Count > 0)
@@ -317,14 +317,14 @@ namespace FormsPixelGameEngine
         // Frighten the ghosts
         public void Frighten()
         {
-            if (!frightened)
-            {
-                // pause mode tracker
-                PauseModeTracker();
+            // pause mode tracker
+            PauseModeTracker();
 
-                // frighten the ghosts
-                ghosts.Where(g => !g.AtHome).ToList().ForEach(g => g.Frighten());
-            }
+            // frighten the ghosts
+            ghosts.Where(g => !g.AtHome).ToList().ForEach(g => g.Frighten());
+
+            // stop flashing -- just in case ghosts are already flashing
+            flashing = false;
 
             // chase again after 6 seconds
             exitFrightenTime = RunningTime + Time.SECOND * 6;
