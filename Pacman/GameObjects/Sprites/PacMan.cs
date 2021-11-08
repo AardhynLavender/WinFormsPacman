@@ -283,7 +283,7 @@ namespace FormsPixelGameEngine.GameObjects.Sprites
 
         public override void Input()
         {
-            if (locked) return;
+            if (locked || InputManager.MultipleKeysPressed) return;
 
             // grab the direction before it updates
             previousDirection = Direction == previousDirection 
