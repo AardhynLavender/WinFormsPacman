@@ -25,12 +25,15 @@ namespace FormsPixelGameEngine.GameObjects.Sprites
     {
         // CONSTANTS
 
+        private const int START_LIVES   = 3;
+
         // start position
 
         private const int START_X       = 108;
         private const int START_Y       = 208;
 
         // texture indices
+
         private const int STATIONARY    = 0;
         private const int UP            = 88;
         private const int DOWN          = 96;
@@ -41,6 +44,7 @@ namespace FormsPixelGameEngine.GameObjects.Sprites
 
         private const int ANIMATION     = 50;
         private const int DIRECTIONS    = 4;
+        private const int DEATH_LENGTH  = 11;
 
         // tile infomation
 
@@ -50,6 +54,8 @@ namespace FormsPixelGameEngine.GameObjects.Sprites
         // FIELDS
 
         // animations
+
+        private Animation death;
 
         private Animation up;
         private Animation down;
@@ -62,6 +68,11 @@ namespace FormsPixelGameEngine.GameObjects.Sprites
 
         private List<Direction> directionHistory;
 
+        // lives
+
+        private int lives;
+        private bool alive;
+
         // CONSTRUCTOR
 
         public PacMan(World world)
@@ -73,9 +84,25 @@ namespace FormsPixelGameEngine.GameObjects.Sprites
             directionHistory    = new List<Direction>();
             locked              = true;
             Frozen              = true;
+            alive               = true;
             offsetX = offsetY   = 3;
+            z                   = 200;
+            lives               = START_LIVES;
 
-            // create animations
+            // create animations 
+
+            death = new Animation(game, tileset, this, SIZE_TILES, 0, DEATH_LENGTH, Time.TENTH_SECOND, () =>
+            {
+                death.Reset();
+                sourceRect = tileset.GetTileSourceRect(-1, SIZE_TILES, SIZE_TILES);
+
+                if (deductLife())
+                    game.RestartLevel();
+
+                else
+                    game.EndGame();
+            }, 
+            false);
 
             up      = new Animation(game, tileset, this, SIZE_TILES, UP, 2, ANIMATION);
             right   = new Animation(game, tileset, this, SIZE_TILES, RIGHT, 2, ANIMATION);
@@ -94,9 +121,54 @@ namespace FormsPixelGameEngine.GameObjects.Sprites
 
         // PROPERTIES
 
-
+        public bool Alive
+            => alive;
 
         // METHODS
+
+        // deducts a life, returning false if pacman has no remaining lives
+        private bool deductLife()
+            => --lives > 0;
+
+        // plays death animation and sound, deducts a life and resets the level.
+        public void Kill()
+        {
+            // only kill if alive
+            if (alive)
+            {
+                game.LooseLevel();
+                alive = false;
+
+                CurrentAnimation = death;
+                CurrentAnimation.Stop();
+
+                sourceRect = tileset.GetTileSourceRect(0, SIZE_TILES, SIZE_TILES);
+
+                game.QueueTask(Time.TWO_SECOND, () =>
+                {
+                    CurrentAnimation.Start();
+                    game.PlaySound(Properties.Resources.death_3);
+                });
+            }
+        }
+
+        public void Revive()
+        {
+            if (!alive)
+            {
+                CurrentAnimation.Reset();
+
+                alive       = true;
+
+                Frozen      = false;
+                locked      = false;
+
+                x           = START_X;
+                y           = START_Y;
+
+                direction   = Direction.LEFT;
+            }
+        }
 
         public override void Update()
         {
@@ -178,31 +250,35 @@ namespace FormsPixelGameEngine.GameObjects.Sprites
                 world.Slide(Direction.RIGHT);
             }
 
-
-            // determine if pacman is moving
-            if (Trajectory.X != 0 || Trajectory.Y != 0)
-                CurrentAnimation.Start();
-
-            else
+            if (alive)
             {
-                CurrentAnimation.Animating = false;
+                // determine if pacman is moving
+                if (Trajectory.X != 0 || Trajectory.Y != 0)
+                    CurrentAnimation.Start();
 
-                // re-apply previous direction (prevents 'orphaned corner collision')
-                if (directionHistory.Count > 2)
+                else
                 {
-                    Direction direction = directionHistory[directionHistory.Count - 2];
-                    Direction = direction;
+                    CurrentAnimation.Animating = false;
+
+                    // re-apply previous direction (prevents 'orphaned corner collision')
+                    if (directionHistory.Count > 2)
+                    {
+                        Direction direction = directionHistory[directionHistory.Count - 2];
+                        Direction = direction;
+                    }
                 }
+
+                // set the correct animation
+                CurrentAnimation = directionalAnimations[(int)direction];
+
+                if (Frozen)
+                    CurrentAnimation.Animating = false;
+
+                else
+                    // update the sprite
+                    base.Update();
             }
 
-            // set the correct animation
-            CurrentAnimation = directionalAnimations[(int)direction];
-
-            if (Frozen)
-                CurrentAnimation.Animating = false;
-
-            // update the sprite
-            base.Update();
         }
 
         public override void Input()

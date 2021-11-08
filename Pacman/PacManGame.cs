@@ -364,7 +364,7 @@ namespace FormsPixelGameEngine
                 {
                     ghost.Frozen = true;
                     QueueFree(ghost);
-                }); 
+                });
 
                 // wall strobe animation
                 QueueTask(Time.SECOND, () =>
@@ -380,7 +380,8 @@ namespace FormsPixelGameEngine
                             QueueFree(pacman);
                             QueueFree(world);
 
-                            QueueTask(Time.HALF_SECOND, () => {
+                            QueueTask(Time.HALF_SECOND, () =>
+                            {
                                 newLevel();
                             });
                         });
@@ -391,6 +392,35 @@ namespace FormsPixelGameEngine
             {
                 // special level 255 end game screen...
             }
+        }
+
+        public void LooseLevel()
+        {
+            ghosts.ForEach(g => 
+            {
+                g.Hide();
+                g.Frozen = true;
+            });
+
+            pacman.Frozen = true;
+        }
+
+        // resets the positions of all the ghosts and pacman
+        public void RestartLevel()
+        {
+            QueueTask(Time.TWO_SECOND, () =>
+            {
+                if (!pacman.Alive)
+                {  
+                    ghosts.ForEach(g =>
+                    {
+                        g.Reset();
+                        g.Frozen = false;
+                    });
+
+                    pacman.Revive();
+                }
+            });
         }
 
         private void newLevel()

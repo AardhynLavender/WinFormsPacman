@@ -118,6 +118,7 @@ namespace FormsPixelGameEngine.Render
         public void Reset()
         {
             Stop();
+            currentFrame = 0;
             gameObject.SourceRect = orignalRect ;
         }
     }
