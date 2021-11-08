@@ -24,6 +24,8 @@ namespace FormsPixelGameEngine.Utility
     {
         // FIELDS
 
+        private static int pressedKeys;
+
         private static Dictionary<Keys, bool> keys =
         new Dictionary<Keys, bool>
         {
@@ -50,18 +52,27 @@ namespace FormsPixelGameEngine.Utility
         public static bool Select   => keys[Keys.Space] || keys[Keys.Enter];
         public static bool Escape   => keys[Keys.Escape] || keys[Keys.Back];
 
+        public static bool MultipleKeysPressed
+            => pressedKeys > 1;
+
         // METHODS
 
         public static void PressKey(Keys key)
         {
-            if (keys.ContainsKey(key))
+            if (keys.ContainsKey(key) && !keys[key])
+            { 
+                pressedKeys++;
                 keys[key] = true;
+            }
         }
 
         public static void ReleaseKey(Keys key)
         {
-            if (keys.ContainsKey(key))
+            if (keys.ContainsKey(key) && keys[key])
+            {
+                pressedKeys--;
                 keys[key] = false;
+            }
         }
     }
 }
