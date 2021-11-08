@@ -241,6 +241,18 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
         // calculate the target tile
         protected abstract Vector2D GetTargetTile();
 
+        // place the ghost in its original position
+        public virtual void Reset()
+        {
+
+            Vector2D start = world.GetCoordinate(homeTile);
+            x = start.X;
+            y = start.Y;
+            Trajectory.Zero();
+            
+            Show();
+        }
+
         // reverse direction and set target tile to
         // applicable map corner
         public void Scatter()
@@ -277,7 +289,6 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
             if (mode != Mode.FRIGHTENED)
             {
                 mode = Mode.FRIGHTENED;
-
                 reverseDirection();
             }
           
@@ -315,13 +326,14 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
             CurrentAnimation.Start();
         }
 
+
         private bool InGhostHouse()
             => currentTile.X >= 10
             && currentTile.X <= 17
             && currentTile.Y >= 15
             && currentTile.Y <= 19;
 
-        public bool IncrementPelletCounter()
+        public bool IncrementPelletCounter() 
             => ++pelletCounter < PelletLimit;
 
         private void reverseDirection()
@@ -362,8 +374,14 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
             currentTile = world.GetTile(x, y);
 
             // eat if occupying the same tile as pacman
-            if (mode == Mode.FRIGHTENED && currentTile.Equals(pacman.CurrentTile))
-                Eat();
+            if (currentTile.Equals(pacman.CurrentTile))
+            {
+                if (mode == Mode.FRIGHTENED)
+                    Eat();
+                 
+                else if (mode != Mode.EATEN)
+                    pacman.Kill();
+            }
 
             // revert to standard mode when home after being eaten
             if (mode == Mode.EATEN && currentTile.Equals(homeTile))
@@ -382,7 +400,8 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
                 }
 
                 // update target tile based on mode
-                else {
+                else
+                {
                     if (offsetX == 0)
                     {
                         offsetX = OFFSET_X;

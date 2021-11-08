@@ -51,9 +51,7 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
             Trajectory      = Directions[(int)Direction.LEFT];
             speed           = 1.0f;
 
-            Vector2D start = world.GetCoordinate(homeTile);
-            x = start.X;
-            y = start.Y;
+            Reset();
 
             // configure animations
 

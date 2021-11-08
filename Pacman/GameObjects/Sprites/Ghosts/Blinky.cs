@@ -73,6 +73,18 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
 
         // METHODS
 
+        public override void Reset()
+        {
+            Show();
+
+            Vector2D startTile = homeTile;
+            startTile.Y -= 3;
+            Vector2D start = world.GetCoordinate(startTile);
+
+            x = start.X;
+            y = start.Y;
+        }
+
         protected override Vector2D GetTargetTile()
             => pacman.CurrentTile;
     }
