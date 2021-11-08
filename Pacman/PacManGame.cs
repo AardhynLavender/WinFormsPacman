@@ -112,6 +112,7 @@ namespace FormsPixelGameEngine
         private long exitFrightenTime;
         private bool flashing;
 
+        private LivesManager livesMana ger;
 
         private Menu menu;
         private TileSet tileset;
@@ -134,7 +135,8 @@ namespace FormsPixelGameEngine
         {
             // initalize fileds
 
-            modeTracker = new Stopwatch();
+            modeTracker     = new Stopwatch();
+            livesManager    = new LivesManager();
 
             digits = new Dictionary<int, int>(DIGITS)
             {
@@ -481,7 +483,7 @@ namespace FormsPixelGameEngine
             if (!gameObjects.Contains(world)) AddGameObject(world);
 
             // reset pacman
-            pacman  = (PacMan)AddGameObject(new PacMan(world));
+            pacman  = (PacMan)AddGameObject(new PacMan(world, livesManager));
 
             // create a new set of ghosts and pacman
             blinky  = (Blinky)AddGameObject(new Blinky(world, pacman));
@@ -524,11 +526,13 @@ namespace FormsPixelGameEngine
         {
             base.StartGame();
 
-
             QueueFree(menu);
             newLevel();
 
+            AddGameObject(livesManager);
+
             score = 0;
+
             DisplayText(hiScore.ToString(), 40);
         }
 
@@ -541,6 +545,8 @@ namespace FormsPixelGameEngine
         {
             ResetModeTracker();
             level = 0;
+
+            QueueFree(livesManager);
 
             ghosts.ForEach(g => QueueFree(g));
             QueueFree(world);

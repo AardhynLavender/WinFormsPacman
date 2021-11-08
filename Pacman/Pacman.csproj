@@ -80,6 +80,7 @@
     <Compile Include="Utility\Colour.cs" />
     <Compile Include="Utility\Direction.cs" />
     <Compile Include="Utility\InputManager.cs" />
+    <Compile Include="Utility\LivesManager.cs" />
     <Compile Include="Utility\Mode.cs" />
     <Compile Include="Utility\Time.cs" />
     <Compile Include="Utility\Task.cs" />

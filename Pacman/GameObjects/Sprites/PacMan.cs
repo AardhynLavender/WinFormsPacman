@@ -25,8 +25,6 @@ namespace FormsPixelGameEngine.GameObjects.Sprites
     {
         // CONSTANTS
 
-        private const int START_LIVES   = 3;
-
         // start position
 
         private const int START_X       = 108;
@@ -70,12 +68,12 @@ namespace FormsPixelGameEngine.GameObjects.Sprites
 
         // lives
 
-        private int lives;
+        private LivesManager livesManager;
         private bool alive;
 
         // CONSTRUCTOR
 
-        public PacMan(World world)
+        public PacMan(World world, LivesManager livesManager)
             : base(START_X, START_Y, STATIONARY, SIZE_TILES, SIZE_TILES, new Vector2D(), world)
         {
             // initatlize fields
@@ -87,7 +85,8 @@ namespace FormsPixelGameEngine.GameObjects.Sprites
             alive               = true;
             offsetX = offsetY   = 3;
             z                   = 200;
-            lives               = START_LIVES;
+
+            this.livesManager   = livesManager;
 
             // create animations 
 
@@ -96,7 +95,8 @@ namespace FormsPixelGameEngine.GameObjects.Sprites
                 death.Reset();
                 sourceRect = tileset.GetTileSourceRect(-1, SIZE_TILES, SIZE_TILES);
 
-                if (deductLife())
+
+                if (livesManager.DeductLife())
                     game.RestartLevel();
 
                 else
@@ -125,10 +125,6 @@ namespace FormsPixelGameEngine.GameObjects.Sprites
             => alive;
 
         // METHODS
-
-        // deducts a life, returning false if pacman has no remaining lives
-        private bool deductLife()
-            => --lives > 0;
 
         // plays death animation and sound, deducts a life and resets the level.
         public void Kill()
