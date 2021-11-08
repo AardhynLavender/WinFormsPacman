@@ -23,7 +23,7 @@ namespace FormsPixelGameEngine.Utility
         private const int TEXTURE = 92;
 
         private static readonly Vector2D 
-        startVector = new Vector2D(2, 34);
+        startVector = new Vector2D(16, 272);
 
         // FIELDS
 
@@ -38,7 +38,7 @@ namespace FormsPixelGameEngine.Utility
             // create lives
             livesDisplay = new GameObject[START_LIVES];
             for (int i = 0; i < START_LIVES; i++)
-                livesDisplay[i] = new GameObject(startVector.X + i * SIZE, startVector.Y, TEXTURE, SIZE, SIZE);
+                livesDisplay[i] = new GameObject(startVector.X + i * tileset.Size * SIZE, startVector.Y, TEXTURE, 100, SIZE, SIZE);
         }
 
         // PROPERTIES
@@ -52,12 +52,15 @@ namespace FormsPixelGameEngine.Utility
         public bool DeductLife()
         {
             game.QueueFree(livesDisplay[--lives]);
-            return lives <= 0;
+            return lives > 0;
         }
 
         // add lives display
         public override void OnAddGameObject()
-            => Array.ForEach(livesDisplay, l => game.AddGameObject(l));
+        {
+            lives = START_LIVES;
+            Array.ForEach(livesDisplay, l => game.AddGameObject(l));
+        }
 
         // remove lives display
         public override void OnFreeGameObject()

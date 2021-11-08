@@ -112,7 +112,7 @@ namespace FormsPixelGameEngine
         private long exitFrightenTime;
         private bool flashing;
 
-        private LivesManager livesMana ger;
+        private LivesManager livesManager;
 
         private Menu menu;
         private TileSet tileset;
@@ -135,8 +135,6 @@ namespace FormsPixelGameEngine
         {
             // initalize fileds
 
-            modeTracker     = new Stopwatch();
-            livesManager    = new LivesManager();
 
             digits = new Dictionary<int, int>(DIGITS)
             {
@@ -144,22 +142,20 @@ namespace FormsPixelGameEngine
                 { 5, 446 },{ 6, 486 },{ 7, 487 },{ 8, 488 },{ 9, 528 }
             };
 
-            scoreDisplay = new List<TileObject>();
-
-            // create tileset
-
-            tileset = new TileSet("Assets/tileset.tsx", "Assets/tileset.png");
-
-            // configure GameObject
-
-            GameObject.Init(this, screen, tileset);
+            modeTracker     = new Stopwatch();
+            scoreDisplay    = new List<TileObject>();
+            tileset         = new TileSet("Assets/tileset.tsx", "Assets/tileset.png");
 
             // calculate default mode absolute switching times
-
             modeIndex = 0;
             for (int i = 0; i < modeTimes.GetLength(0); i++)
                 for (int j = 1; j < modeTimes.GetLength(1) - 1; j++)
                     modeTimes[i, j] += modeTimes[i, j - 1];
+
+            // configure GameObject
+            GameObject.Init(this, screen, tileset);
+
+            livesManager    = new LivesManager();
 
             // create and run menu
 
