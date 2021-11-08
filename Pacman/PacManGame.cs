@@ -92,6 +92,7 @@ namespace FormsPixelGameEngine
         private long exitFrightenTime;
         private bool flashing;
 
+        private Menu menu;
         private TileSet tileset;
         private World world;
 
@@ -139,7 +140,7 @@ namespace FormsPixelGameEngine
 
             // create and run menu
 
-            Menu menu = (Menu)AddGameObject(new Menu());
+            menu = (Menu)AddGameObject(new Menu());
         }
 
         // PROPERTIES
@@ -443,9 +444,6 @@ namespace FormsPixelGameEngine
 
             world.Ghosts = ghosts;
 
-            // reset score
-
-            Score = 0;
             pelletCount = 0;
 
             PlaySound(Properties.Resources.game_start);
@@ -476,7 +474,12 @@ namespace FormsPixelGameEngine
         {
             base.StartGame();
 
+
+            QueueFree(menu);
             newLevel();
+
+            score = 0;
+            DisplayText(hiScore.ToString(), 40);
         }
 
         protected override void SaveGame()
@@ -486,7 +489,14 @@ namespace FormsPixelGameEngine
 
         public override void EndGame()
         {
-            base.EndGame();
+            ResetModeTracker();
+            level = 0;
+
+            ghosts.ForEach(g => QueueFree(g));
+            QueueFree(world);
+            QueueFree(pacman);
+
+            menu = (Menu)AddGameObject(new Menu());
         }
     }
 }

@@ -235,20 +235,17 @@ namespace FormsPixelGameEngine
         public void QueueDraw(Action callback)
             => drawQueue.Add(new Task(callback, 0, this));
 
-        // ABSTRACT
+        // ABSTRACT AND VIRTUAL
 
         // handles set up code for a game to begin
         public virtual void StartGame()
         {
+            gameTime.Restart();
             gameTime.Start();
         }
 
         // handles destruction code for the game
-        public virtual void EndGame()
-        {
-            gameTime.Stop();
-            gameTime.Reset();
-        }
+        public abstract void EndGame();
 
         // handles data saving (unimplimented)
         protected virtual void SaveGame()

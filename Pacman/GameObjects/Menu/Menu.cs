@@ -2,6 +2,7 @@
 
 using FormsPixelGameEngine.GameObjects.Tiles;
 using FormsPixelGameEngine.Utility;
+using System;
 
 namespace FormsPixelGameEngine.GameObjects.Menu
 {
@@ -25,6 +26,7 @@ namespace FormsPixelGameEngine.GameObjects.Menu
 
         private int _selectionIndex;
         private bool keyHeld;
+        bool selected;
 
         // CONSTRUCTOR
 
@@ -52,6 +54,7 @@ namespace FormsPixelGameEngine.GameObjects.Menu
 
         private void Select()
         {
+            selected = true;
             game.PlaySound(Properties.Resources.eat_ghost);
             game.QueueTask(Time.HALF_SECOND + Time.QUARTER_SECOND, () =>
             {
@@ -59,6 +62,7 @@ namespace FormsPixelGameEngine.GameObjects.Menu
                 {
                     case 0:
 
+                        selected = false;
                         game.QueueFree(this);
                         game.StartGame();
                         break;
@@ -101,7 +105,7 @@ namespace FormsPixelGameEngine.GameObjects.Menu
             }
             else if (InputManager.Select)
             {
-                if (!keyHeld)
+                if (!keyHeld && !selected)
                 {
                     Select();
                     keyHeld = true;
