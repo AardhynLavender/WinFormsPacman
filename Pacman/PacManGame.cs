@@ -417,6 +417,9 @@ namespace FormsPixelGameEngine
                 // wall strobe animation
                 QueueTask(Time.SECOND, () =>
                 {
+                    world.ClearTile(world.GetTileObject(new Vector2D(13, 15)));
+                    world.ClearTile(world.GetTileObject(new Vector2D(14, 15)));
+
                     world.OffsetTiles(-168, Time.HALF_SECOND, tile => tile.Wall);
                     QueueTask(Time.SECOND, () =>
                     {
