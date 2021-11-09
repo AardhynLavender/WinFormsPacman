@@ -304,6 +304,7 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
                 CurrentAnimation.Stop();
                 mode = Mode.EATEN;
 
+                game.ConsumeGhost();
                 game.PlaySound(Properties.Resources.eat_ghost);
                 game.Freeze(Time.SECOND);
             }

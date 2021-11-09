@@ -32,6 +32,7 @@ namespace FormsPixelGameEngine
         // CONSTANT AND STATIC MEMBERS
 
         private const int DIGITS        = 10;
+        private const int POINT_TILES   = 2;
         private const int GHOSTS        = 4;
         private const int LEVEL_PELLETS = 240;
         private const int LEVEL_MAX     = 255;
@@ -75,6 +76,24 @@ namespace FormsPixelGameEngine
             }
         };
 
+        private static readonly int[] ghostPoints =
+        new int[GHOSTS]
+        {
+            200,
+            400,
+            800,
+            1600
+        };
+
+        public static readonly int[,] pointTiles =
+        new int[GHOSTS, POINT_TILES]
+        {
+            { 531, 536 },
+            { 534, 536 },
+            { 533, 536 },
+            { 535, 536 }
+        };
+
         // FIELDS
 
         private bool debug;
@@ -89,8 +108,10 @@ namespace FormsPixelGameEngine
         private Stopwatch modeTracker;
         private Mode currentMode;
         private int modeIndex;
+        private int eatenGhosts;
         private long exitFrightenTime;
         private bool flashing;
+
 
         private Menu menu;
         private TileSet tileset;
@@ -190,6 +211,9 @@ namespace FormsPixelGameEngine
         private bool frightened
             => exitFrightenTime != 0;
 
+        public int EatenGhosts
+            => eatenGhosts;
+
         // GAME LOOP
 
         protected override void Process()
@@ -232,8 +256,29 @@ namespace FormsPixelGameEngine
                 winLevel();
         }
 
+        public void ConsumeGhost()
+        {
+            pacman.Hide();
+
+            GameObject[] points = new GameObject[POINT_TILES]
+            {
+                new GameObject(pacman.X - tileset.Size / 2, pacman.Y, pointTiles[eatenGhosts, 0], 200),
+                new GameObject(pacman.X + tileset.Size / 2, pacman.Y, pointTiles[eatenGhosts, 1], 200)
+            };
+
+            Score += ghostPoints[eatenGhosts++];
+
+            Array.ForEach(points, p => AddGameObject(p));
+            QueueTask(Time.SECOND, () => 
+            {
+                pacman.Show();
+                Array.ForEach(points, p => QueueFree(p)); 
+            });
+        }
+
         // Determines the mode the ghosts should default
         // to based on the level and level timer.
+
         private void setGhostMode()
         {
             // determine the correct mode set
@@ -320,6 +365,8 @@ namespace FormsPixelGameEngine
         {
             // pause mode tracker
             PauseModeTracker();
+
+            eatenGhosts = 0;
 
             // frighten the ghosts
             ghosts.Where(g => !g.AtHome).ToList().ForEach(g => g.Frighten());
