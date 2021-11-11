@@ -31,14 +31,23 @@ namespace FormsPixelGameEngine
     {
         // CONSTANT AND STATIC MEMBERS
 
-        private const int DIGITS        = 10;
-        private const int POINT_TILES   = 2;
-        private const int GHOSTS        = 4;
-        private const int LEVEL_PELLETS = 240;
-        private const int LEVEL_MAX     = 255;
-        private const int MODE_SWITCHES = 7;
-        private const int SWITCH_SETS   = 3;
-        private const int FLASH_TIME    = Time.TWO_SECOND;
+        private const int DIGITS                = 10;
+        private const int POINT_TILES           = 2;
+        private const int GHOSTS                = 4;
+        private const int LEVEL_PELLETS         = 240;
+        private const int LEVEL_MAX             = 255;
+        private const int MODE_SWITCHES         = 7;
+        private const int SWITCH_SETS           = 3;
+        private const int FLASH_TIME            = Time.TWO_SECOND;
+        private const int WALL_CYCLE            = -168;
+
+        private const int READY                 = 571;
+        private const int HI_SCORE              = 40;
+
+        private const int CLYDE_PELLET_LIMIT    = 60;
+        private const int CLYDE_DECREMENT       = 10;
+        private const int INKY_PELLET_LIMIT     = 30;
+        private const int FRIGHTEN_TIME         = 6;
 
         private static readonly int[,] modeTimes = 
         new int[SWITCH_SETS, MODE_SWITCHES + 1]
@@ -110,6 +119,7 @@ namespace FormsPixelGameEngine
         private int modeIndex;
         private int eatenGhosts;
         private long exitFrightenTime;
+        private int frightenTime;
         private bool flashing;
 
         private LivesManager livesManager;
@@ -125,6 +135,9 @@ namespace FormsPixelGameEngine
         private Inky inky;
         private Clyde clyde;
         private List<Ghost> ghosts;
+
+        private int clydePelletLimit;
+        private int inkyPelletLimit;
 
         private Dictionary<int, int> digits;
 
@@ -373,7 +386,7 @@ namespace FormsPixelGameEngine
             flashing = false;
 
             // chase again after 6 seconds
-            exitFrightenTime = RunningTime + Time.SECOND * 6;
+            exitFrightenTime = RunningTime + Time.SECOND * frightenTime;
         }
 
         // freezes all sprites except eaten ghosts
@@ -415,16 +428,17 @@ namespace FormsPixelGameEngine
                 // wall strobe animation
                 QueueTask(Time.SECOND, () =>
                 {
+                    // clear gate
                     world.ClearTile(world.GetTileObject(new Vector2D(13, 15)));
                     world.ClearTile(world.GetTileObject(new Vector2D(14, 15)));
 
-                    world.OffsetTiles(-168, Time.HALF_SECOND, tile => tile.Wall);
+                    world.OffsetTiles(WALL_CYCLE, Time.HALF_SECOND, tile => tile.Wall);
                     QueueTask(Time.SECOND, () =>
                     {
-                        world.OffsetTiles(-168, Time.HALF_SECOND, tile => tile.Wall);
+                        world.OffsetTiles(WALL_CYCLE, Time.HALF_SECOND, tile => tile.Wall);
                         QueueTask(Time.SECOND, () =>
                         {
-                            world.OffsetTiles(-168, Time.HALF_SECOND, tile => tile.Wall);
+                            world.OffsetTiles(WALL_CYCLE, Time.HALF_SECOND, tile => tile.Wall);
 
                             QueueFree(pacman);
                             QueueFree(world);
@@ -439,7 +453,8 @@ namespace FormsPixelGameEngine
             }
             else
             {
-                // special level 255 end game screen...
+                // Well done, all 255 levels... Go get a life!
+                EndGame();
             }
         }
 
@@ -481,11 +496,32 @@ namespace FormsPixelGameEngine
             // reset pacman
             pacman  = (PacMan)AddGameObject(new PacMan(world, livesManager));
 
+            // update pellet limits
+
+            if (level == 0)
+            {
+                clydePelletLimit = CLYDE_PELLET_LIMIT;
+                inkyPelletLimit = INKY_PELLET_LIMIT;
+            }
+            else if (level == 1)
+            {
+                clydePelletLimit = CLYDE_PELLET_LIMIT - CLYDE_DECREMENT;
+                inkyPelletLimit = 0;
+            }
+            else
+            {
+                clydePelletLimit = 0;
+            }
+
+            // update ghosts frighten time
+            if (level < 7)
+                --frightenTime;
+
             // create a new set of ghosts and pacman
             blinky  = (Blinky)AddGameObject(new Blinky(world, pacman));
-            clyde   = (Clyde)AddGameObject(new Clyde(world, pacman, 60));
+            clyde   = (Clyde)AddGameObject(new Clyde(world, pacman, clydePelletLimit));
             pinky   = (Pinky)AddGameObject(new Pinky(world, pacman));
-            inky    = (Inky)AddGameObject(new Inky(world, pacman, blinky, 30));
+            inky    = (Inky)AddGameObject(new Inky(world, pacman, blinky, inkyPelletLimit));
 
             ghosts  = new List<Ghost>(GHOSTS)
                     { blinky, inky, pinky, clyde };
@@ -504,7 +540,7 @@ namespace FormsPixelGameEngine
                 pacman.Frozen = false;
 
                 for (int i = 0; i < "ready!".Length; i++)
-                    world.ClearTile(571 + i);
+                    world.ClearTile(READY + i);
             });
         }
 
@@ -523,19 +559,18 @@ namespace FormsPixelGameEngine
             base.StartGame();
 
             QueueFree(menu);
-            newLevel();
+
+            frightenTime = FRIGHTEN_TIME;
+            score = level = 0;
 
             AddGameObject(livesManager);
-
-            score = 0;
-
-            DisplayText(hiScore.ToString(), 40);
+            newLevel();
+            DisplayText(hiScore.ToString(), HI_SCORE);
         }
 
         public override void EndGame()
         {
             ResetModeTracker();
-            level = 0;
 
             QueueFree(livesManager);
 
