@@ -27,9 +27,10 @@ namespace FormsPixelGameEngine
 
         // CONSTANTS
 
-        private const int WIDTH = 224;
-        private const int HEIGHT = 288;
-        private const float SCALE = 3f;
+        private const int WIDTH     = 224;
+        private const int MARGIN    = 5;
+        private const int HEIGHT    = 288;
+        private const float SCALE   = 3f;
 
         // FIELDS
 
@@ -43,13 +44,14 @@ namespace FormsPixelGameEngine
             InitializeComponent();
             FormBorderStyle = FormBorderStyle.None;
             TopMost = true;
-            //Cursor.Hide();
 
             // game initalization
 
             // set the forms size to the GameScreen
-            Width = (int)(WIDTH * SCALE);
-            Height = (int)(HEIGHT * SCALE);
+            Width   = (int)(WIDTH * SCALE);
+            Height  = (int)(HEIGHT * SCALE);
+
+            Left = Top = MARGIN;
 
             pacMan = new PacManGame(new GameScreen(CreateGraphics(), WIDTH, HEIGHT, SCALE), new SoundPlayer(), ticker);
             
