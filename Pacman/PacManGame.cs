@@ -146,8 +146,7 @@ namespace FormsPixelGameEngine
         public PacManGame(GameScreen screen, SoundPlayer media, System.Windows.Forms.Timer ticker)
             : base(screen, media, ticker)
         {
-            // initalize fileds
-
+            // initalize fields
 
             digits = new Dictionary<int, int>(DIGITS)
             {
@@ -170,8 +169,7 @@ namespace FormsPixelGameEngine
 
             livesManager    = new LivesManager();
 
-            // create and run menu
-
+            // create and run a menu
             menu = (Menu)AddGameObject(new Menu());
         }
 
@@ -197,7 +195,7 @@ namespace FormsPixelGameEngine
             private set
             {
                 hiScore = value;
-                DisplayText(hiScore.ToString(), 40);
+                DisplayText(hiScore.ToString(), HI_SCORE);
             }
         }
 
@@ -206,24 +204,15 @@ namespace FormsPixelGameEngine
             get => debug; 
             set => debug = value; 
         }
-
-        public PacMan Pacman
-            => pacman;
         
         public Vector2D PacManPosition 
             => pacman.CurrentTile;
-
-        public TileSet TileSet
-            => tileset;
 
         public Mode CurrentMode 
             => currentMode;
 
         private bool frightened
             => exitFrightenTime != 0;
-
-        public int EatenGhosts
-            => eatenGhosts;
 
         // GAME LOOP
 
@@ -267,14 +256,16 @@ namespace FormsPixelGameEngine
                 winLevel();
         }
 
+        // display points earned and hide pacman while freezing the game 
         public void ConsumeGhost()
         {
             pacman.Hide();
+            Freeze(Time.SECOND);
 
             GameObject[] points = new GameObject[POINT_TILES]
             {
-                new GameObject(pacman.X - tileset.Size / 2, pacman.Y, pointTiles[eatenGhosts, 0], 200),
-                new GameObject(pacman.X + tileset.Size / 2, pacman.Y, pointTiles[eatenGhosts, 1], 200)
+                new GameObject(pacman.X - tileset.Size / 2, pacman.Y, pointTiles[eatenGhosts, 0]),
+                new GameObject(pacman.X + tileset.Size / 2, pacman.Y, pointTiles[eatenGhosts, 1])
             };
 
             Score += ghostPoints[eatenGhosts++];
@@ -311,6 +302,7 @@ namespace FormsPixelGameEngine
             }
         }
 
+        // Uses the pellet counter and preference rank to determine what ghost can be released
         private void tryReleaseGhosts()
         {
             // find the highest ranked ghost in the ghost house
@@ -337,12 +329,15 @@ namespace FormsPixelGameEngine
 
         // EVENTS
 
+        // stop mode tracker
         public void PauseModeTracker()
             => modeTracker.Stop();
 
+        // resume mode tracker
         public void ResumeModeTracker()
             => modeTracker.Start();
 
+        // reset mode tracker
         public void ResetModeTracker()
         {
             modeTracker.Reset();
@@ -440,24 +435,22 @@ namespace FormsPixelGameEngine
                         {
                             world.OffsetTiles(WALL_CYCLE, Time.HALF_SECOND, tile => tile.Wall);
 
+                            // free pacman and recreate the world
                             QueueFree(pacman);
                             QueueFree(world);
-
-                            QueueTask(Time.HALF_SECOND, () =>
-                            {
-                                newLevel();
-                            });
+                            QueueTask(Time.HALF_SECOND, () => newLevel());
                         });
                     });
                 });
             }
             else
             {
-                // Well done, all 255 levels... Go get a life!
+                // Well done, all 255 levels...
                 EndGame();
             }
         }
 
+        // freeze everything and hide ghosts
         public void LooseLevel()
         {
             ghosts.ForEach(g => 
@@ -487,6 +480,7 @@ namespace FormsPixelGameEngine
             });
         }
 
+        // create a new level, set of ghosts, and Pacman
         private void newLevel()
         {
             // reset world
@@ -513,11 +507,11 @@ namespace FormsPixelGameEngine
                 clydePelletLimit = 0;
             }
 
-            // update ghosts frighten time
+            // shorten ghosts frighten time
             if (level < 7)
                 --frightenTime;
 
-            // create a new set of ghosts and pacman
+            // create a new set of ghosts
             blinky  = (Blinky)AddGameObject(new Blinky(world, pacman));
             clyde   = (Clyde)AddGameObject(new Clyde(world, pacman, clydePelletLimit));
             pinky   = (Pinky)AddGameObject(new Pinky(world, pacman));
@@ -527,7 +521,6 @@ namespace FormsPixelGameEngine
                     { blinky, inky, pinky, clyde };
 
             world.Ghosts = ghosts;
-
             pelletCount = 0;
 
             PlaySound(Properties.Resources.game_start);
@@ -546,14 +539,17 @@ namespace FormsPixelGameEngine
 
         // DEBUG
 
+        // Queues a line to be drawn after all other rendering
         public void DrawLine(Vector2D a, Vector2D b, Colour colour)
             => QueueDraw(() => screen.DrawLine(a, b, colour));
 
+        // Queues an elipse to be drawn after all other rendering
         public void DrawEllipse(Vector2D p, float r, Colour colour)
             => QueueDraw(() => screen.DrawEllipse(p, r, colour));
 
         // ABSTRACT
 
+        // the games beginning point
         public override void StartGame()
         {
             base.StartGame();
@@ -568,17 +564,20 @@ namespace FormsPixelGameEngine
             DisplayText(hiScore.ToString(), HI_SCORE);
         }
 
+        // the games end point
         public override void EndGame()
         {
-            ResetModeTracker();
+            QueueTask(Time.TWO_SECOND, () =>
+            {
+                ResetModeTracker();
+                QueueFree(livesManager);
 
-            QueueFree(livesManager);
+                ghosts.ForEach(g => QueueFree(g));
+                QueueFree(world);
+                QueueFree(pacman);
 
-            ghosts.ForEach(g => QueueFree(g));
-            QueueFree(world);
-            QueueFree(pacman);
-
-            menu = (Menu)AddGameObject(new Menu());
+                menu = (Menu)AddGameObject(new Menu());
+            });
         }
     }
 }

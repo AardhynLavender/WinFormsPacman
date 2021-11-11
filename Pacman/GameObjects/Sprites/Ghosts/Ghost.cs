@@ -43,7 +43,6 @@
 
 using System;
 using System.Linq;
-using System.Drawing;
 using System.Collections.Generic;
 
 using FormsPixelGameEngine.Render;
@@ -74,6 +73,7 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
 
         protected const int OFFSET_X            = 4;
         private const int OFFSET_Y              = 3;
+        private const int DEBUG_Z               = 200;
 
         private const int SELECTOR_ANIMATIONS   = 7;
         private const int SELECTOR_RATE         = Time.TWENTYTH_SECOND;
@@ -171,7 +171,7 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
 
             if (game.Debug)
             {
-                tileSelector        = game.AddGameObject(new GameObject(0, 0, tileTexture, 200, 1, 1));
+                tileSelector        = game.AddGameObject(new GameObject(0, 0, tileTexture, DEBUG_Z, 1, 1));
                 SelectorRotation    = Game.AddAnimation(new Animation(game, tileset, tileSelector, 1, tileTexture, SELECTOR_ANIMATIONS, SELECTOR_RATE));
                 SelectorRotation.Start();
             }
@@ -201,8 +201,7 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
 
         // METHODS
 
-        // print debugging infomation 
-
+        // prints debugging infomation 
         protected virtual void debugDraw()
         {
             if (mode != Mode.FRIGHTENED && !locked)
@@ -214,10 +213,10 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
 
                 // offset tiles to centroids
 
-                a.X += 4;
-                b.X += 4;
-                a.Y += 4;
-                b.Y += 4;
+                a.X += OFFSET_X;
+                b.X += OFFSET_X;
+                a.Y += OFFSET_X;
+                b.Y += OFFSET_X;
 
                 // draw a line
 
@@ -229,6 +228,7 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
             }
         }
 
+        // removes animation and tileselector
         public override void OnFreeGameObject()
         {
             if (game.Debug)
@@ -269,6 +269,7 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
             }
         }
 
+        // sets mode to chase
         public void Chase()
         {
             if (mode == Mode.EATEN && !currentTile.Equals(homeTile)) ;
@@ -306,7 +307,6 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
 
                 game.ConsumeGhost();
                 game.PlaySound(Properties.Resources.eat_ghost);
-                game.Freeze(Time.SECOND);
             }
         }
 
@@ -327,16 +327,18 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
             CurrentAnimation.Start();
         }
 
-
+        // checks if a ghost is within the ghost house
         private bool InGhostHouse()
             => currentTile.X >= 10
             && currentTile.X <= 17
             && currentTile.Y >= 15
             && currentTile.Y <= 19;
 
+        // increments pellet counter and returns if within the limit
         public bool IncrementPelletCounter() 
             => ++pelletCounter < PelletLimit;
 
+        // inverts trajectory
         private void reverseDirection()
         {
             // reverse direction
@@ -349,6 +351,7 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
 
         // UPDATING
 
+        // updates tiles, position, trajectory, animations, and mode specific infomation
         public override void Update()
         {
             if (inTunnel)

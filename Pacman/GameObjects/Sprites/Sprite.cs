@@ -20,6 +20,12 @@ namespace FormsPixelGameEngine.GameObjects.Sprites
 {
     class Sprite : GameObject
     {
+        // CONSTANTS
+
+        private const int TUNNEL_Y          = 17;
+        private const int TUNNEL_START_X    = 6;
+        private const int TUNNEL_END_X      = 21;
+
         // FIELDS
 
         protected float localX;
@@ -43,9 +49,9 @@ namespace FormsPixelGameEngine.GameObjects.Sprites
         {
             // initalize fields
 
-            this.world = world;
-            Trajectory = trajectory;
-            hidden = false;
+            this.world  = world;
+            Trajectory  = trajectory;
+            hidden      = false;
         }
 
         // PROPERTIES
@@ -73,14 +79,15 @@ namespace FormsPixelGameEngine.GameObjects.Sprites
         public Vector2D Trajectory;
 
         protected bool inTunnel
-            => (currentTile.X < 6 || currentTile.X > 21)
-                && currentTile.Y == 17;
+            => (currentTile.X < TUNNEL_START_X || currentTile.X > TUNNEL_END_X)
+                && currentTile.Y == TUNNEL_Y;
 
         public bool Locked
         {
             get => locked;
             set => locked = value;
         }
+
         public bool Frozen
         {
             get => frozen;
@@ -89,12 +96,15 @@ namespace FormsPixelGameEngine.GameObjects.Sprites
 
         // METHODS
 
+        // object will not be drawn
         public void Hide()
             => hidden = true;
 
+        // object will be drawn
         public void Show()
             => hidden = false;
 
+        // shifts the game object by its defined trajectory
         public override void Update()
         {
             if (!frozen)
@@ -107,6 +117,7 @@ namespace FormsPixelGameEngine.GameObjects.Sprites
             }
         }
 
+        // draws the gameobject translated by defined offset
         public override void Draw()
         {
             if (!hidden)

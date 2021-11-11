@@ -1,6 +1,6 @@
 ﻿
 //
-//  Animation
+//  Animation Class
 //  Created 25/10/2021
 //
 //  WinForms PacMan v0.0.1
@@ -12,12 +12,9 @@
 //
 
 using System;
-using System.Collections.Generic;
 using System.Drawing;
 
-using FormsPixelGameEngine.Utility;
 using FormsPixelGameEngine.GameObjects;
-using FormsPixelGameEngine.GameObjects.Sprites.Ghosts;
 
 namespace FormsPixelGameEngine.Render
 {
@@ -72,10 +69,6 @@ namespace FormsPixelGameEngine.Render
             orignalRect         = gameObject.SourceRect;
             animating           = false;
         }
-
-        // PROPERTIES
-
-
 
         // METHODS
 

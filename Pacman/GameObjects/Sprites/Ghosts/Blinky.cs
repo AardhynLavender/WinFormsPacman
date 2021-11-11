@@ -28,7 +28,10 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
 
         private const int START_X       = 107;
         private const int START_Y       = 112;
+        private const int TILE_OFFSET_Y = 3;
 
+
+        private const int TARGET_TILE   = 366;
         private const int TEXTURE_RIGHT = 168;
         private const int TEXTURE_LEFT  = 172;
         private const int TEXTURE_UP    = 176;
@@ -41,7 +44,7 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
         // CONSTRUCTOR
 
         public Blinky(World world, PacMan pacman)
-            : base(START_X, START_Y, TEXTURE_RIGHT, 0, 366, world, pacman, COLOUR)
+            : base(START_X, START_Y, TEXTURE_RIGHT, 0, TARGET_TILE, world, pacman, COLOUR)
         {
             // initalize fields
 
@@ -67,24 +70,22 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
             currentAnimation = directionalAnimations[0];
         }
 
-        // PROPERTIES
-
-
-
         // METHODS
 
+        // blinky is reset to outside the ghost house
         public override void Reset()
         {
             Show();
 
             Vector2D startTile = homeTile;
-            startTile.Y -= 3;
+            startTile.Y -= TILE_OFFSET_Y;
             Vector2D start = world.GetCoordinate(startTile);
 
             x = start.X;
             y = start.Y;
         }
 
+        // get Blinkys target tile
         protected override Vector2D GetTargetTile()
             => pacman.CurrentTile;
     }

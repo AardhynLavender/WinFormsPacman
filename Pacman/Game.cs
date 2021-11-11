@@ -1,9 +1,13 @@
 ﻿
 //
 //  Game Class
+//  Created 01/07/2021
+//
+//  WinForms PacMan v0.0.1
+//  Aardhyn Lavender 2021
 //
 //  Defines functionality and members for an abstract game object.
-//  that manages GameObjects and renders infomation to a Screen
+//  that manages GameObjects and renders infomation to a GameScreen
 //
 
 using FormsPixelGameEngine.GameObjects;

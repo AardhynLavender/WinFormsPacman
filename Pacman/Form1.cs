@@ -10,7 +10,13 @@
 //  Platform:               Microsoft Visual Studio 2019
 //
 //  Purpose:                Demonstrate understanding of event driven programming and the object orientated paradigm.
+//
 //  Description:            Simple Clone of Namco Pacman created in Windows Forms for the Windows 10 (and 11) Operating System
+//
+//                          Pacman is a game where the player controls a yellow mouth directing him to eat pink dots in a simple
+//                          maze while avoiding ghosts of varied personalities. Each level level is completed when Pac-Man eats all
+//                          the points (and energisers) or loses when entering the same tile as a Ghost type.
+//
 //  Known Bugs:             None
 //
 //  Additional Features     *   Menu System to toggle between Standard and Development modes -- basicly a start and end game splash screen.
@@ -27,11 +33,6 @@
 //                          *   The Game provides a "Start" button ( and "Develop" ) buttons to start the game.
 //                          *   As the window border was removed for a cleaner app asthetic, I provided a close button in the style of the game to allow
 //                          *   the user to exit the game.
-//
-//  Extra Credit            *   Ghosts chase Pacman and toggle between CHASE and SCATTER as per the orignal game.
-//                          *   Pacman has 3 Lives for all 255 levels
-//                          *   The game has levels.
-//                          *   The game has Power Pellets that allow Pacman to eat the ghosts.
 //
 
 using System;
@@ -76,20 +77,17 @@ namespace FormsPixelGameEngine
         {
             // initalize components and window
             InitializeComponent();
+
             FormBorderStyle = FormBorderStyle.None;
             TopMost = true;
-
-            // game initalization
 
             // set the forms size to the GameScreen
             Width   = (int)(WIDTH * SCALE);
             Height  = (int)(HEIGHT * SCALE);
+            Left = Top = MARGIN;                //<- top left corner of the screen
 
-            Left = Top = MARGIN;
-
+            // create a new game
             pacMan = new PacManGame(new GameScreen(CreateGraphics(), WIDTH, HEIGHT, SCALE), new SoundPlayer(), ticker);
-            
-            // start the game timer
             ticker.Start();
         }
 
@@ -101,11 +99,11 @@ namespace FormsPixelGameEngine
         protected override void OnKeyDown(KeyEventArgs e)
             => InputManager.PressKey(e.KeyCode);
 
-        // called when key is released
+        // Called when key is released
         protected override void OnKeyUp(KeyEventArgs e)
             => InputManager.ReleaseKey(e.KeyCode);
 
-        // pass the mouse down event onto the games screen
+        // Pass the mouse down event onto the games screen
         protected override void OnMouseDown(MouseEventArgs e)
         {
             base.OnMouseDown(e);

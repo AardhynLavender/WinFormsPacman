@@ -17,7 +17,6 @@ using FormsPixelGameEngine.Render;
 using FormsPixelGameEngine.Utility;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 
 namespace FormsPixelGameEngine.GameObjects.Sprites
 {
@@ -25,10 +24,11 @@ namespace FormsPixelGameEngine.GameObjects.Sprites
     {
         // CONSTANTS
 
-        // start position
+        // position
 
         private const int START_X       = 108;
         private const int START_Y       = 208;
+        private const int Z             = 200;
 
         // texture indices
 
@@ -46,8 +46,13 @@ namespace FormsPixelGameEngine.GameObjects.Sprites
 
         // tile infomation
 
-        private const int SIZE_TILES = 2;
-        private const int TILE_HEADER = 7;
+        private const int SIZE_TILES    = 2;
+        private const int TILE_HEADER   = 7;
+        private const int OFFSET        = 3;
+
+        // trajectory
+
+        private const float SPEED       = 1.33f;
 
         // FIELDS
 
@@ -78,13 +83,13 @@ namespace FormsPixelGameEngine.GameObjects.Sprites
         {
             // initatlize fields
 
-            speed               = 1.33f;
+            speed               = SPEED;
             directionHistory    = new List<Direction>();
             locked              = true;
             Frozen              = true;
             alive               = true;
-            offsetX = offsetY   = 3;
-            z                   = 200;
+            offsetX = offsetY   = OFFSET;
+            z                   = Z;
 
             this.livesManager   = livesManager;
 
@@ -104,10 +109,10 @@ namespace FormsPixelGameEngine.GameObjects.Sprites
             }, 
             false);
 
-            up      = new Animation(game, tileset, this, SIZE_TILES, UP, 2, ANIMATION);
-            right   = new Animation(game, tileset, this, SIZE_TILES, RIGHT, 2, ANIMATION);
-            down    = new Animation(game, tileset, this, SIZE_TILES, DOWN, 2, ANIMATION);
-            left    = new Animation(game, tileset, this, SIZE_TILES, LEFT, 2, ANIMATION);
+            up      = new Animation(game, tileset, this, SIZE_TILES, UP, SIZE_TILES, ANIMATION);
+            right   = new Animation(game, tileset, this, SIZE_TILES, RIGHT, SIZE_TILES, ANIMATION);
+            down    = new Animation(game, tileset, this, SIZE_TILES, DOWN, SIZE_TILES, ANIMATION);
+            left    = new Animation(game, tileset, this, SIZE_TILES, LEFT, SIZE_TILES, ANIMATION);
 
             // store directional animations in an array    
             directionalAnimations = new Animation[DIRECTIONS]
@@ -147,7 +152,8 @@ namespace FormsPixelGameEngine.GameObjects.Sprites
                 });
             }
         }
-
+        
+        // resets pacman
         public void Revive()
         {
             if (!alive)
@@ -166,6 +172,7 @@ namespace FormsPixelGameEngine.GameObjects.Sprites
             }
         }
 
+        // updates positional, directional, and animation infomation
         public override void Update()
         {
             // round position
@@ -277,6 +284,7 @@ namespace FormsPixelGameEngine.GameObjects.Sprites
 
         }
 
+        // handles input
         public override void Input()
         {
             if (locked || InputManager.MultipleKeysPressed) return;

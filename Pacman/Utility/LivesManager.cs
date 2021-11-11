@@ -18,9 +18,9 @@ namespace FormsPixelGameEngine.Utility
     {
         // CONSTANTS
 
-        private const int START_LIVES = 3;
-        private const int SIZE = 2;
-        private const int TEXTURE = 92;
+        private const int START_LIVES   = 3;
+        private const int SIZE          = 2;
+        private const int TEXTURE       = 92;
 
         private static readonly Vector2D 
         startVector = new Vector2D(16, 272);

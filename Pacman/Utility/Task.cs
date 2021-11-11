@@ -1,7 +1,11 @@
 ﻿
 //
 //  Task Class
-//  
+//  Created 02/08/2021
+//
+//  WinForms PacMan v0.0.1
+//  Aardhyn Lavender 2021
+//
 //  Defines a simple object to delay a function being
 //  called for a specifed amount of game loops 
 //
@@ -19,9 +23,9 @@ namespace FormsPixelGameEngine.Utility
     {
         // fields
         Game game;
+        Action callback;
         bool called;
         long callTime;
-        Action callback;
 
         // constructor
         public Task(Action callback, int milliseconds, Game game)
@@ -34,7 +38,8 @@ namespace FormsPixelGameEngine.Utility
         }
 
         // has the task been run yet
-        public bool Called => called;
+        public bool Called
+            => called;
 
         // attempt to run the task
         public bool TryRun()

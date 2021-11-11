@@ -41,18 +41,30 @@ namespace FormsPixelGameEngine.Utility
 
         // PROPERTIES
 
-        public static bool Up       => keys[Keys.Up] || keys[Keys.W];
-        public static bool Down     => keys[Keys.Down] || keys[Keys.S];
-        public static bool Left     => keys[Keys.Left] || keys[Keys.A];
-        public static bool Right    => keys[Keys.Right] || keys[Keys.D];
-        public static bool Select   => keys[Keys.Space] || keys[Keys.Enter];
-        public static bool Escape   => keys[Keys.Escape] || keys[Keys.Back];
+        public static bool Up       
+            => keys[Keys.Up] || keys[Keys.W];
+
+        public static bool Down    
+            => keys[Keys.Down] || keys[Keys.S];
+
+        public static bool Left     
+            => keys[Keys.Left] || keys[Keys.A];
+
+        public static bool Right    
+            => keys[Keys.Right] || keys[Keys.D];
+
+        public static bool Select   
+            => keys[Keys.Space] || keys[Keys.Enter];
+
+        public static bool Escape   
+            => keys[Keys.Escape] || keys[Keys.Back];
 
         public static bool MultipleKeysPressed
             => pressedKeys > 1;
 
         // METHODS
 
+        // registeres the specified key as pressed
         public static void PressKey(Keys key)
         {
             if (keys.ContainsKey(key) && !keys[key])
@@ -62,6 +74,7 @@ namespace FormsPixelGameEngine.Utility
             }
         }
 
+        // registers the specified key as released
         public static void ReleaseKey(Keys key)
         {
             if (keys.ContainsKey(key) && keys[key])

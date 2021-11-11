@@ -24,6 +24,11 @@ namespace FormsPixelGameEngine.GameObjects
 {
     class World : GameObject
     {
+        // CONSTANTS
+
+        private const int PELLET = 22;
+        private const int ENERGIZER = 23;
+
         // FIELDS
 
         private int widthTiles;
@@ -74,10 +79,10 @@ namespace FormsPixelGameEngine.GameObjects
                         if (--index == -1)
                             AddTile(new TileObject(i, this, -1));
 
-                        else if (index == 22)
+                        else if (index == PELLET)
                             AddTile(new Pellet(i, this));
 
-                        else if (index == 23)
+                        else if (index == ENERGIZER)
                             AddTile(new Energizer(i, this));
 
                         else
@@ -228,6 +233,7 @@ namespace FormsPixelGameEngine.GameObjects
             }
         }
 
+        // offsets the specified tiles in a world for a set time
         public void OffsetTiles(int offset, int time, Func<TileObject, bool> predicate)
         {
             tiles.Where(predicate).ToList().ForEach(tile =>
@@ -239,8 +245,5 @@ namespace FormsPixelGameEngine.GameObjects
                 );
             });
         }
-
-        public void OffsetTile(int offset, TileObject tile)
-            => tile.SourceRect = tileset.GetTileSourceRect(tile.TextureIndex + offset);
     }
 }

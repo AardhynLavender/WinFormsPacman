@@ -1,6 +1,10 @@
 ﻿
 //
-//  Screen Class
+//  Game Screen Class
+//  Created 02/07/2021
+//
+//  WinForms PacMan v0.0.1
+//  Aardhyn Lavender 2021
 //
 //  an intermediary class that provides functionality to a
 //  Game to render textures to a Form screen with scaling
@@ -91,8 +95,8 @@ namespace FormsPixelGameEngine.Render
             HeightScaled                = height;
             Scale                       = scale;
 
-            src = new Rectangle(0, 0, width, height);
-            dest = new Rectangle(0, 0, WidthScaled, HeightScaled);
+            src                         = new Rectangle(0, 0, width, height);
+            dest                        = new Rectangle(0, 0, WidthScaled, HeightScaled);
 
             // create buffer
 
@@ -103,7 +107,7 @@ namespace FormsPixelGameEngine.Render
             // configure buffer
 
             Buffer.PixelOffsetMode      = System.Drawing.Drawing2D.PixelOffsetMode.Half;
-            display.InterpolationMode    = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
+            display.InterpolationMode   = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
         }
 
         // draws a line on the screen

@@ -1,9 +1,16 @@
 ﻿
-// 
-//  Time Enum
+//
+//  Time Class
+//  Created 02/07/2021
+//
+//  WinForms PacMan v0.0.1
+//  Aardhyn Lavender 2021
 //
 //  A group of constants to reference time
 //  steps in terms of milliseconds.
+//
+//  NOTE :  This is not an emum as that would require
+//          excessive casting from Time to Int.
 //
 
 namespace FormsPixelGameEngine.Utility
@@ -25,8 +32,5 @@ namespace FormsPixelGameEngine.Utility
 
         public const int SEVEN_SECOND           = SECOND * 7;
         public const int TWENTY_SECOND          = SECOND * 20;
-
-
-
     }
 }

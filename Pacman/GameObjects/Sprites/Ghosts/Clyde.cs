@@ -29,6 +29,8 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
         private const int START_X           = 107;
         private const int START_Y           = 112;
 
+        private const int PREFERENCE        = 4;
+        private const int TARGET_TILE       = 450;
         private const int TEXTURE_RIGHT     = 420;
         private const int TEXTURE_LEFT      = 424;
         private const int TEXTURE_UP        = 428;
@@ -41,11 +43,11 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
         // CONSTRUCTOR
 
         public Clyde(World world, PacMan pacman, int pelletLimit)
-            : base(START_X, START_Y, TEXTURE_RIGHT, pelletLimit, 492, world, pacman, COLOUR)
+            : base(START_X, START_Y, TEXTURE_RIGHT, pelletLimit, TARGET_TILE, world, pacman, COLOUR)
         {
             // initalize fields
 
-            preferenceRank  = 4;
+            preferenceRank  = PREFERENCE;
             scatterTile     = new Vector2D(0,35);
             homeTile        = new Vector2D(15, 17);
             Trajectory      = Directions[(int)Direction.LEFT];
@@ -68,12 +70,9 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
             currentAnimation = directionalAnimations[0];
         }
 
-        // PROPERTIES
-
-
-
         // METHODS
 
+        // draw clydes debugging infomation
         protected override void debugDraw()
         {
             base.debugDraw();
@@ -87,6 +86,7 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
             }
         }
 
+        // get Clydes target tile
         protected override Vector2D GetTargetTile()
             => Vector2D.GetAbsDistance(currentTile, pacman.CurrentTile) > SCATTER_RADIUS
                 ? pacman.CurrentTile 

@@ -28,6 +28,11 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
         private const int START_X       = 107;
         private const int START_Y       = 112;
 
+        private const int TARGET_HEADER = 4;
+
+        private const int PREFERENCE    = 2;
+        private const int TARGET_TILE   = 408;    
+
         private const int TEXTURE_RIGHT = 252;
         private const int TEXTURE_LEFT  = 256;
         private const int TEXTURE_UP    = 260;
@@ -42,13 +47,13 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
         // CONSTRUCTOR
 
         public Pinky(World world, PacMan pacman)
-            : base(START_X, START_Y, TEXTURE_UP, PELLET_LIMIT, 408, world, pacman, COLOUR)
+            : base(START_X, START_Y, TEXTURE_UP, PELLET_LIMIT, TARGET_TILE, world, pacman, COLOUR)
         {
 
             // initalize fields
 
-            preferenceRank  = 2;
-            scatterTile     = new Vector2D(0,3);
+            preferenceRank  = PREFERENCE;
+            scatterTile     = new Vector2D(3,0);
             homeTile        = new Vector2D(13, 17);
             Trajectory      = Directions[(int)Direction.LEFT];
             speed           = 1.0f;
@@ -70,17 +75,13 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
             currentAnimation = directionalAnimations[0];
         }
 
-        // PROPERTIES
-
-
-
         // METHODS
 
         protected override Vector2D GetTargetTile()
             => new Vector2D()
             {
-                X = pacman.CurrentTile.X + Directions[(int)pacman.Direction].X * 4,
-                Y = pacman.CurrentTile.Y + Directions[(int)pacman.Direction].Y * 4,
+                X = pacman.CurrentTile.X + Directions[(int)pacman.Direction].X * TARGET_HEADER,
+                Y = pacman.CurrentTile.Y + Directions[(int)pacman.Direction].Y * TARGET_HEADER,
             };
     }
 }

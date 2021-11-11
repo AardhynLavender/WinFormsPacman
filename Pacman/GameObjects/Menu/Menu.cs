@@ -1,8 +1,16 @@
 ﻿
+//
+//  Game Object Class
+//  Created 02/10/2021
+//
+//  WinForms PacMan v0.0.1
+//  Aardhyn Lavender 2021
+//
+//  A group of buttons that call functions when selected
+//  using a pacman style menu tilemap.
+//
 
-using FormsPixelGameEngine.GameObjects.Tiles;
 using FormsPixelGameEngine.Utility;
-using System;
 
 namespace FormsPixelGameEngine.GameObjects.Menu
 {
@@ -13,6 +21,9 @@ namespace FormsPixelGameEngine.GameObjects.Menu
         private const int MENU_ITEMS        = 2;
         private const int MENU_X            = 0;
         private const int MENU_Y            = 0;
+
+        private const int SELECTOR_RIGHT    = 530;
+        private const int SELECTOR_LEFT     = 529;
         private const int SELECTOR_START_X  = 9;
         private const int SELECTOR_START_Y  = 18;
         private const int SELECTION_WIDTH   = 10;
@@ -34,8 +45,8 @@ namespace FormsPixelGameEngine.GameObjects.Menu
             : base(MENU_X, MENU_Y)
         {
             menu            = new World("../../Assets/menu.tmx", X, Y);
-            selectorRight   = new GameObject(SELECTOR_START_X * tileset.Size, SELECTOR_START_Y, 530);
-            selectorLeft    = new GameObject(SELECTOR_START_X * tileset.Size + SELECTION_WIDTH * tileset.Size, SELECTOR_START_Y + SELECTION_WIDTH, 529);
+            selectorRight   = new GameObject(SELECTOR_START_X * tileset.Size, SELECTOR_START_Y, SELECTOR_RIGHT);
+            selectorLeft    = new GameObject(SELECTOR_START_X * tileset.Size + SELECTION_WIDTH * tileset.Size, SELECTOR_START_Y + SELECTION_WIDTH, SELECTOR_LEFT);
         }
 
         // PROPERTIES

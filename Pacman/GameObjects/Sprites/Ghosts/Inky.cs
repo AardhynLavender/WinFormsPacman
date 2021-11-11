@@ -29,6 +29,8 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
         private const int START_X       = 107;
         private const int START_Y       = 112;
 
+        private const int PREFERENCE    = 3;
+        private const int TARGET_TILE   = 450;
         private const int TEXTURE_RIGHT = 336;
         private const int TEXTURE_LEFT  = 340;
         private const int TEXTURE_UP    = 344;
@@ -43,11 +45,11 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
         // CONSTRUCTOR
 
         public Inky(World world, PacMan pacman, Blinky blinky, int pelletLimit)
-            : base(START_X, START_Y, TEXTURE_UP, pelletLimit, 450, world, pacman, COLOUR)
+            : base(START_X, START_Y, TEXTURE_UP, pelletLimit, TARGET_TILE, world, pacman, COLOUR)
         {
             // Initalize fields
 
-            preferenceRank  = 3;
+            preferenceRank  = PREFERENCE;
 
             this.blinky     = blinky;
             scatterTile     = new Vector2D(27, 35);
@@ -74,6 +76,7 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
 
         // METHODS
 
+        // draw inkys debugging infomation
         protected override void debugDraw()
         {
             base.debugDraw();
@@ -94,6 +97,7 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
             }
         }
 
+        // get Inkys target tile
         protected override Vector2D GetTargetTile()
             => new Vector2D
             {
