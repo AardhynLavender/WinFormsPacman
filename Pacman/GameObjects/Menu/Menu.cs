@@ -10,7 +10,7 @@ namespace FormsPixelGameEngine.GameObjects.Menu
     {
         // CONSTANTS
 
-        private const int MENU_ITEMS        = 3;
+        private const int MENU_ITEMS        = 2;
         private const int MENU_X            = 0;
         private const int MENU_Y            = 0;
         private const int SELECTOR_START_X  = 9;
@@ -70,15 +70,8 @@ namespace FormsPixelGameEngine.GameObjects.Menu
                     case 1:
 
                         game.Debug = true;
+
                         goto case 0;
-
-                    case 2:
-
-                        //throw new System.Exception("Credits have not yet been implimented!");
-
-                        // run credits
-                        // Credits.roll();      
-                        break;
 
                     default: break;
                 }
