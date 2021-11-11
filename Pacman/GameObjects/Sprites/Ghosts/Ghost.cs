@@ -380,7 +380,7 @@ namespace FormsPixelGameEngine.GameObjects.Sprites.Ghosts
                 if (mode == Mode.FRIGHTENED)
                     Eat();
                  
-                else if (mode != Mode.EATEN)
+                else if (mode != Mode.EATEN && !game.Debug)
                     pacman.Kill();
             }
 
