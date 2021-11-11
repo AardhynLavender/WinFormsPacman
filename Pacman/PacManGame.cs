@@ -532,11 +532,6 @@ namespace FormsPixelGameEngine
             DisplayText(hiScore.ToString(), 40);
         }
 
-        protected override void SaveGame()
-        {
-            base.SaveGame();
-        }
-
         public override void EndGame()
         {
             ResetModeTracker();

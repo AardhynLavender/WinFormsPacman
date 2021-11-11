@@ -246,9 +246,5 @@ namespace FormsPixelGameEngine
 
         // handles destruction code for the game
         public abstract void EndGame();
-
-        // handles data saving (unimplimented)
-        protected virtual void SaveGame()
-            => Console.WriteLine("[Game] > unhandled save request");
     }
 }
