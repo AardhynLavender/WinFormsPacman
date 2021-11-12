@@ -1,2 +1,212 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<ClassDiagram /> 
+<ClassDiagram MajorVersion="1" MinorVersion="1" GroupingSetting="Access">
+  <Class Name="FormsPixelGameEngine.Form1">
+    <Position X="30.5" Y="3.25" Width="3" />
+    <TypeIdentifier>
+      <HashCode>AABAAAAAAiKAAAAAACCBAAACAAYAABAAIAACAABQAAA=</HashCode>
+      <FileName>Form1.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FormsPixelGameEngine.Game">
+    <Position X="21.5" Y="3" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AABAAgAAAEJABAhAByCACA5gYAAAHAAgABSAAAAQQQQ=</HashCode>
+      <FileName>Game.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FormsPixelGameEngine.PacManGame">
+    <Position X="18.5" Y="3" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>hEARGACQkEyABIlAwgCInEwhMUGRRPYAIFQAAkQwAAM=</HashCode>
+      <FileName>PacManGame.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FormsPixelGameEngine.Program" Collapsed="true">
+    <Position X="24.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAA=</HashCode>
+      <FileName>Program.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FormsPixelGameEngine.GameObjects.GameObject">
+    <Position X="13.25" Y="8.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAABAAAAgTAQAAACEQAEGAAAABIIABiAQAQYAE=</HashCode>
+      <FileName>GameObjects\GameObject.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FormsPixelGameEngine.GameObjects.World">
+    <Position X="0.75" Y="2" Width="2" />
+    <TypeIdentifier>
+      <HashCode>CVgAAAAAAAAABAAAAgAAAAAAAiAQEAQQAAAEEAAABAA=</HashCode>
+      <FileName>GameObjects\World.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FormsPixelGameEngine.GameObjects.Menu.Menu">
+    <Position X="9.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>wAUQAQAAQAAAEAABAAAAEAgAEGAAAAAAAAAAQgAQAgg=</HashCode>
+      <FileName>GameObjects\Menu\Menu.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FormsPixelGameEngine.GameObjects.Sprites.Ghosts.Blinky">
+    <Position X="5" Y="18.25" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AgAAAAAACAAABACAAAAAAAQMAAABAAAAAAAgAAQAABI=</HashCode>
+      <FileName>GameObjects\Sprites\Ghosts\Blinky.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FormsPixelGameEngine.GameObjects.Sprites.Ghosts.Clyde">
+    <Position X="7.25" Y="18.25" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AgAAAAAAAAAAAACAAAAAAAQMAAABAAAAAAAgEEQAABI=</HashCode>
+      <FileName>GameObjects\Sprites\Ghosts\Clyde.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FormsPixelGameEngine.GameObjects.Sprites.Ghosts.Ghost">
+    <Position X="3.75" Y="3.5" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>WwVAEBAAEIAmHACAAAYiAIKEhSCZCBaEBgQQFlCYhgE=</HashCode>
+      <FileName>GameObjects\Sprites\Ghosts\Ghost.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FormsPixelGameEngine.GameObjects.Sprites.Ghosts.Inky">
+    <Position X="0.5" Y="18.25" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AgAAAAAAAAAAAACAAAAAAAQMBAABAAAAAAAgEAQgABI=</HashCode>
+      <FileName>GameObjects\Sprites\Ghosts\Inky.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FormsPixelGameEngine.GameObjects.Sprites.Ghosts.Pinky">
+    <Position X="2.75" Y="18.25" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AgAAAAAAAAAAAACAAAAACAQMAAABAAAAAAAgAAQAIBI=</HashCode>
+      <FileName>GameObjects\Sprites\Ghosts\Pinky.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FormsPixelGameEngine.GameObjects.Sprites.PacMan">
+    <Position X="7" Y="3.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAEAGAgAAQEAQAIAMFAMKQAQgIBCAIgAAgBM=</HashCode>
+      <FileName>GameObjects\Sprites\PacMan.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FormsPixelGameEngine.GameObjects.Sprites.Sprite">
+    <Position X="9.5" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAEAAgAAAAIgAAECAAAAAAAAAEAYICQSQAIEEwACA=</HashCode>
+      <FileName>GameObjects\Sprites\Sprite.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FormsPixelGameEngine.GameObjects.Tiles.Energizer">
+    <Position X="11.5" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAoAE=</HashCode>
+      <FileName>GameObjects\Tiles\Energizer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FormsPixelGameEngine.GameObjects.Tiles.Pellet">
+    <Position X="13.75" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAAAABAAAAAAAAAAAACAAAAAAAAAAoAA=</HashCode>
+      <FileName>GameObjects\Tiles\Pellet.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FormsPixelGameEngine.GameObjects.Tiles.TileObject">
+    <Position X="12.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAAAABACAAAAAgAAAAAAAAAAAAQAAAAEAAAAAAA=</HashCode>
+      <FileName>GameObjects\Tiles\TileObject.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FormsPixelGameEngine.Properties.Resources" Collapsed="true">
+    <Position X="26" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAARBAAAAARQgAAAgABEQAAAQAAAAQAgByDAAAAAIA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FormsPixelGameEngine.Properties.Settings" Collapsed="true">
+    <Position X="27.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAIAAAAAABAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FormsPixelGameEngine.Render.Animation">
+    <Position X="27" Y="6" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>CAQRAAAAkCAADAAAAIUAAAAAAAAABQAIIgCAAAAAAAA=</HashCode>
+      <FileName>Render\Animation.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FormsPixelGameEngine.Render.GameScreen">
+    <Position X="27.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAABAgAABQAQAIAgEECAgEACgCIAEBAAABAQAA=</HashCode>
+      <FileName>Render\GameScreen.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FormsPixelGameEngine.Render.TileSet">
+    <Position X="24.5" Y="6.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>BAAABAAAAAAggSQAQIAAAAAAAAAAAgAEAAIAAAAAAAA=</HashCode>
+      <FileName>Render\TileSet.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FormsPixelGameEngine.Utility.InputManager" Collapsed="true">
+    <Position X="29.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAIIQAIAIAAAAQAAAAAEAAAAAAAAACACAQAAAAAI=</HashCode>
+      <FileName>Utility\InputManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FormsPixelGameEngine.Utility.LivesManager">
+    <Position X="16.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAAIAAAAAAQAAACIAAAACAAAAAABQggA=</HashCode>
+      <FileName>Utility\LivesManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FormsPixelGameEngine.Utility.Task" Collapsed="true">
+    <Position X="29.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABCAAAACgAAAAAAAAABAAAAAAAAAAAIAAAAAAAAAAA=</HashCode>
+      <FileName>Utility\Task.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FormsPixelGameEngine.Utility.Time" Collapsed="true">
+    <Position X="26" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAECAgAAAAAAAgAAAgABAAAAAAAACAEAAAIAAQAQAAA=</HashCode>
+      <FileName>Utility\Time.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Struct Name="FormsPixelGameEngine.Utility.Vector2D" Collapsed="true">
+    <Position X="24.25" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEAAAAAAAAAEgAAAAAAAAQAAAAAAAAAAACAAYgA=</HashCode>
+      <FileName>Utility\Vector2D.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Enum Name="FormsPixelGameEngine.Utility.Colour" Collapsed="true">
+    <Position X="24.25" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAAAAAAAAkAQIAAAAAAAAAAAgAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Utility\Colour.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="FormsPixelGameEngine.Utility.Direction" Collapsed="true">
+    <Position X="26" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAgAAAAAAAAAAAAICAAAgAAAAAAAAAAA=</HashCode>
+      <FileName>Utility\Direction.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="FormsPixelGameEngine.Utility.Mode" Collapsed="true">
+    <Position X="27.75" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAEAAA=</HashCode>
+      <FileName>Utility\Mode.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

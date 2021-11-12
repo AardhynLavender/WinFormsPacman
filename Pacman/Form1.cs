@@ -27,12 +27,12 @@
 //                          *   The Game is not won if pacman eats all pellets in the maze, but rather progresses to the next level. Levels increase
 //                          *   up to 255 like the original PacMan. Winning the game is beating your own high score -- playing for as long as possible.
 //                          *   The Game is lost after Pacman dies three times (running out of lives) rather than on the first time.
-//                          *   The Game gives a "Game Over" message when all lives are lost, but does not explicitly tell the user they have won the
-//                          *   level--just like the orignal game. There is no "you've Won!" at the end of all 255 levels, should anyone attempt to make
+//                          *   The Game returns to the menu when all lives are lost, but does not explicitly tell the user they have won or lost the
+//                          *   level--just like the orignal game. There is no "you've Won!", for instance, at the end of all 255 levels, should anyone attempt to make
 //                               it that far.
 //                          *   The Game provides a "Start" button ( and "Develop" ) buttons to start the game.
 //                          *   As the window border was removed for a cleaner app asthetic, I provided a close button in the style of the game to allow
-//                          *   the user to exit the game.
+//                               the user to exit the game.
 //
 
 using System;
